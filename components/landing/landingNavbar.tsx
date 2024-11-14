@@ -1,15 +1,38 @@
 "use client";
 
 import Link from "next/link";
-import { FiMenu, FiX, FiUser } from "react-icons/fi";
+import { FiMenu, FiX, FiUser, FiChevronDown } from "react-icons/fi";
 import { useState, useEffect } from "react";
-import Image from "next/image";
+
+const navigationItems = [
+  {
+    name: "About",
+    href: "/about",
+  },
+  {
+    name: "Transparency",
+    href: "/transparency",
+    children: [
+      { name: "Budget Reports", href: "/transparency/budget" },
+      { name: "Financial Statements", href: "/transparency/financial" },
+      { name: "Annual Reports", href: "/transparency/reports" },
+    ],
+  },
+  {
+    name: "Barangays",
+    href: "/barangays",
+  },
+  {
+    name: "Contact",
+    href: "/contact",
+  },
+];
 
 export default function LandingNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  // Handle navbar background on scroll
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -40,15 +63,50 @@ export default function LandingNavbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-8">
-            {["About", "Transparency", "Barangays", "Contact"].map((item) => (
-              <Link
-                key={item}
-                href={`/${item.toLowerCase()}`}
-                className="relative text-gray-600 hover:text-blue-600 transition-colors duration-200 py-2 group"
+            {navigationItems.map((item) => (
+              <div
+                key={item.name}
+                className="relative group"
+                onMouseEnter={() => setActiveDropdown(item.name)}
+                onMouseLeave={() => setActiveDropdown(null)}
               >
-                <span>{item}</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full" />
-              </Link>
+                <Link
+                  href={item.href}
+                  className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors duration-200 py-2"
+                >
+                  <span>{item.name}</span>
+                  {item.children && (
+                    <FiChevronDown
+                      className={`w-4 h-4 transition-transform duration-200 ${
+                        activeDropdown === item.name ? "rotate-180" : ""
+                      }`}
+                    />
+                  )}
+                </Link>
+                {/* Dropdown Menu */}
+                {item.children && (
+                  <div
+                    className={`absolute left-0 mt-2 w-48 rounded-xl bg-white shadow-lg border border-gray-100 transition-all duration-200 transform origin-top-left
+                    ${
+                      activeDropdown === item.name
+                        ? "opacity-100 scale-100"
+                        : "opacity-0 scale-95 pointer-events-none"
+                    }`}
+                  >
+                    <div className="py-2">
+                      {item.children.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          href={subItem.href}
+                          className="block px-4 py-2.5 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 transition-colors duration-200"
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -90,14 +148,28 @@ export default function LandingNavbar() {
         {isMenuOpen && (
           <div className="md:hidden absolute left-0 right-0 top-full bg-white/95 backdrop-blur-md shadow-lg border-t border-blue-50">
             <div className="px-4 pt-3 pb-6 space-y-2">
-              {["About", "Transparency", "Barangays", "Contact"].map((item) => (
-                <Link
-                  key={item}
-                  href={`/${item.toLowerCase()}`}
-                  className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 transition-all duration-200"
-                >
-                  {item}
-                </Link>
+              {navigationItems.map((item) => (
+                <div key={item.name}>
+                  <Link
+                    href={item.href}
+                    className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 transition-all duration-200"
+                  >
+                    {item.name}
+                  </Link>
+                  {item.children && (
+                    <div className="pl-6 mt-1 space-y-1">
+                      {item.children.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          href={subItem.href}
+                          className="block px-4 py-2 rounded-lg text-sm text-gray-500 hover:text-blue-600 hover:bg-blue-50/50 transition-all duration-200"
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
               <div className="mt-6 pt-4 border-t border-blue-50 space-y-3">
                 <Link
