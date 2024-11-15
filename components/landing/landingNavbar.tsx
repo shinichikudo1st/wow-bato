@@ -113,14 +113,14 @@ export default function LandingNavbar() {
           {/* Auth Buttons */}
           <div className="hidden md:flex md:items-center md:space-x-4">
             <Link
-              href="/login"
+              href="/authentication/login"
               className="flex items-center px-4 py-2 text-gray-600 hover:text-blue-600 transition-colors duration-200 space-x-2"
             >
               <FiUser className="w-4 h-4" />
               <span>Sign in</span>
             </Link>
             <Link
-              href="/register"
+              href="/authentication/register"
               className="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
             >
               Get Started

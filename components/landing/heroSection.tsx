@@ -5,7 +5,6 @@ import {
   FiBarChart2,
   FiPieChart,
 } from "react-icons/fi";
-import Image from "next/image";
 
 export default function HeroSection() {
   return (
