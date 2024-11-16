@@ -12,19 +12,21 @@ import {
   FiFacebook,
 } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-import { FormErrors } from "@/types/authTypes";
+import { FormErrorsLogin } from "@/types/authTypes";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<FormErrorsLogin>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
+    const newErrors: FormErrorsLogin = {};
 
     if (!formData.email) {
       newErrors.email = "Email is required";
@@ -49,13 +51,17 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      const response = await fetch("api/auth/login", {
+      const response = await fetch("http://localhost:8080/api/v1/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
+
+      if (response.ok) {
+        router.push("/home");
+      }
     } catch (error) {
       console.error("Login error:", error);
     } finally {

@@ -19,7 +19,7 @@ export interface FormErrors {
   confirmPassword?: string;
 }
 
-export interface FormErrors {
+export interface FormErrorsLogin {
   email?: string;
   password?: string;
 }
