@@ -60,7 +60,11 @@ export default function LoginPage() {
       });
 
       if (response.ok) {
-        router.push("/home");
+        const authResponse = await fetch(
+          "http://localhost:8080/api/v1/user/checkAuth"
+        );
+        const authData = await authResponse.json();
+        router.push(`/home/${authData.role}`);
       }
     } catch (error) {
       console.error("Login error:", error);
