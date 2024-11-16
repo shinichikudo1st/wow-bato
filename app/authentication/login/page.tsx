@@ -56,15 +56,19 @@ export default function LoginPage() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         const authResponse = await fetch(
-          "http://localhost:8080/api/v1/user/checkAuth"
+          "http://localhost:8080/api/v1/user/checkAuth",
+          {
+            credentials: "include",
+          }
         );
         const authData = await authResponse.json();
-        router.push(`/home/${authData.role}`);
+        router.push(`/home/${authData.role.toLowerCase().replace(" ", "-")}`);
       }
     } catch (error) {
       console.error("Login error:", error);
