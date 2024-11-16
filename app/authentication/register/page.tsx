@@ -14,27 +14,7 @@ import {
   FiFacebook,
 } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-
-type UserRole = "citizen" | "barangay admin" | "city admin";
-
-interface RegisterFormData {
-  email: string;
-  firstName: string;
-  lastName: string;
-  role: UserRole;
-  contact: string;
-  password: string;
-  confirmPassword: string;
-}
-
-interface FormErrors {
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-  contact?: string;
-  password?: string;
-  confirmPassword?: string;
-}
+import { FormErrors, RegisterFormData, UserRole } from "@/types/authTypes";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState<RegisterFormData>({
@@ -49,7 +29,6 @@ export default function RegisterPage() {
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = (): boolean => {
@@ -82,6 +61,9 @@ export default function RegisterPage() {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
+      setTimeout(() => {
+        setErrors({ ...errors, password: undefined });
+      }, 3000);
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
       newErrors.password =
         "Password must contain uppercase, lowercase, and numbers";
@@ -105,9 +87,19 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Registration attempt:", formData);
+      const response = await fetch("api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to register");
+      }
+
+      console.log("Registration successful");
     } catch (error) {
       console.error("Registration error:", error);
     } finally {

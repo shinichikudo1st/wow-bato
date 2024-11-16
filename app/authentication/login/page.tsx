@@ -12,11 +12,7 @@ import {
   FiFacebook,
 } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-
-interface FormErrors {
-  email?: string;
-  password?: string;
-}
+import { FormErrors } from "@/types/authTypes";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -24,8 +20,8 @@ export default function LoginPage() {
     password: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -53,9 +49,13 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Login attempt:", formData);
+      const response = await fetch("api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
     } catch (error) {
       console.error("Login error:", error);
     } finally {
