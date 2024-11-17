@@ -22,3 +22,24 @@ export async function addBarangay(formData: AddBarangayFormData) {
     throw error;
   }
 }
+
+export async function getBarangays(page: number, limit: number) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/barangay/all?page=${page}&limit=${limit}`,
+      {
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to fetch barangays");
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

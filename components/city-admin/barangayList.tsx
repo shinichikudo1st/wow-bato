@@ -9,6 +9,7 @@ import {
   FiRefreshCw,
   FiEye,
 } from "react-icons/fi";
+import { getBarangays } from "@/libs/barangay";
 
 export default function BarangayList() {
   const [barangays, setBarangays] = useState<BarangayListResponse | null>(null);
@@ -22,23 +23,18 @@ export default function BarangayList() {
     try {
       showRefresh ? setIsRefreshing(true) : setIsLoading(true);
       setError(null);
-      const response = await fetch(
-        `http://localhost:8080/api/v1/barangay/all?page=${currentPage}&limit=${limit}`,
-        {
-          credentials: "include",
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch barangays");
-      }
-      const data = await response.json();
+      const data = await getBarangays(currentPage, limit);
       setBarangays(data);
     } catch (error) {
-      console.error("Error fetching barangays:", error);
-      setError("Failed to load barangays");
+      setError(
+        error instanceof Error ? error.message : "An unknown error occurred"
+      );
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
     }
   };
 
