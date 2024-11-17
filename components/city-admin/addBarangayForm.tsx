@@ -35,8 +35,7 @@ export default function AddBarangayForm() {
     } finally {
       setIsSubmitting(false);
       setTimeout(() => {
-        setError(null);
-        setSuccess(null);
+        resetMessages();
       }, 2000);
     }
   };

@@ -3,6 +3,7 @@ import { AddBarangayFormData } from "@/types/barangayTypes";
 export async function addBarangay(formData: AddBarangayFormData) {
   try {
     const response = await fetch("http://localhost:8080/api/v1/barangay/add", {
+      credentials: "include",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
