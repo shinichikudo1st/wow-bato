@@ -43,3 +43,24 @@ export async function getBarangays(page: number, limit: number) {
     throw error;
   }
 }
+
+export async function viewBarangay(id: string) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/barangay/single/${id}`,
+      {
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to fetch barangay");
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
