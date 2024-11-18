@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { BarangayListResponse } from "@/types/barangayTypes";
+import { useState } from "react";
 import {
   FiMapPin,
   FiChevronLeft,
@@ -9,38 +8,13 @@ import {
   FiRefreshCw,
   FiEye,
 } from "react-icons/fi";
-import { getBarangays } from "@/libs/barangay";
+import { useBarangayList } from "@/hooks/barangayHook";
 
 export default function BarangayList() {
-  const [barangays, setBarangays] = useState<BarangayListResponse | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const { barangays, isLoading, isRefreshing, error, fetchBarangays } =
+    useBarangayList(currentPage);
   const limit = 5;
-
-  const fetchBarangays = async (showRefresh = false) => {
-    try {
-      showRefresh ? setIsRefreshing(true) : setIsLoading(true);
-      setError(null);
-      const data = await getBarangays(currentPage, limit);
-      setBarangays(data);
-    } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "An unknown error occurred"
-      );
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-      setTimeout(() => {
-        setError(null);
-      }, 2000);
-    }
-  };
-
-  useEffect(() => {
-    fetchBarangays();
-  }, [currentPage]);
 
   if (error) {
     return (
