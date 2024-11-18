@@ -20,3 +20,11 @@ export interface ViewBarangayResponse {
   data: BarangayListItem;
   message: string;
 }
+
+export interface UseBarangayListReturn {
+  barangays: BarangayListResponse | null;
+  isLoading: boolean;
+  isRefreshing: boolean;
+  error: string | null;
+  fetchBarangays: (showRefresh?: boolean) => Promise<void>;
+}

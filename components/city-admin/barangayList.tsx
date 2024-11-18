@@ -9,8 +9,10 @@ import {
   FiEye,
 } from "react-icons/fi";
 import { useBarangayList } from "@/hooks/barangayHook";
+import { useRouter } from "next/navigation";
 
 export default function BarangayList() {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const { barangays, isLoading, isRefreshing, error, fetchBarangays } =
     useBarangayList(currentPage);
@@ -108,6 +110,9 @@ export default function BarangayList() {
                     </div>
                   </div>
                   <button
+                    onClick={() => {
+                      router.push(`/home/city-admin/${barangay.id}`);
+                    }}
                     className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 
                       bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200
                       opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"

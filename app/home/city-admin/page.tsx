@@ -4,23 +4,8 @@ import AuthBackground from "@/components/auth/authBackground";
 import Navbar from "@/components/reusable/navbar";
 import AddBarangayForm from "@/components/city-admin/addBarangayForm";
 import BarangayList from "@/components/city-admin/barangayList";
-import { useEffect } from "react";
 
 export default function CityAdminPage() {
-  useEffect(() => {
-    const debugSession = async () => {
-      const response = await fetch(
-        "http://localhost:8080/api/v1/user/checkAuth",
-        {
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-      console.log(data);
-    };
-
-    debugSession();
-  }, []);
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
       <AuthBackground />
