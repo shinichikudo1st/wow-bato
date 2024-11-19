@@ -114,7 +114,7 @@ export default function RegisterPage() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
         {/* Logo */}
         <Link
-          href="/login"
+          href="/"
           className="flex items-center justify-center space-x-3 group"
         >
           <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-md transition-transform duration-300 group-hover:scale-105">

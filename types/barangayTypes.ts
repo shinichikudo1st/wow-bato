@@ -28,3 +28,11 @@ export interface UseBarangayListReturn {
   error: string | null;
   fetchBarangays: (showRefresh?: boolean) => Promise<void>;
 }
+
+export interface UseViewBarangayReturn {
+  barangay: BarangayListItem | null;
+  isLoading: boolean;
+  isRefreshing: boolean;
+  error: string | null;
+  fetchBarangay: (showRefresh?: boolean) => Promise<void>;
+}

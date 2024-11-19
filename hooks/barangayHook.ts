@@ -1,9 +1,14 @@
+"use client";
+
 import {
+  BarangayListItem,
   BarangayListResponse,
   UseBarangayListReturn,
+  UseViewBarangayReturn,
+  ViewBarangayResponse,
 } from "@/types/barangayTypes";
 import { useState, useEffect, useCallback } from "react";
-import { getBarangays } from "@/libs/barangay";
+import { getBarangays, viewBarangay } from "@/libs/barangay";
 
 export const useBarangayList = (currentPage: number): UseBarangayListReturn => {
   const [barangays, setBarangays] = useState<BarangayListResponse | null>(null);
@@ -47,4 +52,40 @@ export const useBarangayList = (currentPage: number): UseBarangayListReturn => {
   };
 };
 
-export const useViewBarangay = (id: string) => {};
+export const useViewBarangay = (barangayID: string): UseViewBarangayReturn => {
+  const [barangay, setBarangay] = useState<BarangayListItem | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchBarangay = useCallback(
+    async (showRefresh = false) => {
+      try {
+        showRefresh ? setIsRefreshing(true) : setIsLoading(true);
+        setError(null);
+        const data = await viewBarangay(barangayID);
+        setBarangay(data.data);
+      } catch (error) {
+        setError(
+          error instanceof Error ? error.message : "An unknown error occurred"
+        );
+      } finally {
+        setIsLoading(false);
+        setIsRefreshing(false);
+      }
+    },
+    [barangayID]
+  );
+
+  useEffect(() => {
+    fetchBarangay();
+  }, [fetchBarangay]);
+
+  return {
+    barangay,
+    isLoading,
+    isRefreshing,
+    error,
+    fetchBarangay,
+  };
+};
