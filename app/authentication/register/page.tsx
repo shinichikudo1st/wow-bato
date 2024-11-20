@@ -87,13 +87,17 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      const response = await fetch("localhost:8080/api/v1/user/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/v1/user/register",
+        {
+          credentials: "include",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to register");

@@ -1,0 +1,16 @@
+export async function logout() {
+  try {
+    const response = await fetch("http://localhost:8080/api/v1/user/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to logout");
+    }
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

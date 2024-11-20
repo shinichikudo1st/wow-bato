@@ -1,5 +1,6 @@
 "use client";
 
+import { logout } from "@/libs/authentication";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FiLogOut } from "react-icons/fi";
@@ -9,10 +10,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/user/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+      const response = await logout();
       if (response.ok) {
         router.push("/authentication/login");
       }
