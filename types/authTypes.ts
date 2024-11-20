@@ -28,3 +28,11 @@ export interface FormErrorsLogin {
   email?: string;
   password?: string;
 }
+
+export interface ProfileData {
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  contact: string;
+}

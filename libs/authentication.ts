@@ -77,3 +77,21 @@ export async function checkAuth() {
     throw error;
   }
 }
+
+export async function getProfile() {
+  try {
+    const response = await fetch("http://localhost:8080/api/v1/user/profile", {
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to get profile");
+    }
+
+    const profileData = await response.json();
+
+    return profileData.data;
+  } catch (error) {
+    throw error;
+  }
+}
