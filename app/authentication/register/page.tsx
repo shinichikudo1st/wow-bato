@@ -15,6 +15,9 @@ import {
 } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { FormErrors, RegisterFormData, UserRole } from "@/types/authTypes";
+import ErrorMessage from "@/components/ui/error";
+import SuccessMessage from "@/components/ui/success";
+import { register } from "@/libs/authentication";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState<RegisterFormData>({
@@ -30,6 +33,8 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -80,32 +85,47 @@ export default function RegisterPage() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const resetMessages = () => {
+    setError(null);
+    setSuccess(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
     setIsLoading(true);
+    setError(null);
+    setSuccess(null);
+
     try {
-      const response = await fetch(
-        "http://localhost:8080/api/v1/user/register",
-        {
-          credentials: "include",
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await register(formData);
 
       if (!response.ok) {
-        throw new Error("Failed to register");
+        const data = await response.json();
+        throw new Error(data.message || "Failed to register");
       }
 
-      console.log("Registration successful");
+      setSuccess("Registration successful! You can now login to your account.");
+      setFormData({
+        email: "",
+        firstName: "",
+        lastName: "",
+        role: "citizen",
+        contact: "",
+        password: "",
+        confirmPassword: "",
+      });
+
+      setTimeout(() => {
+        setSuccess(null);
+      }, 3000);
     } catch (error) {
-      console.error("Registration error:", error);
+      setError(error instanceof Error ? error.message : "Failed to register");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
     } finally {
       setIsLoading(false);
     }
@@ -154,6 +174,14 @@ export default function RegisterPage() {
           relative
           before:absolute before:inset-0 before:-z-10 before:bg-white/40 before:backdrop-blur-xl before:rounded-2xl"
         >
+          {/* Error Message */}
+          {error && <ErrorMessage error={error} setError={setError} />}
+
+          {/* Success Message */}
+          {success && (
+            <SuccessMessage success={success} setSuccess={setSuccess} />
+          )}
+
           {/* Social Registration Buttons in a row */}
           <div className="grid grid-cols-2 gap-4">
             <button
@@ -190,7 +218,11 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          <form className="mt-6" onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}
+            onChange={resetMessages}
+            className="mt-8 space-y-6"
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left Column */}
               <div className="space-y-6">
