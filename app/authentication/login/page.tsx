@@ -12,12 +12,13 @@ import {
   FiFacebook,
 } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-import { FormErrorsLogin } from "@/types/authTypes";
+import { FormErrorsLogin, LoginFormData } from "@/types/authTypes";
 import { useRouter } from "next/navigation";
+import { checkAuth, login } from "@/libs/authentication";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
   });
@@ -51,22 +52,10 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:8080/api/v1/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(formData),
-      });
+      const response = await login(formData);
 
       if (response.ok) {
-        const authResponse = await fetch(
-          "http://localhost:8080/api/v1/user/checkAuth",
-          {
-            credentials: "include",
-          }
-        );
+        const authResponse = await checkAuth();
         const authData = await authResponse.json();
         router.push(`/home/${authData.role.toLowerCase().replace(" ", "-")}`);
       }

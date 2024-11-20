@@ -10,6 +10,11 @@ export interface RegisterFormData {
   confirmPassword: string;
 }
 
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
 export interface FormErrors {
   email?: string;
   firstName?: string;
