@@ -1,6 +1,6 @@
 "use client";
 
-import { logout, getProfile } from "@/libs/authentication";
+import { logout } from "@/libs/authentication";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -11,33 +11,13 @@ import {
   FiPhone,
 } from "react-icons/fi";
 import { useState, useEffect, useRef } from "react";
-
-interface ProfileData {
-  Email: string;
-  FirstName: string;
-  LastName: string;
-  Role: string;
-  Contact: string;
-}
+import { useProfile } from "@/hooks/userHooks";
 
 export default function Navbar() {
   const router = useRouter();
-  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const { profile } = useProfile();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const data = await getProfile();
-        setProfile(data);
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      }
-    };
-
-    fetchProfile();
-  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {

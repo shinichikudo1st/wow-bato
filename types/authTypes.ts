@@ -30,9 +30,9 @@ export interface FormErrorsLogin {
 }
 
 export interface ProfileData {
-  email: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-  contact: string;
+  Email: string;
+  FirstName: string;
+  LastName: string;
+  Role: string;
+  Contact: string;
 }
