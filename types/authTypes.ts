@@ -4,6 +4,7 @@ export interface RegisterFormData {
   email: string;
   firstName: string;
   lastName: string;
+  barangay: string;
   role: UserRole;
   contact: string;
   password: string;

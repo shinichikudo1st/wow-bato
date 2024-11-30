@@ -64,3 +64,26 @@ export async function viewBarangay(id: string) {
     throw error;
   }
 }
+
+export async function getBarangayNames() {
+  try {
+    const response = await fetch(
+      "http://localhost:8080/api/v1/barangay/options",
+      {
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+
+    const barangays = data.data;
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to fetch barangay names");
+    }
+
+    return barangays;
+  } catch (error) {
+    throw error;
+  }
+}

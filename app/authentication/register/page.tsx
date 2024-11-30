@@ -18,12 +18,14 @@ import { FormErrors, RegisterFormData, UserRole } from "@/types/authTypes";
 import ErrorMessage from "@/components/ui/error";
 import SuccessMessage from "@/components/ui/success";
 import { register } from "@/libs/authentication";
+import { useBarangayNames } from "@/hooks/barangayHook";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState<RegisterFormData>({
     email: "",
     firstName: "",
     lastName: "",
+    barangay: "",
     role: "citizen",
     contact: "",
     password: "",
@@ -35,6 +37,7 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const barangays = useBarangayNames();
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -112,6 +115,7 @@ export default function RegisterPage() {
         email: "",
         firstName: "",
         lastName: "",
+        barangay: "",
         role: "citizen",
         contact: "",
         password: "",
@@ -328,6 +332,34 @@ export default function RegisterPage() {
                         }
                       />
                     </div>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="barangay"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Barangay
+                    </label>
+                    <select
+                      id="barangay"
+                      name="barangay"
+                      required
+                      className="mt-1 block w-full pl-3 pr-10 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      value={formData.barangay}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          barangay: e.target.value,
+                        })
+                      }
+                    >
+                      {barangays.map((barangay) => (
+                        <option key={barangay.id} value={barangay.id}>
+                          {barangay.name.charAt(0).toUpperCase() +
+                            barangay.name.slice(1)}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>

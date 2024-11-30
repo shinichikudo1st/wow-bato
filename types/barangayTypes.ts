@@ -36,3 +36,8 @@ export interface UseViewBarangayReturn {
   error: string | null;
   fetchBarangay: (showRefresh?: boolean) => Promise<void>;
 }
+
+export interface UseBarangayNamesReturn {
+  id: number;
+  name: string;
+}
