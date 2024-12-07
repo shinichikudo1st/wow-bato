@@ -2,8 +2,10 @@
 
 import AuthBackground from "@/components/auth/authBackground";
 import Navbar from "@/components/reusable/navbar";
+import AddBudgetCategoryForm from "@/components/barangay-admin/addBudgetCategoryForm";
 import AddProjectForm from "@/components/barangay-admin/addProjectForm";
 import ProjectList from "@/components/barangay-admin/projectList";
+import BudgetCategoryList from "@/components/barangay-admin/budgetCategoryList";
 
 export default function BarangayAdminPage() {
   return (
@@ -24,6 +26,12 @@ export default function BarangayAdminPage() {
                 from this central dashboard.
               </p>
             </div>
+
+            {/* Add Budget Category Form */}
+            <AddBudgetCategoryForm />
+
+            {/* Budget Category List */}
+            <BudgetCategoryList />
 
             {/* Add Project Form */}
             <AddProjectForm />
