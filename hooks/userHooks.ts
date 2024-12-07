@@ -1,4 +1,4 @@
-import { getProfile } from "@/libs/authentication";
+import { checkAuth, getProfile } from "@/libs/authentication";
 import { ProfileData } from "@/types/authTypes";
 import { useEffect, useState } from "react";
 
@@ -19,4 +19,22 @@ export const useProfile = () => {
   }, []);
 
   return { profile };
+};
+
+export const useProfileID = () => {
+  const [userID, setUserID] = useState<number | null>(null);
+  const [barangayID, setBarangayID] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchProfileID = async () => {
+      const authResponse = await checkAuth();
+      const authData = await authResponse.json();
+      setUserID(authData.user_id);
+      setBarangayID(authData.barangay_id);
+    };
+
+    fetchProfileID();
+  }, []);
+
+  return { userID, barangayID };
 };
