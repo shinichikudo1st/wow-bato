@@ -20,30 +20,30 @@ export default function BudgetCategoryList({
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const { budgetCategories, isLoading, success, error } =
-    useBudgetCategory(barangayID);
+  const { budgetCategories, isLoading, error } = useBudgetCategory(barangayID);
 
-  // Dummy data for UI demonstration
-  const dummyCategories = [
-    {
-      id: 1,
-      name: "Infrastructure Development",
-      description:
-        "Budget allocation for infrastructure projects and maintenance",
-      totalProjects: 3,
-      totalBudget: 1500000,
-      activeProjects: 2,
-    },
-    {
-      id: 2,
-      name: "Social Services",
-      description:
-        "Funds for community welfare and social development programs",
-      totalProjects: 2,
-      totalBudget: 800000,
-      activeProjects: 1,
-    },
-  ];
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-md">
+        <div className="flex flex-col items-center justify-center h-64 space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <p className="text-sm text-gray-500">Loading categories...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-md">
+        <div className="text-center py-8">
+          <p className="text-red-600 mb-4">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -90,7 +90,7 @@ export default function BudgetCategoryList({
             </span>
             <button
               onClick={() => setCurrentPage((prev) => prev + 1)}
-              disabled={dummyCategories.length < 5} // Assuming 5 is the page limit
+              disabled={!budgetCategories || budgetCategories.length < 5}
               className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
             >
               <FiChevronRight className="w-5 h-5" />
@@ -111,75 +111,74 @@ export default function BudgetCategoryList({
 
       {/* Categories List */}
       <div className="space-y-4">
-        {dummyCategories.map((category) => (
-          <div
-            key={category.id}
-            className="group bg-white p-6 rounded-xl border border-gray-100 hover:border-blue-100 hover:shadow-md transition-all duration-200"
-          >
-            <div className="flex items-start justify-between">
-              <div className="space-y-4 flex-1">
-                {/* Category Header */}
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 group-hover:scale-110 transition-all duration-200">
-                    <FiFolderPlus className="w-5 h-5 text-blue-600" />
+        {budgetCategories && budgetCategories.length > 0 ? (
+          budgetCategories.map((category) => (
+            <div
+              key={category.id}
+              className="group bg-white p-6 rounded-xl border border-gray-100 hover:border-blue-100 hover:shadow-md transition-all duration-200"
+            >
+              <div className="flex items-start justify-between">
+                <div className="space-y-4 flex-1 min-w-0">
+                  {/* Category Header */}
+                  <div className="flex items-start space-x-3">
+                    <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 group-hover:scale-110 transition-all duration-200 flex-shrink-0">
+                      <FiFolderPlus className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 truncate">
+                        {category.name}
+                      </h3>
+                      <p className="text-sm text-gray-500 line-clamp-2 mt-1">
+                        {category.description}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
-                      {category.name}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      {category.description}
-                    </p>
+
+                  {/* Category Details */}
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="flex items-center space-x-2">
+                      <FiFolderPlus className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <span className="text-sm text-gray-600 truncate">
+                        2 Projects
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <FiTrendingUp className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <span className="text-sm text-gray-600 truncate">
+                        ₱200,000
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <FiFileText className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <span className="text-sm text-gray-600 truncate">
+                        1 Active
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Category Details */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="flex items-center space-x-2">
-                    <FiFolderPlus className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">
-                      {category.totalProjects} Projects
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <FiTrendingUp className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">
-                      ₱{category.totalBudget.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <FiFileText className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">
-                      {category.activeProjects} Active
-                    </span>
-                  </div>
-                </div>
+                {/* View Details Button */}
+                <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 flex-shrink-0">
+                  <FiEye className="w-4 h-4 mr-1.5" />
+                  View Details
+                </button>
               </div>
-
-              {/* View Details Button */}
-              <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0">
-                <FiEye className="w-4 h-4 mr-1.5" />
-                View Details
-              </button>
             </div>
+          ))
+        ) : (
+          <div className="text-center py-12">
+            <div className="flex justify-center mb-4">
+              <FiFolderPlus className="w-12 h-12 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No Budget Categories Yet
+            </h3>
+            <p className="text-gray-500">
+              Create your first budget category to get started.
+            </p>
           </div>
-        ))}
+        )}
       </div>
-
-      {/* Empty State */}
-      {dummyCategories.length === 0 && (
-        <div className="text-center py-12">
-          <div className="flex justify-center mb-4">
-            <FiFolderPlus className="w-12 h-12 text-gray-400" />
-          </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
-            No Budget Categories Yet
-          </h3>
-          <p className="text-gray-500">
-            Create your first budget category to get started.
-          </p>
-        </div>
-      )}
     </div>
   );
 }

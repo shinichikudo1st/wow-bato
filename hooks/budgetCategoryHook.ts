@@ -12,7 +12,6 @@ export const useBudgetCategory = (
     BudgetCategoryResponse[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -32,7 +31,6 @@ export const useBudgetCategory = (
         setIsLoading(false);
         setTimeout(() => {
           setError(null);
-          setSuccess(null);
         }, 3000);
       }
     };
@@ -44,6 +42,5 @@ export const useBudgetCategory = (
     budgetCategories,
     isLoading,
     error,
-    success,
   };
 };
