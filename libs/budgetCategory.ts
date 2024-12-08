@@ -27,12 +27,12 @@ export async function addBudgetCategory(formData: AddBudgetCategoryFormData) {
 }
 
 export async function getBarangayBudgetCategory(
-  barangayID: number,
+  barangayID: number | null,
   page: number
 ) {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/v1/all/${barangayID}?page=${page}&limit=${5}`,
+      `http://localhost:8080/api/v1/budgetCategory/all/${barangayID}?page=${page}&limit=${5}`,
       {
         credentials: "include",
         method: "GET",

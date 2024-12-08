@@ -34,7 +34,7 @@ export default function BarangayAdminPage() {
             <AddBudgetCategoryForm barangayID={barangayID} />
 
             {/* Budget Category List */}
-            <BudgetCategoryList />
+            <BudgetCategoryList barangayID={barangayID} />
 
             {/* Add Project Form */}
             <AddProjectForm />

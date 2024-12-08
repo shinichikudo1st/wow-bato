@@ -21,7 +21,10 @@ export const useProfile = () => {
   return { profile };
 };
 
-export const useProfileID = () => {
+export const useProfileID = (): {
+  userID: number | null;
+  barangayID: number | null;
+} => {
   const [userID, setUserID] = useState<number | null>(null);
   const [barangayID, setBarangayID] = useState<number | null>(null);
 
