@@ -6,8 +6,11 @@ import AddBudgetCategoryForm from "@/components/barangay-admin/addBudgetCategory
 import AddProjectForm from "@/components/barangay-admin/addProjectForm";
 import ProjectList from "@/components/barangay-admin/projectList";
 import BudgetCategoryList from "@/components/barangay-admin/budgetCategoryList";
+import { useProfileID } from "@/hooks/userHooks";
 
 export default function BarangayAdminPage() {
+  const { barangayID } = useProfileID();
+
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
       <AuthBackground />
@@ -28,7 +31,7 @@ export default function BarangayAdminPage() {
             </div>
 
             {/* Add Budget Category Form */}
-            <AddBudgetCategoryForm />
+            <AddBudgetCategoryForm barangayID={barangayID} />
 
             {/* Budget Category List */}
             <BudgetCategoryList />

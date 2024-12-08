@@ -1,5 +1,8 @@
 "use client";
 
+import { addBudgetCategory } from "@/libs/budgetCategory";
+import { AddBudgetCategoryFormData } from "@/types/budgetCategoryTypes";
+import React, { useState } from "react";
 import {
   FiFolderPlus,
   FiFileText,
@@ -7,7 +10,48 @@ import {
   FiTrendingUp,
 } from "react-icons/fi";
 
-export default function AddBudgetCategoryForm() {
+export default function AddBudgetCategoryForm({
+  barangayID,
+}: {
+  barangayID: number | null;
+}) {
+  const [formData, setFormData] = useState<AddBudgetCategoryFormData>({
+    name: "",
+    description: "",
+    barangay_ID: barangayID || 0,
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      const data = await addBudgetCategory(formData);
+
+      setSuccess(data.message);
+      setFormData({
+        name: "",
+        description: "",
+        barangay_ID: barangayID || 0,
+      });
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "Unknown error occurred"
+      );
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        setError(null);
+        setSuccess(null);
+      }, 3000);
+    }
+  };
+
   return (
     <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
       <div className="flex items-start justify-between mb-8">
@@ -28,7 +72,7 @@ export default function AddBudgetCategoryForm() {
         </div>
       </div>
 
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label
             htmlFor="categoryName"
@@ -49,6 +93,10 @@ export default function AddBudgetCategoryForm() {
                 hover:border-blue-300 transition-all duration-200
                 bg-white hover:bg-blue-50/30"
               placeholder="Enter category name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
             />
           </div>
         </div>
@@ -73,6 +121,10 @@ export default function AddBudgetCategoryForm() {
                 hover:border-blue-300 transition-all duration-200
                 bg-white hover:bg-blue-50/30 resize-none"
               placeholder="Enter category description"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
             />
           </div>
         </div>
