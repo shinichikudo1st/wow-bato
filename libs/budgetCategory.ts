@@ -25,3 +25,31 @@ export async function addBudgetCategory(formData: AddBudgetCategoryFormData) {
     throw error;
   }
 }
+
+export async function getBarangayBudgetCategory(
+  barangayID: number,
+  page: number
+) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/all/${barangayID}?page=${page}&limit=${5}`,
+      {
+        credentials: "include",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to fetch Budget Categories");
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
