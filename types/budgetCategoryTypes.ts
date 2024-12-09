@@ -15,5 +15,6 @@ export interface BudgetCategoryViewReturn {
   budgetCategories: BudgetCategoryResponse[] | null;
   isLoading: boolean;
   error: string | null;
+  categoryCount: number;
   fetchBudgetCategories: () => void;
 }

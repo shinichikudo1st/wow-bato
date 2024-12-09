@@ -13,6 +13,7 @@ export const useBudgetCategory = (
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [categoryCount, setCategoryCount] = useState(0);
 
   const fetchBudgetCategories = async () => {
     if (!barangayID) return;
@@ -22,6 +23,7 @@ export const useBudgetCategory = (
       const response = await getBarangayBudgetCategory(barangayID, 1);
 
       setBudgetCategories(response.data);
+      setCategoryCount(response.count);
     } catch (error) {
       setError(
         error instanceof Error ? error.message : "Unknown error occured"
@@ -42,6 +44,7 @@ export const useBudgetCategory = (
     budgetCategories,
     isLoading,
     error,
+    categoryCount,
     fetchBudgetCategories,
   };
 };
