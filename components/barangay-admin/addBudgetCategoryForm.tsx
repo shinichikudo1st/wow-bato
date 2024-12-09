@@ -2,7 +2,7 @@
 
 import { addBudgetCategory } from "@/libs/budgetCategory";
 import { AddBudgetCategoryFormData } from "@/types/budgetCategoryTypes";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FiFolderPlus,
   FiFileText,
@@ -20,6 +20,13 @@ export default function AddBudgetCategoryForm({
     description: "",
     barangay_ID: barangayID || 0,
   });
+
+  useEffect(() => {
+    if (barangayID) {
+      setFormData({ ...formData, barangay_ID: barangayID });
+    }
+  }, [barangayID]);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);

@@ -20,7 +20,8 @@ export default function BudgetCategoryList({
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const { budgetCategories, isLoading, error } = useBudgetCategory(barangayID);
+  const { budgetCategories, isLoading, error, fetchBudgetCategories } =
+    useBudgetCategory(barangayID);
 
   // Loading state
   if (isLoading) {
@@ -47,7 +48,7 @@ export default function BudgetCategoryList({
 
   const handleRefresh = () => {
     setIsRefreshing(true);
-    // Add your refresh logic here
+    fetchBudgetCategories();
     setTimeout(() => {
       setIsRefreshing(false);
     }, 1000);

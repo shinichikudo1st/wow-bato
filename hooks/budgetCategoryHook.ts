@@ -14,27 +14,27 @@ export const useBudgetCategory = (
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchBudgetCategories = async () => {
+    if (!barangayID) return;
+
+    try {
+      setIsLoading(true);
+      const response = await getBarangayBudgetCategory(barangayID, 1);
+
+      setBudgetCategories(response.data);
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "Unknown error occured"
+      );
+    } finally {
+      setIsLoading(false);
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+    }
+  };
+
   useEffect(() => {
-    const fetchBudgetCategories = async () => {
-      if (!barangayID) return;
-
-      try {
-        setIsLoading(true);
-        const response = await getBarangayBudgetCategory(barangayID, 1);
-
-        setBudgetCategories(response.data);
-      } catch (error) {
-        setError(
-          error instanceof Error ? error.message : "Unknown error occured"
-        );
-      } finally {
-        setIsLoading(false);
-        setTimeout(() => {
-          setError(null);
-        }, 3000);
-      }
-    };
-
     fetchBudgetCategories();
   }, [barangayID]);
 
@@ -42,5 +42,6 @@ export const useBudgetCategory = (
     budgetCategories,
     isLoading,
     error,
+    fetchBudgetCategories,
   };
 };
