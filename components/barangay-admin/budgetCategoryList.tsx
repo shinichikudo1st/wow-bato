@@ -20,8 +20,13 @@ export default function BudgetCategoryList({
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const { budgetCategories, isLoading, error, fetchBudgetCategories } =
-    useBudgetCategory(barangayID);
+  const {
+    budgetCategories,
+    isLoading,
+    error,
+    categoryCount,
+    fetchBudgetCategories,
+  } = useBudgetCategory(barangayID);
 
   // Loading state
   if (isLoading) {
@@ -91,7 +96,11 @@ export default function BudgetCategoryList({
             </span>
             <button
               onClick={() => setCurrentPage((prev) => prev + 1)}
-              disabled={!budgetCategories || budgetCategories.length < 5}
+              disabled={
+                !budgetCategories ||
+                categoryCount <= 5 ||
+                currentPage >= Math.ceil(categoryCount / 5)
+              }
               className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
             >
               <FiChevronRight className="w-5 h-5" />
