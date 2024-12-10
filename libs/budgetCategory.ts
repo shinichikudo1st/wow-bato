@@ -36,9 +36,6 @@ export async function getBarangayBudgetCategory(
       {
         credentials: "include",
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
       }
     );
 
@@ -46,6 +43,28 @@ export async function getBarangayBudgetCategory(
 
     if (!response.ok) {
       throw new Error(data.error || "Failed to fetch Budget Categories");
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getBudgetCategoryOptions(barangayID: number | number) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/budgetCategory/options/${barangayID}`,
+      {
+        credentials: "include",
+        method: "GET",
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to fetch category options");
     }
 
     return data;

@@ -17,3 +17,8 @@ export interface BudgetCategoryViewReturn {
   error: string | null;
   categoryCount: number;
 }
+
+export interface CategoryOptions {
+  id: number;
+  name: string;
+}
