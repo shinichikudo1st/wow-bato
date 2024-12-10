@@ -6,7 +6,8 @@ import {
 import { useEffect, useState } from "react";
 
 export const useBudgetCategory = (
-  barangayID: number | null
+  barangayID: number | null,
+  page: number
 ): BudgetCategoryViewReturn => {
   const [budgetCategories, setBudgetCategories] = useState<
     BudgetCategoryResponse[]
@@ -20,7 +21,7 @@ export const useBudgetCategory = (
 
     try {
       setIsLoading(true);
-      const response = await getBarangayBudgetCategory(barangayID, 1);
+      const response = await getBarangayBudgetCategory(barangayID, page);
 
       setBudgetCategories(response.data);
       setCategoryCount(response.count);
@@ -38,13 +39,12 @@ export const useBudgetCategory = (
 
   useEffect(() => {
     fetchBudgetCategories();
-  }, [barangayID]);
+  }, [barangayID, page]);
 
   return {
     budgetCategories,
     isLoading,
     error,
     categoryCount,
-    fetchBudgetCategories,
   };
 };

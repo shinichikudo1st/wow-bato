@@ -20,13 +20,8 @@ export default function BudgetCategoryList({
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const {
-    budgetCategories,
-    isLoading,
-    error,
-    categoryCount,
-    fetchBudgetCategories,
-  } = useBudgetCategory(barangayID);
+  const { budgetCategories, isLoading, error, categoryCount } =
+    useBudgetCategory(barangayID, currentPage);
 
   // Loading state
   if (isLoading) {
@@ -53,10 +48,18 @@ export default function BudgetCategoryList({
 
   const handleRefresh = () => {
     setIsRefreshing(true);
-    fetchBudgetCategories();
+    setCurrentPage(1);
     setTimeout(() => {
       setIsRefreshing(false);
     }, 1000);
+  };
+
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
 
   return (
@@ -85,7 +88,7 @@ export default function BudgetCategoryList({
           </button>
           <div className="flex items-center bg-gray-50 rounded-lg p-1">
             <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              onClick={prevPage}
               disabled={currentPage === 1}
               className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
             >
@@ -95,7 +98,7 @@ export default function BudgetCategoryList({
               Page {currentPage}
             </span>
             <button
-              onClick={() => setCurrentPage((prev) => prev + 1)}
+              onClick={nextPage}
               disabled={
                 !budgetCategories ||
                 categoryCount <= 5 ||
