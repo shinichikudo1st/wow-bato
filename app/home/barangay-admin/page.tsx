@@ -3,8 +3,6 @@
 import AuthBackground from "@/components/auth/authBackground";
 import Navbar from "@/components/reusable/navbar";
 import AddBudgetCategoryForm from "@/components/barangay-admin/addBudgetCategoryForm";
-import AddProjectForm from "@/components/barangay-admin/addProjectForm";
-import ProjectList from "@/components/barangay-admin/projectList";
 import BudgetCategoryList from "@/components/barangay-admin/budgetCategoryList";
 import { useProfileID } from "@/hooks/userHooks";
 
@@ -32,16 +30,10 @@ export default function BarangayAdminPage() {
 
             {/* Add Budget Category Form */}
             <AddBudgetCategoryForm barangayID={barangayID} />
-
-            {/* Budget Category List */}
-            <BudgetCategoryList barangayID={barangayID} />
-
-            {/* Add Project Form */}
-            <AddProjectForm />
           </div>
 
-          {/* Project List */}
-          <ProjectList />
+          {/* Budget Category List */}
+          <BudgetCategoryList barangayID={barangayID} />
         </div>
       </main>
     </div>

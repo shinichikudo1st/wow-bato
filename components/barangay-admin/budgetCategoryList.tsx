@@ -12,12 +12,14 @@ import {
 } from "react-icons/fi";
 import { useState } from "react";
 import { useBudgetCategory } from "@/hooks/budgetCategoryHook";
+import { useRouter } from "next/navigation";
 
 export default function BudgetCategoryList({
   barangayID,
 }: {
   barangayID: number | null;
 }) {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { budgetCategories, isLoading, error, categoryCount } =
@@ -171,7 +173,12 @@ export default function BudgetCategoryList({
                 </div>
 
                 {/* View Details Button */}
-                <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 flex-shrink-0">
+                <button
+                  onClick={() =>
+                    router.push(`/home/barangay-admin/${category.id}`)
+                  }
+                  className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 flex-shrink-0"
+                >
                   <FiEye className="w-4 h-4 mr-1.5" />
                   View Details
                 </button>
