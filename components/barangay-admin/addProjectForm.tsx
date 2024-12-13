@@ -1,5 +1,8 @@
 "use client";
 
+import { AddNewProject } from "@/libs/project";
+import { ProjectFormData } from "@/types/projectTypes";
+import { useState } from "react";
 import {
   FiFolder,
   FiCalendar,
@@ -9,6 +12,39 @@ import {
 } from "react-icons/fi";
 
 export default function AddProjectForm() {
+  const [formData, setFormData] = useState<ProjectFormData>({
+    name: "",
+    description: "",
+    startdate: "",
+    status: "Pending",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSuccess(null);
+    setError(null);
+
+    try {
+      const result = await AddNewProject(formData);
+
+      setSuccess(result.message);
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "Unknown error occured"
+      );
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        setError(null);
+        setSuccess(null);
+      }, 2000);
+    }
+  };
+
   return (
     <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
       <div className="flex items-start justify-between mb-8">
@@ -29,7 +65,7 @@ export default function AddProjectForm() {
         </div>
       </div>
 
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label
             htmlFor="name"
@@ -50,40 +86,10 @@ export default function AddProjectForm() {
                 hover:border-blue-300 transition-all duration-200
                 bg-white hover:bg-blue-50/30"
               placeholder="Enter project name"
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
             />
-          </div>
-        </div>
-
-        <div>
-          <label
-            htmlFor="budget"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Budget Allocation
-          </label>
-          <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <span className="text-gray-400 font-medium group-hover:text-blue-500 transition-colors">
-                ₱
-              </span>
-            </div>
-            <input
-              type="number"
-              id="budget"
-              name="budget"
-              className="w-full pl-8 pr-16 py-3 border border-gray-300 rounded-lg 
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
-                hover:border-blue-300 transition-all duration-200
-                bg-white hover:bg-blue-50/30"
-              placeholder="0.00"
-              step="0.01"
-              min="0"
-            />
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <span className="text-sm text-gray-400 bg-gray-50 px-2 py-1 rounded-md group-hover:bg-blue-50 transition-colors">
-                PHP
-              </span>
-            </div>
           </div>
         </div>
 
@@ -107,6 +113,9 @@ export default function AddProjectForm() {
                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
                   hover:border-blue-300 transition-all duration-200
                   bg-white hover:bg-blue-50/30"
+                onChange={(e) =>
+                  setFormData({ ...formData, startdate: e.target.value })
+                }
               />
             </div>
           </div>
@@ -155,6 +164,9 @@ export default function AddProjectForm() {
                 hover:border-blue-300 transition-all duration-200
                 bg-white hover:bg-blue-50/30 resize-none"
               placeholder="Enter project description"
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
             />
           </div>
         </div>

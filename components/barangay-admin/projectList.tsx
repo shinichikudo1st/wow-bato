@@ -8,7 +8,7 @@ import {
   FiTrendingUp,
 } from "react-icons/fi";
 
-export default function ProjectList() {
+export default function ProjectList({ categoryID }: { categoryID: string }) {
   // Dummy data for UI demonstration
   const dummyProjects = [
     {
