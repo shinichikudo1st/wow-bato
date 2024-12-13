@@ -1,11 +1,7 @@
-import {
-  getBarangayBudgetCategory,
-  getBudgetCategoryOptions,
-} from "@/libs/budgetCategory";
+import { getBarangayBudgetCategory } from "@/libs/budgetCategory";
 import {
   BudgetCategoryResponse,
   BudgetCategoryViewReturn,
-  CategoryOptions,
 } from "@/types/budgetCategoryTypes";
 import { useEffect, useState } from "react";
 
@@ -51,26 +47,4 @@ export const useBudgetCategory = (
     error,
     categoryCount,
   };
-};
-
-export const useCategoryOptions = (
-  barangayID: number | null
-): CategoryOptions[] => {
-  const [categoryOptions, setCategoryOptions] = useState<CategoryOptions[]>([]);
-
-  const fetchCategoryOptions = async () => {
-    if (!barangayID) return;
-
-    try {
-      const result = await getBudgetCategoryOptions(barangayID);
-
-      setCategoryOptions(result.data);
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    fetchCategoryOptions();
-  }, [barangayID]);
-
-  return categoryOptions;
 };
