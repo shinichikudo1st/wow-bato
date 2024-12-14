@@ -11,11 +11,16 @@ import {
   FiTrendingUp,
 } from "react-icons/fi";
 
-export default function AddProjectForm() {
+export default function AddProjectForm({
+  categoryID,
+}: {
+  categoryID: number | null;
+}) {
   const [formData, setFormData] = useState<ProjectFormData>({
     name: "",
     description: "",
-    startdate: "",
+    startDate: "",
+    endDate: "",
     status: "Pending",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,7 +34,7 @@ export default function AddProjectForm() {
     setError(null);
 
     try {
-      const result = await AddNewProject(formData);
+      const result = await AddNewProject(formData, categoryID);
 
       setSuccess(result.message);
     } catch (error) {
@@ -114,7 +119,7 @@ export default function AddProjectForm() {
                   hover:border-blue-300 transition-all duration-200
                   bg-white hover:bg-blue-50/30"
                 onChange={(e) =>
-                  setFormData({ ...formData, startdate: e.target.value })
+                  setFormData({ ...formData, startDate: e.target.value })
                 }
               />
             </div>
@@ -139,6 +144,9 @@ export default function AddProjectForm() {
                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
                   hover:border-blue-300 transition-all duration-200
                   bg-white hover:bg-blue-50/30"
+                onChange={(e) =>
+                  setFormData({ ...formData, endDate: e.target.value })
+                }
               />
             </div>
           </div>

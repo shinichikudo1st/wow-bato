@@ -7,9 +7,9 @@ import { use } from "react";
 const BudgetCategoryBarangayAdmin = ({
   params,
 }: {
-  params: Promise<{ categoryID: string }>;
+  params: Promise<{ budgetCategory: number }>;
 }) => {
-  const categoryID = use(params).categoryID;
+  const categoryID = use(params).budgetCategory;
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -31,7 +31,7 @@ const BudgetCategoryBarangayAdmin = ({
             </div>
 
             {/* Add Project */}
-            <AddProjectForm />
+            <AddProjectForm categoryID={categoryID} />
           </div>
 
           {/* Project List */}
