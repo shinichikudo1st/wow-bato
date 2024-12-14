@@ -13,3 +13,9 @@ export interface ProjectListResponse {
   endDate: string;
   status: string;
 }
+
+export interface ViewReturnProjectList {
+  projectList: ProjectListResponse[];
+  error: string | null;
+  loading: boolean;
+}
