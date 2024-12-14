@@ -1,6 +1,7 @@
 export interface ProjectFormData {
   name: string;
   description: string;
-  startdate: string;
+  startDate: string;
+  endDate: string;
   status: string;
 }
