@@ -30,10 +30,13 @@ export async function AddNewProject(
   }
 }
 
-export async function GetAllProject(categoryID: number | null) {
+export async function GetAllProject(
+  categoryID: number | null,
+  page: number | null
+) {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/v1/project/all/${categoryID}`,
+      `http://localhost:8080/api/v1/project/all/${categoryID}?limit=${5}&page=${page}`,
       {
         credentials: "include",
         method: "GET",

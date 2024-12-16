@@ -19,7 +19,7 @@ export const UseViewProjectList = (
     setIsLoading(true);
 
     try {
-      const result = await GetAllProject(categoryID);
+      const result = await GetAllProject(categoryID, page);
 
       setProjectList(result.projects);
     } catch (error) {
