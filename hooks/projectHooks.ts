@@ -21,7 +21,7 @@ export const UseViewProjectList = (
     try {
       const result = await GetAllProject(categoryID);
 
-      setProjectList(result.data);
+      setProjectList(result.projects);
     } catch (error) {
       setError(
         error instanceof Error ? error.message : "Unknown error occurred"
