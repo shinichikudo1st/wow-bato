@@ -1,5 +1,4 @@
 import { ProjectFormData } from "@/types/projectTypes";
-import { error } from "console";
 
 export async function AddNewProject(
   projectData: ProjectFormData,

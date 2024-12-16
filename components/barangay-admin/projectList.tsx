@@ -21,6 +21,14 @@ export default function ProjectList({
     currentPage
   );
 
+  const NextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const PreviousPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
   return (
     <div className="space-y-6">
       {/* Header Section */}
