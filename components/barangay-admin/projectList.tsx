@@ -8,6 +8,9 @@ import {
   FiCalendar,
   FiEye,
   FiTrendingUp,
+  FiRefreshCw,
+  FiChevronLeft,
+  FiChevronRight,
 } from "react-icons/fi";
 
 export default function ProjectList({
@@ -51,6 +54,34 @@ export default function ProjectList({
             className="w-full px-4 py-2 pl-10 pr-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
           />
           <FiFolder className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+        </div>
+      </div>
+
+      <div className="flex items-center space-x-3">
+        <button
+          disabled={loading}
+          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 disabled:opacity-50"
+        >
+          <FiRefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
+        </button>
+        <div className="flex items-center bg-gray-50 rounded-lg p-1">
+          <button
+            onClick={NextPage}
+            disabled={currentPage === 1 || loading}
+            className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
+          >
+            <FiChevronLeft className="w-5 h-5" />
+          </button>
+          <span className="px-4 text-sm font-medium text-gray-700">
+            Page {currentPage}
+          </span>
+          <button
+            onClick={PreviousPage}
+            disabled={loading || !projectList || projectList.length < 5}
+            className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
+          >
+            <FiChevronRight className="w-5 h-5" />
+          </button>
         </div>
       </div>
 
