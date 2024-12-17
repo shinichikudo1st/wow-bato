@@ -19,7 +19,7 @@ export default function ProjectList({
   categoryID: number | null;
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const { projectList, error, loading } = UseViewProjectList(
+  const { projectList, error, loading, fetchProjectList } = UseViewProjectList(
     categoryID,
     currentPage
   );
@@ -59,6 +59,7 @@ export default function ProjectList({
 
       <div className="flex items-center space-x-3">
         <button
+          onClick={fetchProjectList}
           disabled={loading}
           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 disabled:opacity-50"
         >
@@ -86,71 +87,80 @@ export default function ProjectList({
       </div>
 
       {/* Projects List */}
-      <div className="space-y-4">
-        {projectList &&
-          projectList.map((project) => (
-            <div
-              key={project.id}
-              className="group bg-white p-6 rounded-xl border border-gray-100 hover:border-blue-100 hover:shadow-md transition-all duration-200"
-            >
-              <div className="flex items-start justify-between">
-                <div className="space-y-4 flex-1">
-                  {/* Project Header */}
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 group-hover:scale-110 transition-all duration-200">
-                      <FiFolder className="w-5 h-5 text-blue-600" />
+      {loading ? (
+        <div className="flex flex-col items-center justify-center h-64 space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <p className="text-sm text-gray-500">Loading Projects...</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {projectList &&
+            projectList.map((project) => (
+              <div
+                key={project.id}
+                className="group bg-white p-6 rounded-xl border border-gray-100 hover:border-blue-100 hover:shadow-md transition-all duration-200"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="space-y-4 flex-1">
+                    {/* Project Header */}
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 group-hover:scale-110 transition-all duration-200">
+                        <FiFolder className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+                          {project.name}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {project.status}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
-                        {project.name}
-                      </h3>
-                      <p className="text-sm text-gray-500">{project.status}</p>
+
+                    {/* Project Details */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      <div className="flex items-center space-x-2">
+                        <FiDollarSign className="w-4 h-4 text-gray-400" />
+                        <span className="text-sm text-gray-600">₱100,000</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FiCalendar className="w-4 h-4 text-gray-400" />
+                        <span className="text-sm text-gray-600">
+                          {new Date(project.startDate).toLocaleDateString()} -{" "}
+                          {new Date(project.endDate).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FiTrendingUp className="w-4 h-4 text-gray-400" />
+                        <span className="text-sm text-gray-600">
+                          60% Complete
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div className="w-full bg-gray-100 rounded-full h-2.5">
+                      <div
+                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
+                        style={{ width: `60%` }}
+                      ></div>
                     </div>
                   </div>
 
-                  {/* Project Details */}
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div className="flex items-center space-x-2">
-                      <FiDollarSign className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">₱100,000</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <FiCalendar className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">
-                        {new Date(project.startDate).toLocaleDateString()} -{" "}
-                        {new Date(project.endDate).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <FiTrendingUp className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">
-                        60% Complete
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Progress Bar */}
-                  <div className="w-full bg-gray-100 rounded-full h-2.5">
-                    <div
-                      className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
-                      style={{ width: `60%` }}
-                    ></div>
-                  </div>
-                </div>
-
-                {/* View Details Button */}
-                <button
-                  className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 
+                  {/* View Details Button */}
+                  <button
+                    className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 
                   bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200
                   opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
-                >
-                  <FiEye className="w-4 h-4 mr-1.5" />
-                  View Details
-                </button>
+                  >
+                    <FiEye className="w-4 h-4 mr-1.5" />
+                    View Details
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-      </div>
+            ))}
+        </div>
+      )}
 
       {/* Empty State (when no projects) */}
       {projectList && projectList.length === 0 && (

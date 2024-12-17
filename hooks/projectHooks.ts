@@ -39,5 +39,6 @@ export const UseViewProjectList = (
     projectList,
     error,
     loading,
+    fetchProjectList,
   };
 };

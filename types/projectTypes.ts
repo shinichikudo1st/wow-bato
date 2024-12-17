@@ -18,4 +18,5 @@ export interface ViewReturnProjectList {
   projectList: ProjectListResponse[];
   error: string | null;
   loading: boolean;
+  fetchProjectList: () => Promise<void>;
 }
