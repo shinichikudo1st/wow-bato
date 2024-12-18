@@ -12,6 +12,7 @@ import {
   FiChevronLeft,
   FiChevronRight,
   FiMapPin,
+  FiSearch,
 } from "react-icons/fi";
 
 export default function ProjectList({
@@ -47,9 +48,9 @@ export default function ProjectList({
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Barangay List</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Project List</h2>
           <p className="text-sm text-gray-500 mt-1">
-            Manage and view all barangays in Toledo City
+            Manage and view all Projects in Toledo City
           </p>
         </div>
 
@@ -84,6 +85,16 @@ export default function ProjectList({
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Search Section */}
+      <div className="relative mb-6">
+        <input
+          type="text"
+          placeholder="Search projects..."
+          className="w-full px-4 py-2 pl-10 pr-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+        />
+        <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
       </div>
 
       {/* Content Section */}
