@@ -11,6 +11,7 @@ import {
   FiRefreshCw,
   FiChevronLeft,
   FiChevronRight,
+  FiMapPin,
 } from "react-icons/fi";
 
 export default function ProjectList({
@@ -23,14 +24,6 @@ export default function ProjectList({
     categoryID,
     currentPage
   );
-
-  const NextPage = () => {
-    setCurrentPage((prev) => prev + 1);
-  };
-
-  const PreviousPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
 
   if (error) {
     return (
@@ -50,68 +43,58 @@ export default function ProjectList({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="bg-white p-6 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
       {/* Header Section */}
-      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-md">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">
-            Current Projects
-          </h2>
-          <div className="flex items-center space-x-2 text-sm text-gray-500">
-            <FiFolder className="w-4 h-4" />
-            <span>{projectList && projectList.length} Projects</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Barangay List</h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Manage and view all barangays in Toledo City
+          </p>
+        </div>
+
+        {/* Controls */}
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={fetchProjectList}
+            disabled={loading}
+            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 disabled:opacity-50"
+          >
+            <FiRefreshCw
+              className={`w-5 h-5 ${loading ? "animate-spin" : ""}`}
+            />
+          </button>
+          <div className="flex items-center bg-gray-50 rounded-lg p-1">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1 || loading}
+              className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
+            >
+              <FiChevronLeft className="w-5 h-5" />
+            </button>
+            <span className="px-4 text-sm font-medium text-gray-700">
+              Page {currentPage}
+            </span>
+            <button
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+              disabled={loading || !projectList || projectList.length < 5}
+              className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
+            >
+              <FiChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
-
-        {/* Search and Filter */}
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search projects..."
-            className="w-full px-4 py-2 pl-10 pr-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-          />
-          <FiFolder className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-        </div>
       </div>
 
-      <div className="flex items-center space-x-3">
-        <button
-          onClick={fetchProjectList}
-          disabled={loading}
-          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 disabled:opacity-50"
-        >
-          <FiRefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
-        </button>
-        <div className="flex items-center bg-gray-50 rounded-lg p-1">
-          <button
-            onClick={NextPage}
-            disabled={currentPage === 1 || loading}
-            className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
-          >
-            <FiChevronLeft className="w-5 h-5" />
-          </button>
-          <span className="px-4 text-sm font-medium text-gray-700">
-            Page {currentPage}
-          </span>
-          <button
-            onClick={PreviousPage}
-            disabled={loading || !projectList || projectList.length < 5}
-            className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
-          >
-            <FiChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
-
-      {/* Projects List */}
+      {/* Content Section */}
       {loading ? (
         <div className="flex flex-col items-center justify-center h-64 space-y-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="text-sm text-gray-500">Loading Projects...</p>
+          <p className="text-sm text-gray-500">Loading barangays...</p>
         </div>
       ) : (
-        <div className="space-y-4">
-          {projectList &&
+        <div className="space-y-3">
+          {projectList && projectList.length > 0 ? (
             projectList.map((project) => (
               <div
                 key={project.id}
@@ -166,31 +149,27 @@ export default function ProjectList({
 
                   {/* View Details Button */}
                   <button
-                    className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 
-                  bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200
-                  opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
+                    className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600
+                    bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200
+                    opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
                   >
                     <FiEye className="w-4 h-4 mr-1.5" />
                     View Details
                   </button>
                 </div>
               </div>
-            ))}
-        </div>
-      )}
-
-      {/* Empty State (when no projects) */}
-      {projectList && projectList.length === 0 && (
-        <div className="bg-white p-8 rounded-xl border border-gray-100 text-center">
-          <div className="flex justify-center mb-4">
-            <FiFolder className="w-12 h-12 text-gray-400" />
-          </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
-            No Projects Yet
-          </h3>
-          <p className="text-gray-500">
-            Create your first project to get started.
-          </p>
+            ))
+          ) : (
+            <div className="text-center py-12 px-4 rounded-xl border-2 border-dashed border-gray-200">
+              <FiMapPin className="w-8 h-8 text-gray-400 mx-auto mb-3" />
+              <h3 className="text-lg font-medium text-gray-900 mb-1">
+                No Projects Found
+              </h3>
+              <p className="text-sm text-gray-500">
+                There are no projects to display at the moment.
+              </p>
+            </div>
+          )}
         </div>
       )}
     </div>
