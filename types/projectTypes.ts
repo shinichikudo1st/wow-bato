@@ -15,8 +15,14 @@ export interface ProjectListResponse {
 }
 
 export interface ViewReturnProjectList {
+  categoryInfo: DisplayCategory;
   projectList: ProjectListResponse[];
   error: string | null;
   loading: boolean;
   fetchProjectList: () => Promise<void>;
+}
+
+export interface DisplayCategory {
+  name: string;
+  description: string;
 }

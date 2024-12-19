@@ -21,10 +21,8 @@ export default function ProjectList({
   categoryID: number | null;
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const { projectList, error, loading, fetchProjectList } = UseViewProjectList(
-    categoryID,
-    currentPage
-  );
+  const { categoryInfo, projectList, error, loading, fetchProjectList } =
+    UseViewProjectList(categoryID, currentPage);
 
   if (error) {
     return (
@@ -48,9 +46,11 @@ export default function ProjectList({
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Project List</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            {categoryInfo.name}
+          </h2>
           <p className="text-sm text-gray-500 mt-1">
-            Manage and view all Projects in Toledo City
+            {categoryInfo.description}
           </p>
         </div>
 
