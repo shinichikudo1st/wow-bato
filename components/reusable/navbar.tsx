@@ -12,6 +12,7 @@ import {
 } from "react-icons/fi";
 import { useState, useEffect, useRef } from "react";
 import { useProfile } from "@/hooks/userHooks";
+import { LuLogOut } from "react-icons/lu";
 
 export default function Navbar() {
   const router = useRouter();
@@ -120,7 +121,7 @@ export default function Navbar() {
                       </p>
                     </div>
                     <div
-                      className="px-4 py-3 
+                      className="px-4 py-3 border-b border-blue-50 
                       hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-transparent 
                       transition-colors duration-200"
                     >
@@ -136,24 +137,25 @@ export default function Navbar() {
                         {profile.Contact}
                       </p>
                     </div>
+                    <div
+                      onClick={handleLogout}
+                      className="px-4 py-3 border-b border-blue-50 cursor-pointer  
+                      hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-transparent 
+                      transition-colors duration-200"
+                    >
+                      <div className="flex items-center space-x-3 mb-2">
+                        <div className="p-1.5 bg-blue-100 rounded-lg">
+                          <FiLogOut className="w-4 h-4 text-blue-600" />
+                        </div>
+                        <p className="text-xs font-bold text-blue-600">
+                          Logout your account
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
             )}
-
-            <button
-              onClick={handleLogout}
-              className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-medium text-white
-                bg-gradient-to-r from-blue-600 to-blue-500 
-                hover:from-blue-700 hover:to-blue-600 
-                transition-all duration-300 
-                shadow-sm hover:shadow-md
-                transform hover:-translate-y-0.5
-                space-x-2"
-            >
-              <FiLogOut className="h-4 w-4" />
-              <span>Logout</span>
-            </button>
           </div>
         </div>
       </div>
