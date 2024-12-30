@@ -16,8 +16,10 @@ import { useRouter } from "next/navigation";
 
 export default function BudgetCategoryList({
   barangayID,
+  userRole,
 }: {
   barangayID: number | null;
+  userRole: string | null;
 }) {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
@@ -174,9 +176,15 @@ export default function BudgetCategoryList({
 
                 {/* View Details Button */}
                 <button
-                  onClick={() =>
-                    router.push(`/home/barangay-admin/${category.id}`)
-                  }
+                  onClick={() => {
+                    if (userRole === "citizen") {
+                      router.push(`/home/citizen/${category.id}`);
+                    } else if (userRole === "barangay admin") {
+                      router.push(`/home/barangay-admin/${category.id}`);
+                    } else {
+                      router.push(`/home/city-admin/${category.id}`);
+                    }
+                  }}
                   className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 flex-shrink-0"
                 >
                   <FiEye className="w-4 h-4 mr-1.5" />

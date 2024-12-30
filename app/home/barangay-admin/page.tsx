@@ -7,7 +7,7 @@ import BudgetCategoryList from "@/components/barangay-admin/budgetCategoryList";
 import { useProfileID } from "@/hooks/userHooks";
 
 export default function BarangayAdminPage() {
-  const { barangayID } = useProfileID();
+  const { barangayID, userRole } = useProfileID();
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -33,7 +33,7 @@ export default function BarangayAdminPage() {
           </div>
 
           {/* Budget Category List */}
-          <BudgetCategoryList barangayID={barangayID} />
+          <BudgetCategoryList barangayID={barangayID} userRole={userRole} />
         </div>
       </main>
     </div>

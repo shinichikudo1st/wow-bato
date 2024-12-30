@@ -24,9 +24,11 @@ export const useProfile = () => {
 export const useProfileID = (): {
   userID: number | null;
   barangayID: number | null;
+  userRole: string | null;
 } => {
   const [userID, setUserID] = useState<number | null>(null);
   const [barangayID, setBarangayID] = useState<number | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfileID = async () => {
@@ -34,10 +36,11 @@ export const useProfileID = (): {
       const authData = await authResponse.json();
       setUserID(authData.user_id);
       setBarangayID(authData.barangay_id);
+      setUserRole(authData.role);
     };
 
     fetchProfileID();
   }, []);
 
-  return { userID, barangayID };
+  return { userID, barangayID, userRole };
 };

@@ -1,11 +1,12 @@
 "use client";
 
 import AuthBackground from "@/components/auth/authBackground";
+import BudgetCategoryList from "@/components/barangay-admin/budgetCategoryList";
 import Navbar from "@/components/reusable/navbar";
 import { useProfileID } from "@/hooks/userHooks";
 
 export default function BarangayCitizenPage() {
-  const { barangayID } = useProfileID();
+  const { barangayID, userRole } = useProfileID();
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -24,6 +25,7 @@ export default function BarangayCitizenPage() {
                 View your barangay projects and track financial allocations
               </p>
             </div>
+            <BudgetCategoryList barangayID={barangayID} userRole={userRole} />
           </div>
         </div>
       </main>
