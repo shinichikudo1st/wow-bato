@@ -2,6 +2,7 @@
 
 import AuthBackground from "@/components/auth/authBackground";
 import BudgetCategoryList from "@/components/barangay-admin/budgetCategoryList";
+import CitizenCommentFeedback from "@/components/citizen/citizenFeedback";
 import Navbar from "@/components/reusable/navbar";
 import { useFeedbacks } from "@/hooks/feedbackHooks";
 import { useProfileID } from "@/hooks/userHooks";
@@ -38,6 +39,13 @@ export default function BarangayCitizenPage() {
               setActiveProject={setActiveProject}
             />
           </div>
+          <CitizenCommentFeedback
+            projectID={activeProject}
+            feedbacks={feedbacks}
+            GetFeedbacksData={GetFeedbacksData}
+            isLoading={isLoading}
+            error={error}
+          />
         </div>
       </main>
     </div>

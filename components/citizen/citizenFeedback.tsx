@@ -1,6 +1,19 @@
+import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
 
-const CitizenCommentFeedback = ({ projectID }: { projectID: number }) => {
+const CitizenCommentFeedback = ({
+  projectID,
+  feedbacks,
+  GetFeedbacksData,
+  isLoading,
+  error,
+}: {
+  projectID: number | null;
+  feedbacks: FeedbackListItem[] | null;
+  GetFeedbacksData: () => void;
+  isLoading: boolean;
+  error: string;
+}) => {
   return (
     <>
       <div className="w-fullbg-white rounded-lg border p-1 md:p-3 m-10">
