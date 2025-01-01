@@ -3,10 +3,17 @@
 import AuthBackground from "@/components/auth/authBackground";
 import BudgetCategoryList from "@/components/barangay-admin/budgetCategoryList";
 import Navbar from "@/components/reusable/navbar";
+import { useFeedbacks } from "@/hooks/feedbackHooks";
 import { useProfileID } from "@/hooks/userHooks";
+import { useState } from "react";
 
 export default function BarangayCitizenPage() {
   const { barangayID, userRole } = useProfileID();
+
+  const [activeProject, setActiveProject] = useState<number | null>(null);
+
+  const { feedbacks, GetFeedbacksData, isLoading, error } =
+    useFeedbacks(activeProject);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -25,7 +32,11 @@ export default function BarangayCitizenPage() {
                 View your barangay projects and track financial allocations
               </p>
             </div>
-            <BudgetCategoryList barangayID={barangayID} userRole={userRole} />
+            <BudgetCategoryList
+              barangayID={barangayID}
+              userRole={userRole}
+              setActiveProject={setActiveProject}
+            />
           </div>
         </div>
       </main>

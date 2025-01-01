@@ -2,7 +2,9 @@ import { GetFeedbacks } from "@/libs/feedback";
 import { FeedbackListItem, FeedbackListResponse } from "@/types/feedbackTypes";
 import { useEffect, useState } from "react";
 
-export const useFeedbacks = (projectID: string): FeedbackListResponse => {
+export const useFeedbacks = (
+  projectID: number | null
+): FeedbackListResponse => {
   const [feedbacks, setFeedbacks] = useState<FeedbackListItem[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -23,7 +25,7 @@ export const useFeedbacks = (projectID: string): FeedbackListResponse => {
 
   useEffect(() => {
     GetFeedbacksData();
-  }, []);
+  }, [projectID]);
 
   return { feedbacks, GetFeedbacksData, isLoading, error };
 };

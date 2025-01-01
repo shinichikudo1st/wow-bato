@@ -1,4 +1,4 @@
-export async function GetFeedbacks(projectID: string) {
+export async function GetFeedbacks(projectID: number) {
   try {
     const response = await fetch(
       `http://localhost:8080/api/v1/feedback/all/${projectID}`,
