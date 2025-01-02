@@ -1,5 +1,7 @@
+import { SubmitFeedback } from "@/libs/feedback";
 import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
+import { useState } from "react";
 
 const CitizenCommentFeedback = ({
   projectID,
@@ -14,6 +16,33 @@ const CitizenCommentFeedback = ({
   isLoading: boolean;
   error: string;
 }) => {
+  interface FeedbackForm {
+    content: string;
+  }
+
+  const [formData, setFormData] = useState<FeedbackForm>({
+    content: "",
+  });
+  const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const submitFeedback = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      setSubmitting(true);
+      const result = await SubmitFeedback(projectID, formData.content);
+
+      console.log(result.data);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      setSubmitting(false);
+    } finally {
+      setSubmitting(false);
+      setFormData({ content: "" });
+      GetFeedbacksData();
+    }
+  };
+
   return (
     <>
       <div className="w-fullbg-white rounded-lg border p-1 md:p-3">
@@ -261,22 +290,29 @@ const CitizenCommentFeedback = ({
           </div>
         </div>
 
-        <div className="w-full px-3 mb-2 mt-6">
-          <textarea
-            className="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white"
-            name="body"
-            placeholder="Comment"
-            required
-          ></textarea>
-        </div>
+        <form onSubmit={submitFeedback}>
+          <div className="w-full px-3 mb-2 mt-6">
+            <textarea
+              className="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white"
+              name="content"
+              placeholder="Comment"
+              value={formData.content}
+              onChange={(e) => {
+                setFormData({ ...formData, content: e.target.value });
+              }}
+              required
+            ></textarea>
+          </div>
 
-        <div className="w-full flex justify-end px-3 my-3">
-          <input
-            type="submit"
-            className="px-2.5 py-1.5 rounded-md text-white text-sm bg-indigo-500"
-            value="Post Comment"
-          />
-        </div>
+          <div className="w-full flex justify-end px-3 my-3">
+            <button
+              type="submit"
+              className="px-2.5 py-1.5 rounded-md text-white text-sm bg-indigo-500 cursor-pointer"
+            >
+              Post Comment
+            </button>
+          </div>
+        </form>
       </div>
     </>
   );

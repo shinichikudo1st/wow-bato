@@ -5,7 +5,7 @@ import ProjectList from "@/components/barangay-admin/projectList";
 import CitizenCommentFeedback from "@/components/citizen/citizenFeedback";
 import Navbar from "@/components/reusable/navbar";
 import { useFeedbacks } from "@/hooks/feedbackHooks";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 const BudgetCategoryCitizen = ({
   params,
