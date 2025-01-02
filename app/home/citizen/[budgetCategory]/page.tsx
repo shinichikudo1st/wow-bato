@@ -1,7 +1,11 @@
+"use client";
+
 import AuthBackground from "@/components/auth/authBackground";
 import ProjectList from "@/components/barangay-admin/projectList";
+import CitizenCommentFeedback from "@/components/citizen/citizenFeedback";
 import Navbar from "@/components/reusable/navbar";
-import { use } from "react";
+import { useFeedbacks } from "@/hooks/feedbackHooks";
+import { use, useState } from "react";
 
 const BudgetCategoryCitizen = ({
   params,
@@ -9,6 +13,11 @@ const BudgetCategoryCitizen = ({
   params: Promise<{ budgetCategory: number }>;
 }) => {
   const categoryID = use(params).budgetCategory;
+
+  const [activeProject, setActiveProject] = useState<number | null>(null);
+
+  const { feedbacks, GetFeedbacksData, isLoading, error } =
+    useFeedbacks(activeProject);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -30,8 +39,18 @@ const BudgetCategoryCitizen = ({
             </div>
 
             {/* Project List */}
-            <ProjectList categoryID={categoryID} />
+            <ProjectList
+              categoryID={categoryID}
+              setActiveProject={setActiveProject}
+            />
           </div>
+          <CitizenCommentFeedback
+            projectID={activeProject}
+            feedbacks={feedbacks}
+            GetFeedbacksData={GetFeedbacksData}
+            isLoading={isLoading}
+            error={error}
+          />
         </div>
       </main>
     </div>

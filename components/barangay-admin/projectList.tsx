@@ -17,8 +17,10 @@ import {
 
 export default function ProjectList({
   categoryID,
+  setActiveProject,
 }: {
   categoryID: number | null;
+  setActiveProject: (projectID: number) => void;
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const { categoryInfo, projectList, error, loading, fetchProjectList } =
@@ -160,6 +162,7 @@ export default function ProjectList({
 
                   {/* View Details Button */}
                   <button
+                    onClick={() => setActiveProject(project.id)}
                     className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600
                     bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200
                     opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"

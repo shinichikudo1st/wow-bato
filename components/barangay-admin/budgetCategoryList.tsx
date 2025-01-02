@@ -17,11 +17,9 @@ import { useRouter } from "next/navigation";
 export default function BudgetCategoryList({
   barangayID,
   userRole,
-  setActiveProject,
 }: {
   barangayID: number | null;
   userRole: string | null;
-  setActiveProject: (projectID: number) => void;
 }) {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
@@ -180,7 +178,7 @@ export default function BudgetCategoryList({
                 <button
                   onClick={() => {
                     if (userRole === "citizen") {
-                      setActiveProject(category.id);
+                      router.push(`/home/citizen/${category.id}`);
                     } else if (userRole === "barangay admin") {
                       router.push(`/home/barangay-admin/${category.id}`);
                     } else {

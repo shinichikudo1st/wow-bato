@@ -16,7 +16,7 @@ const CitizenCommentFeedback = ({
 }) => {
   return (
     <>
-      <div className="w-fullbg-white rounded-lg border p-1 md:p-3 m-10">
+      <div className="w-fullbg-white rounded-lg border p-1 md:p-3">
         <h3 className="font-semibold p-1">Project Discussion</h3>
         <div className="flex flex-col gap-5 m-3">
           {/* <!-- Comment Container --> */}
