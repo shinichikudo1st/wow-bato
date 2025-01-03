@@ -1,9 +1,11 @@
 export interface FeedbackListItem {
-  id: number;
+  feedback_id: number;
   project_id: number;
   user_id: number;
   content: string;
   role: string;
+  first_name: string;
+  last_name: string;
 }
 
 export interface FeedbackListResponse {
