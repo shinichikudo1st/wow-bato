@@ -48,3 +48,25 @@ export async function SubmitFeedback(
     throw error;
   }
 }
+
+export async function DeleteFeedback(feedbackID: number) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/feedback/delete/${feedbackID}`,
+      {
+        credentials: "include",
+        method: "DELETE",
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to delete feedback");
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

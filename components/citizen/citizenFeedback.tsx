@@ -1,4 +1,4 @@
-import { SubmitFeedback } from "@/libs/feedback";
+import { DeleteFeedback, SubmitFeedback } from "@/libs/feedback";
 import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
 import { useState } from "react";
@@ -93,7 +93,7 @@ const CitizenCommentFeedback = ({
                         </h3>
                       </div>
                       <p className="text-gray-600 mt-2">{feedback.content}</p>
-                      <button 
+                      <button
                         onClick={() => handleReply(feedback.feedback_id)}
                         className="text-blue-500 hover:text-blue-700 transition-colors mt-2 text-sm font-medium"
                       >
@@ -102,11 +102,28 @@ const CitizenCommentFeedback = ({
                     </div>
                     <div className="relative p-3">
                       <button
-                        onClick={() => setActiveDropdown(activeDropdown === feedback.feedback_id ? null : feedback.feedback_id)}
+                        onClick={() =>
+                          setActiveDropdown(
+                            activeDropdown === feedback.feedback_id
+                              ? null
+                              : feedback.feedback_id
+                          )
+                        }
                         className="text-gray-500 hover:text-gray-700 transition-colors px-2 rounded-md"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                          />
                         </svg>
                       </button>
                       {activeDropdown === feedback.feedback_id && (
@@ -115,7 +132,12 @@ const CitizenCommentFeedback = ({
                             <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                               Edit Comment
                             </button>
-                            <button className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                            <button
+                              onClick={() =>
+                                DeleteFeedback(feedback.feedback_id)
+                              }
+                              className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                            >
                               Delete Comment
                             </button>
                           </div>
@@ -307,7 +329,7 @@ const CitizenCommentFeedback = ({
           </div>
         </form>
       </div>
-    </> 
+    </>
   );
 };
 
