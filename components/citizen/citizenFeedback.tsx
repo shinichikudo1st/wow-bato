@@ -24,6 +24,9 @@ const CitizenCommentFeedback = ({
     content: "",
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [replyContent, setReplyContent] = useState<string>("");
 
   const submitFeedback = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +34,6 @@ const CitizenCommentFeedback = ({
     try {
       setSubmitting(true);
       const result = await SubmitFeedback(projectID, formData.content);
-
       console.log(result.message);
     } catch (error) {
       console.error("Error submitting feedback:", error);
@@ -43,44 +45,122 @@ const CitizenCommentFeedback = ({
     }
   };
 
+  const handleReply = (feedbackId: number) => {
+    if (replyingTo === feedbackId) {
+      setReplyingTo(null);
+      setReplyContent("");
+    } else {
+      setReplyingTo(feedbackId);
+      setReplyContent("");
+    }
+    setActiveDropdown(null);
+  };
+
+  const submitReply = async (feedbackId: number) => {
+    // TODO: Implement reply submission logic
+    console.log("Submitting reply to feedback:", feedbackId, replyContent);
+    setReplyingTo(null);
+    setReplyContent("");
+  };
+
   return (
     <>
-      <div className="w-fullbg-white rounded-lg border p-1 md:p-3">
+      <div className="w-full bg-white rounded-lg border p-1 md:p-3">
         <h3 className="font-semibold p-1">Project Discussion</h3>
         <div className="flex flex-col gap-5 m-3">
           {/* <!-- Comment Container --> */}
           <div>
             {feedbacks &&
               feedbacks.map((feedback) => (
-                <div
-                  key={feedback.feedback_id}
-                  className="flex w-full justify-between border rounded-md mt-5"
-                >
-                  <div className="p-3">
-                    <div className="flex gap-3 items-center">
-                      <Image
-                        src="/sawako.jpeg"
-                        width={40}
-                        height={40}
-                        alt="User 1"
-                        className="object-cover w-10 h-10 rounded-full border-2 border-emerald-400  shadow-emerald-400"
-                      />
-                      <h3 className="font-bold">
-                        {feedback.first_name + " " + feedback.last_name}
-                        <br />
-                        <span className="text-sm text-gray-400 font-bold">
-                          {/* capitalize it */}
-                          {feedback.role.charAt(0).toUpperCase() +
-                            feedback.role.slice(1).toLowerCase()}
-                        </span>
-                      </h3>
+                <div key={feedback.feedback_id}>
+                  <div className="flex w-full justify-between border rounded-md mt-5 hover:border-emerald-400 transition-colors">
+                    <div className="p-3 w-full">
+                      <div className="flex gap-3 items-center">
+                        <Image
+                          src="/sawako.jpeg"
+                          width={40}
+                          height={40}
+                          alt="User 1"
+                          className="object-cover w-10 h-10 rounded-full border-2 border-emerald-400 shadow-emerald-400"
+                        />
+                        <h3 className="font-bold">
+                          {feedback.first_name + " " + feedback.last_name}
+                          <br />
+                          <span className="text-sm text-gray-400 font-bold">
+                            {feedback.role.charAt(0).toUpperCase() +
+                              feedback.role.slice(1).toLowerCase()}
+                          </span>
+                        </h3>
+                      </div>
+                      <p className="text-gray-600 mt-2">{feedback.content}</p>
+                      <button 
+                        onClick={() => handleReply(feedback.feedback_id)}
+                        className="text-blue-500 hover:text-blue-700 transition-colors mt-2 text-sm font-medium"
+                      >
+                        Reply
+                      </button>
                     </div>
-                    <p className="text-gray-600 mt-2">{feedback.content}</p>
-                    <button className="text-right text-blue-500">Reply</button>
+                    <div className="relative p-3">
+                      <button
+                        onClick={() => setActiveDropdown(activeDropdown === feedback.feedback_id ? null : feedback.feedback_id)}
+                        className="text-gray-500 hover:text-gray-700 transition-colors px-2 rounded-md"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                        </svg>
+                      </button>
+                      {activeDropdown === feedback.feedback_id && (
+                        <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+                          <div className="py-1">
+                            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                              Edit Comment
+                            </button>
+                            <button className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                              Delete Comment
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
+                  {replyingTo === feedback.feedback_id && (
+                    <div className="ml-12 mt-2">
+                      <div className="flex gap-2">
+                        <Image
+                          src="/sawako.jpeg"
+                          width={32}
+                          height={32}
+                          alt="User reply"
+                          className="object-cover w-8 h-8 rounded-full border-2 border-emerald-400"
+                        />
+                        <div className="flex-1">
+                          <textarea
+                            value={replyContent}
+                            onChange={(e) => setReplyContent(e.target.value)}
+                            placeholder="Write a reply..."
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+                            rows={2}
+                          />
+                          <div className="flex justify-end gap-2 mt-2">
+                            <button
+                              onClick={() => setReplyingTo(null)}
+                              className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              onClick={() => submitReply(feedback.feedback_id)}
+                              className="px-3 py-1 text-sm bg-emerald-500 text-white rounded-md hover:bg-emerald-600 transition-colors"
+                            >
+                              Submit Reply
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
-
             {/* <!-- Reply Container  --> */}
             <div className="text-gray-300 font-bold pl-14">|</div>
             <div className="flex justify-between border ml-5  rounded-md">
@@ -227,7 +307,7 @@ const CitizenCommentFeedback = ({
           </div>
         </form>
       </div>
-    </>
+    </> 
   );
 };
 
