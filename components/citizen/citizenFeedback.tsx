@@ -1,4 +1,8 @@
-import { DeleteFeedback, SubmitFeedback } from "@/libs/feedback";
+import {
+  DeleteFeedback,
+  SubmitFeedback,
+  UpdateFeedback,
+} from "@/libs/feedback";
 import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
 import { useState } from "react";
@@ -70,11 +74,20 @@ const CitizenCommentFeedback = ({
   };
 
   const submitEdit = async (feedbackId: number) => {
-    // TODO: Implement edit submission logic
-    console.log("Editing comment:", feedbackId, editContent);
-    setEditingComment(null);
-    setEditContent("");
-    GetFeedbacksData();
+    try {
+      const response = await UpdateFeedback(editContent, feedbackId);
+
+      console.log(response.message);
+    } catch (error) {
+      console.log(
+        error instanceof Error ? error.message : "Unknown error occured"
+      );
+    } finally {
+      console.log("Editing comment:", feedbackId, editContent);
+      setEditingComment(null);
+      setEditContent("");
+      GetFeedbacksData();
+    }
   };
 
   const handleDelete = async (feedbackId: number) => {
