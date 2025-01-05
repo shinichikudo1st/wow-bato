@@ -1,4 +1,4 @@
-import { SubmitFeedback } from "@/libs/feedback";
+import { DeleteFeedback, SubmitFeedback } from "@/libs/feedback";
 import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
 import { useState } from "react";
@@ -29,7 +29,10 @@ const CitizenCommentFeedback = ({
   const [replyContent, setReplyContent] = useState<string>("");
   const [editingComment, setEditingComment] = useState<number | null>(null);
   const [editContent, setEditContent] = useState<string>("");
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(
+    null
+  );
+  const [deleteError, setDeleteError] = useState<string>("");
 
   const submitFeedback = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,10 +78,19 @@ const CitizenCommentFeedback = ({
   };
 
   const handleDelete = async (feedbackId: number) => {
-    // TODO: Implement delete logic
-    console.log("Deleting comment:", feedbackId);
-    setShowDeleteConfirm(null);
-    GetFeedbacksData();
+    try {
+      const response = await DeleteFeedback(feedbackId);
+
+      console.log(response.message);
+    } catch (error) {
+      setDeleteError(
+        error instanceof Error ? error.message : "Unknown error occured"
+      );
+    } finally {
+      console.log("Deleting comment:", feedbackId);
+      setShowDeleteConfirm(null);
+      GetFeedbacksData();
+    }
   };
 
   const submitReply = async (feedbackId: number) => {
@@ -107,7 +119,9 @@ const CitizenCommentFeedback = ({
             />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No Project Selected</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">
+          No Project Selected
+        </h3>
         <p className="text-sm text-gray-500">
           Please select a project to view and participate in the discussion.
         </p>
@@ -171,7 +185,7 @@ const CitizenCommentFeedback = ({
                         <p className="text-gray-600 mt-2">{feedback.content}</p>
                       )}
                       {!editingComment && (
-                        <button 
+                        <button
                           onClick={() => handleReply(feedback.feedback_id)}
                           className="text-blue-500 hover:text-blue-700 transition-colors mt-2 text-sm font-medium"
                         >
@@ -182,24 +196,48 @@ const CitizenCommentFeedback = ({
                     {!editingComment && (
                       <div className="relative p-3">
                         <button
-                          onClick={() => setActiveDropdown(activeDropdown === feedback.feedback_id ? null : feedback.feedback_id)}
+                          onClick={() =>
+                            setActiveDropdown(
+                              activeDropdown === feedback.feedback_id
+                                ? null
+                                : feedback.feedback_id
+                            )
+                          }
                           className="text-gray-500 hover:text-gray-700 transition-colors px-2 rounded-md"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                            />
                           </svg>
                         </button>
                         {activeDropdown === feedback.feedback_id && (
                           <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
                             <div className="py-1">
                               <button
-                                onClick={() => handleEdit(feedback.feedback_id, feedback.content)}
+                                onClick={() =>
+                                  handleEdit(
+                                    feedback.feedback_id,
+                                    feedback.content
+                                  )
+                                }
                                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                               >
                                 Edit Comment
                               </button>
                               <button
-                                onClick={() => setShowDeleteConfirm(feedback.feedback_id)}
+                                onClick={() =>
+                                  setShowDeleteConfirm(feedback.feedback_id)
+                                }
                                 className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                               >
                                 Delete Comment
@@ -215,9 +253,12 @@ const CitizenCommentFeedback = ({
                   {showDeleteConfirm === feedback.feedback_id && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                       <div className="bg-white rounded-lg p-6 max-w-sm mx-4">
-                        <h3 className="text-lg font-medium mb-4">Delete Comment?</h3>
+                        <h3 className="text-lg font-medium mb-4">
+                          Delete Comment?
+                        </h3>
                         <p className="text-gray-500 mb-4">
-                          Are you sure you want to delete this comment? This action cannot be undone.
+                          Are you sure you want to delete this comment? This
+                          action cannot be undone.
                         </p>
                         <div className="flex justify-end gap-3">
                           <button
