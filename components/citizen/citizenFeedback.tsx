@@ -3,6 +3,7 @@ import {
   SubmitFeedback,
   UpdateFeedback,
 } from "@/libs/feedback";
+import { SubmitFeedbackReply } from "@/libs/feedbackReply";
 import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
 import { useState } from "react";
@@ -106,9 +107,17 @@ const CitizenCommentFeedback = ({
     }
   };
 
-  const submitReply = async (feedbackId: number) => {
+  const submitReply = async (feedbackId: number | null) => {
     // TODO: Implement reply submission logic
     console.log("Submitting reply to feedback:", feedbackId, replyContent);
+    try {
+      const data = await SubmitFeedbackReply(feedbackId, replyContent);
+      console.log(data.message);
+    } catch (error) {
+      console.log(
+        error instanceof Error ? error.message : "Unknown Error Occured"
+      );
+    }
     setReplyingTo(null);
     setReplyContent("");
   };
