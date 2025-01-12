@@ -7,7 +7,7 @@ import BudgetCategoryList from "@/components/barangay-admin/budgetCategoryList";
 import { useProfileID } from "@/hooks/userHooks";
 
 export default function BarangayAdminPage() {
-  const { barangayID, userRole } = useProfileID();
+  const { barangayID, userRole, barangayName } = useProfileID();
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -20,7 +20,7 @@ export default function BarangayAdminPage() {
             {/* Welcome Section */}
             <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                Barangay Dashboard
+                Brgy. {barangayName} Dashboard
               </h1>
               <p className="text-gray-600">
                 Manage your barangay projects and track financial allocations
