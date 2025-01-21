@@ -109,3 +109,32 @@ export async function DeleteBarangay(barangayID: string) {
     throw error;
   }
 }
+
+export async function UpdateBarangay(
+  updateBarangay: AddBarangayFormData,
+  barangayID: string
+) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/barangay/update/${barangayID}`,
+      {
+        credentials: "include",
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateBarangay),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to update barangay");
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
