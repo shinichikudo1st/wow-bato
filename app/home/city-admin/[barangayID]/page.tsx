@@ -14,6 +14,7 @@ import {
 import Navbar from "@/components/reusable/navbar";
 import AuthBackground from "@/components/auth/authBackground";
 import { useRouter } from "next/navigation";
+import { DeleteBarangay } from "@/libs/barangay";
 
 const CityAdminBarangayViewPage = ({
   params,
@@ -24,6 +25,18 @@ const CityAdminBarangayViewPage = ({
   const barangayID = use(params).barangayID;
   const { barangay, isLoading, error, fetchBarangay } =
     useViewBarangay(barangayID);
+
+  const handleDelete = async (barangayID: string) => {
+    try {
+      const result = await DeleteBarangay(barangayID);
+
+      console.log(result.message);
+    } catch (error) {
+      console.log(
+        error instanceof Error ? error.message : "Unknown error occured"
+      );
+    }
+  };
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">

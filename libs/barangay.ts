@@ -87,3 +87,25 @@ export async function getBarangayNames() {
     throw error;
   }
 }
+
+export async function DeleteBarangay(barangayID: string) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/barangay/delete/${barangayID}`,
+      {
+        credentials: "include",
+        method: "DELETE",
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to delete barangay");
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
