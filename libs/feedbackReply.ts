@@ -1,6 +1,10 @@
+export interface replyData {
+  feedback_reply: string;
+}
+
 export async function SubmitFeedbackReply(
   feedbackID: number | null,
-  content: string
+  content: replyData
 ) {
   try {
     const response = await fetch(
@@ -11,7 +15,7 @@ export async function SubmitFeedbackReply(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ content }),
+        body: JSON.stringify(content),
       }
     );
 

@@ -3,7 +3,7 @@ import {
   SubmitFeedback,
   UpdateFeedback,
 } from "@/libs/feedback";
-import { GetFeedbackReply, SubmitFeedbackReply } from "@/libs/feedbackReply";
+import { GetFeedbackReply, replyData, SubmitFeedbackReply } from "@/libs/feedbackReply";
 import { FeedbackReply } from "@/types/feedbackReplyTypes";
 import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
@@ -32,7 +32,9 @@ const CitizenCommentFeedback = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
-  const [replyContent, setReplyContent] = useState<string>("");
+  const [replyContent, setReplyContent] = useState<replyData>({
+    feedback_reply: "",
+  });
   const [editingComment, setEditingComment] = useState<number | null>(null);
   const [editContent, setEditContent] = useState<string>("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(
@@ -95,10 +97,14 @@ const CitizenCommentFeedback = ({
   const handleReply = (feedbackId: number) => {
     if (replyingTo === feedbackId) {
       setReplyingTo(null);
-      setReplyContent("");
+      setReplyContent({
+        feedback_reply: "",
+      });
     } else {
       setReplyingTo(feedbackId);
-      setReplyContent("");
+      setReplyContent({
+        feedback_reply: "",
+      });
     }
     setActiveDropdown(null);
   };
@@ -151,9 +157,13 @@ const CitizenCommentFeedback = ({
       console.log(
         error instanceof Error ? error.message : "Unknown Error Occured"
       );
+    } finally {
+      setReplyingTo(null);
+      setReplyContent({
+        feedback_reply: "",
+      });
+      GetFeedbacksData();
     }
-    setReplyingTo(null);
-    setReplyContent("");
   };
 
   if (!projectID) {
@@ -376,8 +386,10 @@ const CitizenCommentFeedback = ({
                       />
                       <div className="flex-1">
                         <textarea
-                          value={replyContent}
-                          onChange={(e) => setReplyContent(e.target.value)}
+                          value={replyContent.feedback_reply}
+                          onChange={(e) =>
+                            setReplyContent({ feedback_reply: e.target.value })
+                          }
                           placeholder="Write a reply..."
                           className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none bg-gray-50"
                           rows={3}
