@@ -3,7 +3,8 @@ import {
   SubmitFeedback,
   UpdateFeedback,
 } from "@/libs/feedback";
-import { SubmitFeedbackReply } from "@/libs/feedbackReply";
+import { GetFeedbackReply, SubmitFeedbackReply } from "@/libs/feedbackReply";
+import { FeedbackReply } from "@/types/feedbackReplyTypes";
 import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
 import { useState } from "react";
@@ -38,6 +39,40 @@ const CitizenCommentFeedback = ({
     null
   );
   const [deleteError, setDeleteError] = useState<string>("");
+  const [replies, setReplies] = useState<FeedbackReply[]>([]);
+  const [activeFeedbackReplies, setActiveFeedbackReplies] = useState<number | null>(null);
+
+  const getReplies = async(feedbackId: number) => {
+    try {
+      const result = await GetFeedbackReply(feedbackId);
+
+      console.log(result.data);
+
+      if (result && result.data) {
+        setReplies(result.data);
+      } else {
+        setReplies([]);
+      }
+    } catch (error) {
+      console.log(
+        error instanceof Error ? error.message : "Unknown error occured"
+      );
+      setReplies([]);
+    }
+  }
+
+  const handleShowReplies = async (feedbackId: number) => {
+    if (activeFeedbackReplies === feedbackId) {
+      // If clicking on the same feedback, close it
+      setActiveFeedbackReplies(null);
+      setReplies([]);
+    } else {
+      // If clicking on a different feedback, close the previous one and open the new one
+      setActiveFeedbackReplies(feedbackId);
+      setReplies([]); // Clear existing replies before loading new ones
+      await getReplies(feedbackId);
+    }
+  };
 
   const submitFeedback = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,7 +143,6 @@ const CitizenCommentFeedback = ({
   };
 
   const submitReply = async (feedbackId: number | null) => {
-    // TODO: Implement reply submission logic
     console.log("Submitting reply to feedback:", feedbackId, replyContent);
     try {
       const data = await SubmitFeedbackReply(feedbackId, replyContent);
@@ -219,6 +253,17 @@ const CitizenCommentFeedback = ({
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
                             </svg>
                             Reply
+                          </button>
+                          <button
+                            onClick={() => handleShowReplies(feedback.feedback_id)}
+                            className="text-gray-600 hover:text-gray-700 text-sm font-medium flex items-center space-x-1"
+                          >
+                            <span>{activeFeedbackReplies === feedback.feedback_id ? 'Hide' : 'Show'} Replies</span>
+                            {activeFeedbackReplies === feedback.feedback_id && replies.length > 0 && (
+                              <span className="bg-gray-100 px-2 py-0.5 rounded-full text-xs">
+                                {replies.length}
+                              </span>
+                            )}
                           </button>
                         </div>
                       </>
@@ -353,6 +398,26 @@ const CitizenCommentFeedback = ({
                         </div>
                       </div>
                     </div>
+                  </div>
+                )}
+
+                {/* Replies Section */}
+                {activeFeedbackReplies === feedback.feedback_id && (
+                  <div className="mt-4 pl-6 border-l-2 border-gray-100">
+                    {replies.length > 0 ? (
+                      <div className="space-y-4">
+                        {replies.map((reply, index) => (
+                          <div key={index} className="bg-gray-50 p-4 rounded-lg">
+                            <p className="text-sm text-gray-700">{reply.Content}</p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              User ID: {reply.UserID}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-500">No replies yet</p>
+                    )}
                   </div>
                 )}
               </div>
