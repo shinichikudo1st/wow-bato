@@ -31,7 +31,8 @@ const CityAdminBarangayViewPage = ({
     name: "",
     city: "",
     region: "",
-  })
+  });
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleDelete = async (barangayID: string) => {
     try {
@@ -45,9 +46,11 @@ const CityAdminBarangayViewPage = ({
     }
   };
 
-  const handleUpdate = async() => {
+  const handleUpdate = async () => {
     try {
       const result = await UpdateBarangay(updateBarangay, barangayID);
+
+      console.log(result.message);
     } catch (error) {
       console.log(
         error instanceof Error ? error.message : "Unknown error occured"
@@ -57,9 +60,9 @@ const CityAdminBarangayViewPage = ({
         name: "",
         city: "",
         region: "",
-      })
+      });
     }
-  }
+  };
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -99,68 +102,124 @@ const CityAdminBarangayViewPage = ({
                   </button>
                 </div>
               ) : (
-                <div className="space-y-8">
-                  {/* Header */}
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-blue-100 rounded-xl">
-                      <FiMapPin className="w-7 h-7 text-blue-600" />
-                    </div>
-                    <div>
-                      <h1 className="text-3xl font-bold text-gray-900">
-                        {barangay?.name}
-                      </h1>
-                      <p className="text-gray-500 mt-1">
-                        Barangay Information Details
-                      </p>
-                    </div>
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      Barangay {barangay?.name} Details
+                    </h2>
                   </div>
 
-                  {/* Image Placeholder */}
-                  <div className="relative group">
-                    <div className="aspect-video rounded-2xl bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-200 group-hover:border-blue-200 transition-colors duration-200">
-                      <div className="text-center p-8">
-                        <FiImage className="w-12 h-12 mx-auto text-gray-400 mb-3" />
-                        <p className="text-sm font-medium text-gray-500">
-                          No barangay image available
-                        </p>
-                        <p className="text-xs text-gray-400 mt-1">
-                          Upload an image to showcase the barangay
-                        </p>
+                  {isEditing ? (
+                    <div className="bg-gray-50 p-6 rounded-lg space-y-4">
+                      <div>
+                        <label
+                          htmlFor="name"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                          Barangay Name
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          value={updateBarangay.name}
+                          onChange={(e) =>
+                            setUpdateBarangay({
+                              ...updateBarangay,
+                              name: e.target.value,
+                            })
+                          }
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        />
                       </div>
-                    </div>
-                    <button className="absolute inset-0 w-full h-full bg-blue-600 bg-opacity-0 hover:bg-opacity-10 transition-all duration-200 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <span className="px-4 py-2 bg-white rounded-lg shadow-lg text-sm font-medium text-blue-600">
-                        Upload Image
-                      </span>
-                    </button>
-                  </div>
-
-                  {/* Info Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
-                      <div className="flex items-center space-x-3 mb-3">
-                        <FiHome className="w-5 h-5 text-indigo-600" />
-                        <h2 className="text-sm font-medium text-gray-500">
+                      <div>
+                        <label
+                          htmlFor="city"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
                           City
-                        </h2>
+                        </label>
+                        <input
+                          type="text"
+                          id="city"
+                          value={updateBarangay.city}
+                          onChange={(e) =>
+                            setUpdateBarangay({
+                              ...updateBarangay,
+                              city: e.target.value,
+                            })
+                          }
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        />
                       </div>
-                      <p className="text-lg font-semibold text-gray-900 ml-8">
-                        {barangay?.city}
-                      </p>
-                    </div>
-
-                    <div className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
-                      <div className="flex items-center space-x-3 mb-3">
-                        <FiGlobe className="w-5 h-5 text-purple-600" />
-                        <h2 className="text-sm font-medium text-gray-500">
+                      <div>
+                        <label
+                          htmlFor="region"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
                           Region
-                        </h2>
+                        </label>
+                        <input
+                          type="text"
+                          id="region"
+                          value={updateBarangay.region}
+                          onChange={(e) =>
+                            setUpdateBarangay({
+                              ...updateBarangay,
+                              region: e.target.value,
+                            })
+                          }
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        />
                       </div>
-                      <p className="text-lg font-semibold text-gray-900 ml-8">
-                        {barangay?.region}
-                      </p>
+                      <div className="flex space-x-4 pt-4">
+                        <button
+                          onClick={handleUpdate}
+                          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                        >
+                          Save Changes
+                        </button>
+                        <button
+                          onClick={() => {
+                            setIsEditing(false);
+                            setUpdateBarangay({
+                              name: "",
+                              city: "",
+                              region: "",
+                            });
+                          }}
+                          className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
+                        <div className="flex items-center space-x-3 mb-3">
+                          <FiHome className="w-5 h-5 text-indigo-600" />
+                          <h2 className="text-sm font-medium text-gray-500">
+                            City
+                          </h2>
+                        </div>
+                        <p className="text-lg font-semibold text-gray-900 ml-8">
+                          {barangay?.city}
+                        </p>
+                      </div>
+
+                      <div className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
+                        <div className="flex items-center space-x-3 mb-3">
+                          <FiGlobe className="w-5 h-5 text-purple-600" />
+                          <h2 className="text-sm font-medium text-gray-500">
+                            Region
+                          </h2>
+                        </div>
+                        <p className="text-lg font-semibold text-gray-900 ml-8">
+                          {barangay?.region}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -195,10 +254,23 @@ const CityAdminBarangayViewPage = ({
                 Actions
               </h2>
               <div className="space-y-3">
-                <button className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                <button
+                  onClick={() => {
+                    setIsEditing(true);
+                    setUpdateBarangay({
+                      name: barangay?.name || "",
+                      city: barangay?.city || "",
+                      region: barangay?.region || "",
+                    });
+                  }}
+                  className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                >
                   Edit Barangay
                 </button>
-                <button className="w-full px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors duration-200">
+                <button
+                  onClick={() => handleDelete(barangayID)}
+                  className="w-full px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors duration-200"
+                >
                   Delete Barangay
                 </button>
               </div>
