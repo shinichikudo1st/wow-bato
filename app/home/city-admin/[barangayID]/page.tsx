@@ -1,7 +1,7 @@
 "use client";
 
 import { useViewBarangay } from "@/hooks/barangayHook";
-import { use } from "react";
+import { use, useState } from "react";
 import {
   FiMapPin,
   FiHome,
@@ -14,7 +14,8 @@ import {
 import Navbar from "@/components/reusable/navbar";
 import AuthBackground from "@/components/auth/authBackground";
 import { useRouter } from "next/navigation";
-import { DeleteBarangay } from "@/libs/barangay";
+import { DeleteBarangay, UpdateBarangay } from "@/libs/barangay";
+import { AddBarangayFormData } from "@/types/barangayTypes";
 
 const CityAdminBarangayViewPage = ({
   params,
@@ -25,6 +26,12 @@ const CityAdminBarangayViewPage = ({
   const barangayID = use(params).barangayID;
   const { barangay, isLoading, error, fetchBarangay } =
     useViewBarangay(barangayID);
+
+  const [updateBarangay, setUpdateBarangay] = useState<AddBarangayFormData>({
+    name: "",
+    city: "",
+    region: "",
+  })
 
   const handleDelete = async (barangayID: string) => {
     try {
@@ -37,6 +44,22 @@ const CityAdminBarangayViewPage = ({
       );
     }
   };
+
+  const handleUpdate = async() => {
+    try {
+      const result = await UpdateBarangay(updateBarangay, barangayID);
+    } catch (error) {
+      console.log(
+        error instanceof Error ? error.message : "Unknown error occured"
+      );
+    } finally {
+      setUpdateBarangay({
+        name: "",
+        city: "",
+        region: "",
+      })
+    }
+  }
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
