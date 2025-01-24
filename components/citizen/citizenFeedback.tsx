@@ -419,9 +419,31 @@ const CitizenCommentFeedback = ({
                     {replies.length > 0 ? (
                       <div className="space-y-4">
                         {replies.map((reply, index) => (
-                          <div key={index} className="bg-gray-50 p-4 rounded-lg">
-                            <p className="text-sm text-gray-700">{reply.Content}</p>
-                            <p className="text-xs text-gray-500 mt-1">
+                          <div key={index} className="bg-gray-50 p-4 rounded-lg relative group">
+                            <div className="flex justify-between items-center mb-2">
+                              <p className="text-sm text-gray-700 flex-grow">{reply.Content}</p>
+                              <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <button 
+                                  className="text-blue-500 hover:text-blue-700 text-xs"
+                                  onClick={() => {
+                                    // TODO: Implement edit reply logic
+                                    console.log('Edit reply', reply);
+                                  }}
+                                >
+                                  Edit
+                                </button>
+                                <button 
+                                  className="text-red-500 hover:text-red-700 text-xs"
+                                  onClick={() => {
+                                    // TODO: Implement delete reply logic
+                                    console.log('Delete reply', reply);
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            </div>
+                            <p className="text-xs text-gray-500">
                               User ID: {reply.UserID}
                             </p>
                           </div>
