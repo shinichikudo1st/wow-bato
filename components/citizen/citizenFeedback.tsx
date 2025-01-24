@@ -45,6 +45,7 @@ const CitizenCommentFeedback = ({
   const [activeFeedbackReplies, setActiveFeedbackReplies] = useState<number | null>(null);
   const [editingReplyFeedbackID, setEditingReplyFeedbackID] = useState<number | null>(null);
   const [editReplyContent, setEditReplyContent] = useState<string>('');
+  const [deleteConfirmationReply, setDeleteConfirmationReply] = useState<FeedbackReply | null>(null);
 
   const getReplies = async(feedbackId: number) => {
     try {
@@ -349,7 +350,7 @@ const CitizenCommentFeedback = ({
                   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl p-6 max-w-sm mx-4 animate-fadeIn">
                       <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto mb-4">
-                        <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                         </svg>
                       </div>
@@ -470,8 +471,7 @@ const CitizenCommentFeedback = ({
                                     <button 
                                       className="text-red-500 hover:text-red-700 text-xs"
                                       onClick={() => {
-                                        // Placeholder for delete logic
-                                        console.log('Delete reply', reply);
+                                        setDeleteConfirmationReply(reply);
                                       }}
                                     >
                                       Delete
@@ -495,57 +495,114 @@ const CitizenCommentFeedback = ({
             ))}
         </div>
 
-        {/* Floating Comment Box */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4 z-40">
-          <div className="max-w-7xl mx-auto">
-            <form onSubmit={submitFeedback} className="flex gap-4 items-start">
-              <Image
-                src="/sawako.jpeg"
-                width={40}
-                height={40}
-                alt="Your avatar"
-                className="object-cover w-10 h-10 rounded-full border-2 border-emerald-400"
+        {/* Delete Reply Confirmation Modal */}
+        {deleteConfirmationReply && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
+            <div className="relative w-full max-w-lg px-4">
+              {/* Background overlay */}
+              <div 
+                className="absolute inset-0 bg-gray-500 bg-opacity-75" 
+                onClick={() => setDeleteConfirmationReply(null)}
               />
-              <div className="flex-1">
-                <textarea
-                  className="w-full p-3 bg-gray-50 rounded-lg border focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
-                  name="content"
-                  placeholder="Write a comment..."
-                  value={formData.content}
-                  onChange={(e) => {
-                    setFormData({ ...formData, content: e.target.value });
-                  }}
-                  rows={2}
-                  required
-                ></textarea>
-                <div className="flex justify-end mt-2">
+
+              {/* Modal panel */}
+              <div className="relative bg-white rounded-lg shadow-xl p-6 mx-auto">
+                <div className="sm:flex sm:items-start">
+                  <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+                    <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </div>
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 className="text-lg font-medium leading-6 text-gray-900">
+                      Delete Reply
+                    </h3>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
+                        Are you sure you want to delete this reply? This action cannot be undone.
+                      </p>
+                      <p className="text-sm text-gray-700 mt-2 italic">
+                        "{deleteConfirmationReply.Content}"
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                   <button
-                    type="submit"
-                    disabled={submitting}
-                    className="px-4 py-2 bg-emerald-500 text-white text-sm font-medium rounded-lg hover:bg-emerald-600 
-                    transition-colors flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    type="button"
+                    onClick={() => {
+                      // Placeholder for delete logic
+                      console.log('Confirmed delete reply', deleteConfirmationReply);
+                      setDeleteConfirmationReply(null);
+                    }}
+                    className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                   >
-                    {submitting ? (
-                      <>
-                        <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span>Posting...</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                        </svg>
-                        <span>Post Comment</span>
-                      </>
-                    )}
+                    Delete
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDeleteConfirmationReply(null)}
+                    className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                  >
+                    Cancel
                   </button>
                 </div>
               </div>
-            </form>
+            </div>
           </div>
+        )}
+      </div>
+
+      {/* Floating Comment Box */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4 z-40">
+        <div className="max-w-7xl mx-auto">
+          <form onSubmit={submitFeedback} className="flex gap-4 items-start">
+            <Image
+              src="/sawako.jpeg"
+              width={40}
+              height={40}
+              alt="Your avatar"
+              className="object-cover w-10 h-10 rounded-full border-2 border-emerald-400"
+            />
+            <div className="flex-1">
+              <textarea
+                className="w-full p-3 bg-gray-50 rounded-lg border focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+                name="content"
+                placeholder="Write a comment..."
+                value={formData.content}
+                onChange={(e) => {
+                  setFormData({ ...formData, content: e.target.value });
+                }}
+                rows={2}
+                required
+              ></textarea>
+              <div className="flex justify-end mt-2">
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-4 py-2 bg-emerald-500 text-white text-sm font-medium rounded-lg hover:bg-emerald-600 
+                  transition-colors flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {submitting ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span>Posting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                      </svg>
+                      <span>Post Comment</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </>
