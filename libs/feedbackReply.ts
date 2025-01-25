@@ -74,3 +74,29 @@ export async function DeleteFeedbackReply(feedbackID: number | null) {
     throw error;
   }
 }
+
+export async function EditFeedbackReply(replyID: number | null, content: string, userID: number | null) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/feedbackReply/edit/${replyID}`,
+      {
+        credentials: "include",
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content, userID }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to edit reply");
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
