@@ -10,12 +10,14 @@ import Image from "next/image";
 import { useState } from "react";
 
 const CitizenCommentFeedback = ({
+  userID,
   projectID,
   feedbacks,
   GetFeedbacksData,
   isLoading,
   error,
 }: {
+  userID:   number | null;
   projectID: number | null;
   feedbacks: FeedbackListItem[] | null;
   GetFeedbacksData: () => void;

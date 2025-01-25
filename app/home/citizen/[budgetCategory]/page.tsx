@@ -5,7 +5,8 @@ import ProjectList from "@/components/barangay-admin/projectList";
 import CitizenCommentFeedback from "@/components/citizen/citizenFeedback";
 import Navbar from "@/components/reusable/navbar";
 import { useFeedbacks } from "@/hooks/feedbackHooks";
-import { use, useEffect, useState } from "react";
+import { useProfileID } from "@/hooks/userHooks";
+import { use, useState } from "react";
 
 const BudgetCategoryCitizen = ({
   params,
@@ -15,6 +16,7 @@ const BudgetCategoryCitizen = ({
   const categoryID = use(params).budgetCategory;
 
   const [activeProject, setActiveProject] = useState<number | null>(null);
+  const { userID } = useProfileID();
 
   const { feedbacks, GetFeedbacksData, isLoading, error } =
     useFeedbacks(activeProject);
@@ -45,6 +47,7 @@ const BudgetCategoryCitizen = ({
             />
           </div>
           <CitizenCommentFeedback
+            userID={userID}
             projectID={activeProject}
             feedbacks={feedbacks}
             GetFeedbacksData={GetFeedbacksData}
