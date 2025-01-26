@@ -9,6 +9,7 @@ export interface BudgetCategoryResponse {
   name: string;
   description: string;
   barangay_ID: number;
+  project_count: number;
 }
 
 export interface BudgetCategoryViewReturn {

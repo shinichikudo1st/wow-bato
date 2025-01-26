@@ -156,7 +156,7 @@ export default function BudgetCategoryList({
                     <div className="flex items-center space-x-2">
                       <FiFolderPlus className="w-4 h-4 text-gray-400 flex-shrink-0" />
                       <span className="text-sm text-gray-600 truncate">
-                        2 Projects
+                        {category.project_count} Projects
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
