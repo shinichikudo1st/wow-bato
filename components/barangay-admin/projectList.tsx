@@ -1,6 +1,7 @@
 "use client";
 
 import { UseViewProjectList } from "@/hooks/projectHooks";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   FiFolder,
@@ -16,15 +17,28 @@ import {
 } from "react-icons/fi";
 
 export default function ProjectList({
+  userRole,
   categoryID,
   setActiveProject,
 }: {
+  userRole: string | null;
   categoryID: number | null;
   setActiveProject: (projectID: number) => void;
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const { categoryInfo, projectList, error, loading, fetchProjectList } =
     UseViewProjectList(categoryID, currentPage);
+  const router = useRouter();
+
+  const showBudgetItems = (projectID: number) => {
+    if (userRole === "citizen") {
+      router.push(`/home/citizen/projects/${projectID}`);
+    } else if (userRole === "barangay admin") {
+      router.push(`/home/barangay-admin/projects/${projectID}`);
+    } else {
+      router.push(`/home/city-admin/projects/${projectID}`);
+    }
+  };
 
   if (error) {
     return (
@@ -172,6 +186,7 @@ export default function ProjectList({
                       View Details
                     </button>
                     <button
+                      onClick={() => showBudgetItems(project.id)}
                       className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-emerald-600
                       bg-transparent hover:bg-emerald-50 rounded-lg transition-colors duration-200
                       opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
