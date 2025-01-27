@@ -6,7 +6,9 @@ import CitizenCommentFeedback from "@/components/citizen/citizenFeedback";
 import Navbar from "@/components/reusable/navbar";
 import { useFeedbacks } from "@/hooks/feedbackHooks";
 import { useProfileID } from "@/hooks/userHooks";
+import { useRouter } from "next/navigation";
 import { use, useState } from "react";
+import { FiArrowLeft } from "react-icons/fi";
 
 const BudgetCategoryCitizen = ({
   params,
@@ -14,6 +16,7 @@ const BudgetCategoryCitizen = ({
   params: Promise<{ budgetCategory: number }>;
 }) => {
   const categoryID = use(params).budgetCategory;
+  const router = useRouter();
 
   const [activeProject, setActiveProject] = useState<number | null>(null);
   const { userID } = useProfileID();
@@ -27,6 +30,13 @@ const BudgetCategoryCitizen = ({
       <Navbar />
 
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <button
+          onClick={() => router.back()}
+          className="inline-flex items-center mb-6 text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors duration-200"
+        >
+          <FiArrowLeft className="w-4 h-4 mr-2" />
+          Back to Dashboard
+        </button>
         <div className="grid gap-8 md:grid-cols-2">
           <div className="space-y-8">
             {/* Welcome Section */}

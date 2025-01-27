@@ -24,7 +24,7 @@ const BudgetCategoryBarangayAdmin = ({
       <Navbar />
 
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <button
+        <button
           onClick={() => router.back()}
           className="inline-flex items-center mb-6 text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors duration-200"
         >
