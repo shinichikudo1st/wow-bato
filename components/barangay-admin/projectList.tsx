@@ -161,15 +161,25 @@ export default function ProjectList({
                   </div>
 
                   {/* View Details Button */}
-                  <button
-                    onClick={() => setActiveProject(project.id)}
-                    className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600
-                    bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200
-                    opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
-                  >
-                    <FiEye className="w-4 h-4 mr-1.5" />
-                    View Details
-                  </button>
+                  <div className="flex flex-col space-y-2">
+                    <button
+                      onClick={() => setActiveProject(project.id)}
+                      className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600
+                      bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200
+                      opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
+                    >
+                      <FiEye className="w-4 h-4 mr-1.5" />
+                      View Details
+                    </button>
+                    <button
+                      className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-emerald-600
+                      bg-transparent hover:bg-emerald-50 rounded-lg transition-colors duration-200
+                      opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
+                    >
+                      <FiDollarSign className="w-4 h-4 mr-1.5" />
+                      View Budget Items
+                    </button>
+                  </div>
                 </div>
               </div>
             ))
