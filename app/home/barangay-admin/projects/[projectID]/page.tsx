@@ -4,6 +4,7 @@ import Navbar from "@/components/reusable/navbar";
 import { useRouter } from "next/navigation";
 import { use } from "react";
 import { FiArrowLeft } from "react-icons/fi";
+import AddItemComponent from "@/components/barangay-admin/addBudgetItem";
 
 const ProjectItemsBarangayAdmin = ({
   params,
@@ -38,6 +39,13 @@ const ProjectItemsBarangayAdmin = ({
                 dashboard.
               </p>
             </div>
+            
+            {/* Add Budget Item Form */}
+            <AddItemComponent projectID={projectID} />
+          </div>
+          
+          <div className="space-y-8">
+            {/* TODO: Add list of existing items here */}
           </div>
         </div>
       </main>
