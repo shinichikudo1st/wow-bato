@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { use } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 
-const ProjectItemsCitizen = ({
+const ProjectItemsBarangayAdmin = ({
   params,
 }: {
   params: Promise<{ projectID: number }>;
@@ -31,7 +31,7 @@ const ProjectItemsCitizen = ({
             {/* Welcome Section */}
             <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                Project Items
+                Project Items - Barangay Admin
               </h1>
               <p className="text-gray-600">
                 View and Add Items to be used in the project from this central
@@ -45,4 +45,4 @@ const ProjectItemsCitizen = ({
   );
 };
 
-export default ProjectItemsCitizen;
+export default ProjectItemsBarangayAdmin;

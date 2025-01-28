@@ -4,6 +4,7 @@ import AuthBackground from "@/components/auth/authBackground";
 import AddProjectForm from "@/components/barangay-admin/addProjectForm";
 import ProjectList from "@/components/barangay-admin/projectList";
 import Navbar from "@/components/reusable/navbar";
+import { useProfileID } from "@/hooks/userHooks";
 import { useRouter } from "next/navigation";
 import { use } from "react";
 import { useState } from "react";
@@ -17,6 +18,8 @@ const BudgetCategoryBarangayAdmin = ({
   const categoryID = use(params).budgetCategory;
   const [activeProject, setActiveProject] = useState<number | null>(null);
   const router = useRouter();
+
+  const { userRole } = useProfileID();
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -49,8 +52,12 @@ const BudgetCategoryBarangayAdmin = ({
           </div>
 
           {/* Project List */}
-          <ProjectList categoryID={categoryID} setActiveProject={setActiveProject} />
-        </div> 
+          <ProjectList
+            userRole={userRole}
+            categoryID={categoryID}
+            setActiveProject={setActiveProject}
+          />
+        </div>
       </main>
     </div>
   );
