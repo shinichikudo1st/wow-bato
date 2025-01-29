@@ -1,6 +1,6 @@
 import { NewItemData } from "@/types/budgetItemTypes";
 
-export async function AddNewItem(projectID: number, itemData: NewItemData) {
+export async function AddNewItem(projectID: number | null, itemData: NewItemData) {
   try {
     const response = await fetch(
       `http://localhost:8080/api/v1/budgetItem/add/${projectID}`,

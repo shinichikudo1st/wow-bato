@@ -1,9 +1,9 @@
 "use client";
 
+import { AddNewItem } from "@/libs/budgetItem";
 import { NewItemData } from "@/types/budgetItemTypes";
 import { useState } from "react";
 import {
-  FiDollarSign,
   FiFileText,
   FiCheck,
   FiPackage,
@@ -32,8 +32,8 @@ const AddItemComponent = ({
     setError(null);
 
     try {
-      // TODO: Add API call here
-      setSuccess("Budget item added successfully!");
+      const result = await AddNewItem(projectID, formData);
+      setSuccess(result.message);
     } catch (error) {
       setError(
         error instanceof Error ? error.message : "Unknown error occurred"
@@ -121,20 +121,35 @@ const AddItemComponent = ({
                 maximumFractionDigits: 2
               })}
               onChange={(e) => {
-                const value = e.target.value.replace(/[^0-9.]/g, '');
-                const amount = parseFloat(value) || 0;
-                if (!isNaN(amount)) {
+                // Remove all non-numeric characters except decimal point
+                const rawValue = e.target.value.replace(/[^0-9.]/g, '');
+                
+                // Ensure only one decimal point
+                const parts = rawValue.split('.');
+                const cleanValue = parts[0] + (parts.length > 1 ? '.' + parts[1] : '');
+                
+                // Convert to number if valid
+                if (cleanValue === '' || cleanValue === '.') {
                   setFormData({
                     ...formData,
-                    amount_allocated: amount
+                    amount_allocated: 0
                   });
+                } else {
+                  const amount = parseFloat(cleanValue);
+                  if (!isNaN(amount)) {
+                    setFormData({
+                      ...formData,
+                      amount_allocated: amount
+                    });
+                  }
                 }
               }}
               onBlur={(e) => {
-                const amount = parseFloat(e.target.value) || 0;
+                // Format to 2 decimal places on blur
+                const amount = parseFloat(e.target.value.replace(/[^0-9.]/g, '')) || 0;
                 setFormData({
                   ...formData,
-                  amount_allocated: amount
+                  amount_allocated: Number(amount.toFixed(2))
                 });
               }}
             />
