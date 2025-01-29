@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { use } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import AddItemComponent from "@/components/barangay-admin/addBudgetItem";
+import BudgetItemList from "@/components/barangay-admin/budgetItemList";
 
 const ProjectItemsBarangayAdmin = ({
   params,
@@ -45,7 +46,8 @@ const ProjectItemsBarangayAdmin = ({
           </div>
           
           <div className="space-y-8">
-            {/* TODO: Add list of existing items here */}
+            {/* Budget Item List */}
+            <BudgetItemList projectID={projectID} />
           </div>
         </div>
       </main>
