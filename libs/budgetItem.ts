@@ -26,10 +26,10 @@ export async function AddNewItem(projectID: number | null, itemData: NewItemData
   }
 }
 
-export async function GetBudgetItemsByProjectID(projectID: number | null, filter: string) {
+export async function GetBudgetItems(projectID: number | null, filter: string, page: number) {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/v1/budgetItem/getByProject/${projectID}?filter=${filter}`,
+      `http://localhost:8080/api/v1/budgetItem/getByProject/${projectID}?filter=${filter}&page=${page}`,
       {
         credentials: "include",
         method: "GET",
