@@ -17,6 +17,9 @@ export const useBudgetItems = (projectID: number | null, filter: string, page: n
         try {
             const response = await GetBudgetItems(projectID, filter, page);
             setBudgetItems(response.data);
+
+            console.log(budgetItems) // debugging
+            console.log(response.data) // doing debugging
         } catch (error) {
             setError(
                 error instanceof Error ? error.message : "Unknown error occured"

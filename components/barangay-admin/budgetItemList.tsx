@@ -1,5 +1,6 @@
 "use client";
 
+import { useBudgetItems } from "@/hooks/budgetItemHooks";
 import { useState } from "react";
 import {
   FiPackage,
@@ -65,12 +66,13 @@ const dummyItems = [
   },
 ];
 
-const ITEMS_PER_PAGE = 3;
+const ITEMS_PER_PAGE = 5;
 
 const BudgetItemList = ({ projectID }: { projectID: number }) => {
-  const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
+  const [statusFilter, setStatusFilter] = useState<"All" | "Pending" | "Approved" | "Rejected">("Pending");
   const [currentPage, setCurrentPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const { budgetItems } = useBudgetItems(projectID, statusFilter, currentPage);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -103,7 +105,7 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
   };
 
   const filteredItems = dummyItems.filter(
-    (item) => statusFilter === "all" || item.status === statusFilter
+    (item) => statusFilter === "All" || item.status === statusFilter
   );
 
   const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
