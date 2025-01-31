@@ -6,16 +6,20 @@ export interface NewItemData {
 }
 
 export interface BudgetItemList {
-  name: string;
-  amount_allocated: number | 0;
-  description: string;
-  status: string;
-  approval_date: string | null;
-  projectID: number;
+  ID: number;
+  Name: string;
+  Amount_Allocated: number | 0;
+  Description: string;
+  Status: string;
+  Approval_Date: string | null;
+  ProjectID: number;
 }
 
 export interface BudgetItemReturn {
   budgetItems: BudgetItemList[] | null;
+  itemCount: number;
+  totalPages: number;
+  FetchBudgetItems: () => Promise<void>;
   isLoading: boolean;
   error: string | null;
 }
