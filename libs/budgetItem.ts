@@ -47,3 +47,29 @@ export async function GetBudgetItems(projectID: number | null, filter: string, p
   }
 }
 
+export async function UpdateItemStatus(itemID: number, status: string) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/budgetItem/update-status/${itemID}`,
+      {
+        credentials: "include",
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || `Failed to ${status} status`); // Approve or Reject
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
