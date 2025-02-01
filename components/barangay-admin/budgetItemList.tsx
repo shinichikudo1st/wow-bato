@@ -171,17 +171,51 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
               </div>
             </div>
 
-            <div className="flex items-center text-sm text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
-              <FiCalendar className="w-4 h-4 mr-2 text-blue-500" />
-              {item.Approval_Date 
-                ? `Approved on ${new Date(item.Approval_Date).toLocaleDateString('en-PH', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}`
-                : item.Status === 'rejected'
-                ? 'Rejected'
-                : 'Pending Approval'}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center text-sm text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
+                <FiCalendar className="w-4 h-4 mr-2 text-blue-500" />
+                {item.Approval_Date 
+                  ? `Approved on ${new Date(item.Approval_Date).toLocaleDateString('en-PH', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}`
+                  : item.Status === 'rejected'
+                  ? 'Rejected'
+                  : 'Pending Approval'}
+              </div>
+
+              {/* Action Buttons - Only show for pending items */}
+              {item.Status === 'Pending' && (
+                <div className="flex items-center space-x-3">
+                  <button
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium
+                      bg-gradient-to-r from-blue-500 to-blue-600 text-white
+                      hover:from-blue-600 hover:to-blue-700
+                      shadow-sm hover:shadow
+                      rounded-lg transition-all duration-200
+                      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    <div className="bg-blue-400/30 rounded-md p-1 mr-2">
+                      <FiCheck className="w-4 h-4" />
+                    </div>
+                    Approve Item
+                  </button>
+                  <button
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium
+                      border-2 border-gray-200 bg-white text-gray-600
+                      hover:bg-gray-50 hover:border-gray-300
+                      shadow-sm hover:shadow
+                      rounded-lg transition-all duration-200
+                      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                  >
+                    <div className="bg-gray-100 rounded-md p-1 mr-2">
+                      <FiX className="w-4 h-4" />
+                    </div>
+                    Reject Item
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         ))}
