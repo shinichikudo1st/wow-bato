@@ -47,7 +47,7 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
 
   const handleRefresh = () => {
     setIsRefreshing(true);
-    // Simulate refresh
+    FetchBudgetItems();
     setTimeout(() => {
       setIsRefreshing(false);
     }, 1000);
@@ -113,7 +113,7 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
           <span>Filter by status:</span>
         </div>
         <div className="flex space-x-2">
-          {["all", "pending", "approved", "rejected"].map((status) => (
+          {["All", "Pending", "Approved", "Rejected"].map((status) => (
             <button
               key={status}
               onClick={() => {
