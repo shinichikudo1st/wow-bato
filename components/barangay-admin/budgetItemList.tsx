@@ -1,6 +1,7 @@
 "use client";
 
 import { useBudgetItems } from "@/hooks/budgetItemHooks";
+import { UpdateItemStatus } from "@/libs/budgetItem";
 import { useState } from "react";
 import { AiFillMoneyCollect } from "react-icons/ai";
 import {
@@ -26,6 +27,9 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
     itemId: number | null;
     action: 'approve' | 'reject' | null;
   }>({ itemId: null, action: null });
+  const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const { budgetItems, totalPages, FetchBudgetItems, isLoading, error } = useBudgetItems(projectID, statusFilter, currentPage);
 
@@ -57,6 +61,25 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
     setTimeout(() => {
       setIsRefreshing(false);
     }, 1000);
+  };
+
+  const handleUpdateStatus = async(itemId: number | null, action: 'approve' | 'reject' | null) => {
+    setUpdatingStatus(true);
+    try {
+      const result = await UpdateItemStatus(itemId, action)
+
+      setSuccessMessage(result.message);
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error ? error.message : "Unknown error occurred"
+      );
+    } finally {
+      setUpdatingStatus(false);
+      setTimeout(() => {
+        setErrorMessage("");
+        setSuccessMessage("");
+      }, 3000);
+    }
   };
 
   return (
@@ -174,6 +197,7 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
 
                 <div className="flex items-center space-x-3 mt-4">
                   <button
+                    onClick={() => handleUpdateStatus(confirmationState.itemId, confirmationState.action)}
                     className={`inline-flex items-center px-4 py-2 text-sm font-medium
                       ${confirmationState.action === 'approve'
                         ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700'

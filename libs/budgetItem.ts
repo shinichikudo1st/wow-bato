@@ -47,7 +47,7 @@ export async function GetBudgetItems(projectID: number | null, filter: string, p
   }
 }
 
-export async function UpdateItemStatus(itemID: number, status: string) {
+export async function UpdateItemStatus(itemID: number | null, status: string | null) {
   try {
     const response = await fetch(
       `http://localhost:8080/api/v1/budgetItem/update-status/${itemID}`,
