@@ -1,7 +1,7 @@
 "use client";
 
 import { useBudgetItems } from "@/hooks/budgetItemHooks";
-import { UpdateItemStatus } from "@/libs/budgetItem";
+import { UpdateItemStatus, DeleteBudgetItem } from "@/libs/budgetItem";
 import { useState } from "react";
 import { AiFillMoneyCollect } from "react-icons/ai";
 import {
@@ -28,6 +28,7 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
     action: 'approve' | 'reject' | null;
   }>({ itemId: null, action: null });
   const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [deletingItem, setDeletingItem] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -81,6 +82,25 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
       }, 3000);
     }
   };
+
+  const handleDelete = async(itemID: number | null) => {
+    setDeletingItem(true);
+    try {
+      const result = await DeleteBudgetItem(itemID)
+
+      setSuccessMessage(result.message)
+    } catch (error) {
+       setErrorMessage(
+        error instanceof Error ? error.message : "Unknown error occurred"
+      );
+    } finally {
+      setDeletingItem(false);
+      setTimeout(() => {
+        setErrorMessage("");
+        setSuccessMessage("");
+      }, 3000);
+    }
+  }
 
   return (
     <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
