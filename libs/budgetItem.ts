@@ -73,3 +73,22 @@ export async function UpdateItemStatus(itemID: number | null, status: string | n
   }
 }
 
+export async function DeleteBudgetItem(itemID: number | null){
+  try {
+    const response = await fetch(`http://localhost:8080/api/v1/budgetItem/delete/${itemID}`, {
+      credentials: "include",
+      method: "DELETE"
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to delete budget item")
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
