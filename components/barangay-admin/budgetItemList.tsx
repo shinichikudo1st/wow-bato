@@ -333,31 +333,31 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
                   <>
                     <button
                       onClick={() => setConfirmationState({ itemId: item.ID, action: 'approve' })}
-                      className="inline-flex items-center px-4 py-2 text-sm font-medium
+                      className="inline-flex items-center h-10 px-4 text-sm font-medium
                         bg-gradient-to-r from-blue-500 to-blue-600 text-white
                         hover:from-blue-600 hover:to-blue-700
-                        shadow-sm hover:shadow
+                        shadow-sm hover:shadow whitespace-nowrap
                         rounded-lg transition-all duration-200
                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     >
-                      <div className="bg-blue-400/30 rounded-md p-1 mr-2">
+                      <div className="bg-blue-400/30 rounded-md p-1.5 mr-2">
                         <FiCheck className="w-4 h-4" />
                       </div>
-                      Approve Item
+                      Approve
                     </button>
                     <button
                       onClick={() => setConfirmationState({ itemId: item.ID, action: 'reject' })}
-                      className="inline-flex items-center px-4 py-2 text-sm font-medium
+                      className="inline-flex items-center h-10 px-4 text-sm font-medium
                         border-2 border-gray-200 bg-white text-gray-600
                         hover:bg-gray-50 hover:border-gray-300
-                        shadow-sm hover:shadow
+                        shadow-sm hover:shadow whitespace-nowrap
                         rounded-lg transition-all duration-200
                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                     >
-                      <div className="bg-gray-100 rounded-md p-1 mr-2">
+                      <div className="bg-gray-100 rounded-md p-1.5 mr-2">
                         <FiX className="w-4 h-4" />
                       </div>
-                      Reject Item
+                      Reject
                     </button>
                   </>
                 )}
@@ -366,7 +366,7 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
                 {!confirmationState.itemId && (
                   <button
                     onClick={() => setConfirmationState({ itemId: item.ID, action: 'delete' })}
-                    className="inline-flex items-center p-2 text-sm font-medium
+                    className="inline-flex items-center justify-center h-10 w-10 text-sm font-medium
                       text-red-600 hover:bg-red-50
                       rounded-lg transition-all duration-200
                       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
