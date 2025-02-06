@@ -40,6 +40,12 @@ const AddItemComponent = ({
       );
     } finally {
       setIsSubmitting(false);
+      setFormData({
+        name: "",
+        description: "",
+        amount_allocated: 0,
+        status: "Pending",
+      });
       setTimeout(() => {
         setError(null);
         setSuccess(null);
