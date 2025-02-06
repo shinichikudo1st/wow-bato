@@ -65,10 +65,10 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
     }, 1000);
   };
 
-  const handleUpdateStatus = async(itemId: number | null, action: 'approve' | 'reject' | null) => {
+  const handleUpdateStatus = async() => {
     setUpdatingStatus(true);
     try {
-      const result = await UpdateItemStatus(itemId, action)
+      const result = await UpdateItemStatus(confirmationState.itemId, confirmationState.action)
 
       setSuccessMessage(result.message);
     } catch (error) {
@@ -77,6 +77,8 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
       );
     } finally {
       setUpdatingStatus(false);
+      setConfirmationState({ itemId: null, action: null });
+      FetchBudgetItems();
       setTimeout(() => {
         setErrorMessage("");
         setSuccessMessage("");
@@ -226,6 +228,7 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
 
                 <div className="flex items-center space-x-3 mt-4">
                   <button
+                    onClick={() => handleUpdateStatus()}
                     className={`inline-flex items-center px-4 py-2 text-sm font-medium
                       ${confirmationState.action === 'approve'
                         ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700'
