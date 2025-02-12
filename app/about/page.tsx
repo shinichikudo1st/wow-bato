@@ -1,7 +1,10 @@
-import Image from 'next/image';
+"use client"
+import { useRouter } from 'next/navigation';
 import { FiAward, FiTarget, FiUsers, FiTrendingUp, FiArrowRight, FiCheck } from 'react-icons/fi';
 
 export default function AboutPage() {
+    const router = useRouter();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
       {/* Enhanced Hero Section */}
@@ -33,11 +36,15 @@ export default function AboutPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                <button
+                onClick={() => router.push("/authentication/login")}
+                className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                   Get Started
                   <FiArrowRight className="ml-2 w-5 h-5" />
                 </button>
-                <button className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 transition-all duration-300">
+                <button
+                onClick={() => router.push("/barangays")}
+                className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 transition-all duration-300">
                   Learn More
                 </button>
               </div>
