@@ -5,11 +5,12 @@ import {
   BarangayListResponse,
   UseBarangayListReturn,
   UseBarangayNamesReturn,
+  UsePublicViewBarangayReturn,
   UseViewBarangayReturn,
   ViewBarangayResponse,
 } from "@/types/barangayTypes";
 import { useState, useEffect, useCallback } from "react";
-import { getBarangayNames, getBarangays, viewBarangay } from "@/libs/barangay";
+import { DisplayBarangaysPublic, getBarangayNames, getBarangays, viewBarangay } from "@/libs/barangay";
 
 export const useBarangayList = (currentPage: number): UseBarangayListReturn => {
   const [barangays, setBarangays] = useState<BarangayListResponse | null>(null);
@@ -108,3 +109,21 @@ export const useBarangayNames = (): UseBarangayNamesReturn[] => {
 
   return barangays;
 };
+
+export const usePublicViewBarangay = (): UsePublicViewBarangayReturn[] => {
+  const [barangays, setBarangays] = useState<UsePublicViewBarangayReturn[]>([]);
+
+  useEffect(() => {
+    const fetchBarangayNames = async () => {
+      try {
+        const data = await DisplayBarangaysPublic();
+        setBarangays(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchBarangayNames();
+  }, []);
+
+  return barangays
+}
