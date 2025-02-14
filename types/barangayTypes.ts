@@ -41,3 +41,11 @@ export interface UseBarangayNamesReturn {
   id: number;
   name: string;
 }
+
+export interface UsePublicViewBarangayReturn {
+  id: number;
+  name: string;
+  city: string;
+  region: string;
+  image_url: string;
+}
