@@ -138,3 +138,22 @@ export async function UpdateBarangay(
     throw error;
   }
 }
+
+export async function DisplayBarangaysPublic(){
+    try {
+        const response = await fetch(`http://localhost:8080/api/v1/barangay/public-all`, {
+            credentials: "include",
+            method: "GET",
+        })
+
+        const data = await response.json();
+
+        if(!response.ok){
+            throw new Error(data.error || "Failed to fetch barangays")
+        }
+
+        return data;
+    } catch (error) {
+       throw error 
+    }
+}
