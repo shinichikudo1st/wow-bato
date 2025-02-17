@@ -9,6 +9,7 @@ import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
 import { useState } from "react";
 import ReplySection from "../reusable/replySection";
+import RepliesSection from "../reusable/repliesSection";
 
 const CitizenCommentFeedback = ({
   userID,
@@ -376,42 +377,45 @@ const CitizenCommentFeedback = ({
 
                 {/* Delete Confirmation Modal */}
                 {showDeleteConfirm === feedback.feedback_id && (
-                  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-xl p-6 max-w-sm mx-4 animate-fadeIn">
-                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto mb-4">
-                        <svg
-                          className="w-6 h-6 text-red-600"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                          />
-                        </svg>
-                      </div>
-                      <h3 className="text-lg font-semibold text-center mb-2">
-                        Delete Comment?
-                      </h3>
-                      <p className="text-gray-500 text-center mb-6">
-                        Are you sure you want to delete this comment? This
-                        action cannot be undone.
-                      </p>
-                      <div className="flex justify-center gap-3">
-                        <button
-                          onClick={() => setShowDeleteConfirm(null)}
-                          className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          onClick={() => handleDelete(feedback.feedback_id)}
-                          className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition-colors"
-                        >
-                          Delete
-                        </button>
+                  <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-500 bg-opacity-75 flex items-center justify-center">
+                    <div className="relative w-full max-w-lg mx-auto">
+                      <div className="relative bg-white rounded-lg shadow-xl p-6">
+                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto mb-4">
+                          <svg
+                            className="w-6 h-6 text-red-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                            />
+                          </svg>
+                        </div>
+                        <h3 className="text-lg font-semibold text-center mb-2">
+                          Delete Comment?
+                        </h3>
+                        <p className="text-gray-500 text-center mb-6">
+                          Are you sure you want to delete this comment? This
+                          action cannot be undone.
+                        </p>
+                        <div className="flex justify-center gap-3">
+                          <button
+                            onClick={() => setShowDeleteConfirm(null)}
+                            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={() => handleDelete(feedback.feedback_id)}
+                            className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition-colors"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -428,90 +432,12 @@ const CitizenCommentFeedback = ({
 
                 {/* Replies Section */}
                 {activeFeedbackReplies === feedback.feedback_id && (
-                  <div className="mt-4 pl-6 border-l-2 border-gray-100">
-                    {replies.length > 0 ? (
-                      <div className="space-y-4">
-                        {replies.map((reply, index) => (
-                          <div
-                            key={index}
-                            className="bg-gray-50 p-4 rounded-lg relative group"
-                          >
-                            {editingReplyFeedbackID === reply.FeedbackID ? (
-                              <div className="space-y-2">
-                                <input
-                                  type="text"
-                                  value={editReplyContent}
-                                  onChange={(e) =>
-                                    setEditReplyContent(e.target.value)
-                                  }
-                                  className="w-full px-3 py-2 text-sm text-gray-700 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                                  placeholder="Edit your reply"
-                                />
-                                <div className="flex space-x-2">
-                                  <button
-                                    className="px-3 py-1 text-xs text-white bg-blue-600 rounded-md hover:bg-blue-700"
-                                    onClick={() => {
-                                      // Placeholder for save logic
-                                      console.log(
-                                        "Save edited reply",
-                                        editReplyContent
-                                      );
-                                      setEditingReplyFeedbackID(null);
-                                    }}
-                                  >
-                                    Save
-                                  </button>
-                                  <button
-                                    className="px-3 py-1 text-xs text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200"
-                                    onClick={() => {
-                                      setEditingReplyFeedbackID(null);
-                                      setEditReplyContent("");
-                                    }}
-                                  >
-                                    Cancel
-                                  </button>
-                                </div>
-                              </div>
-                            ) : (
-                              <>
-                                <div className="flex justify-between items-center mb-2">
-                                  <p className="text-sm text-gray-700 flex-grow">
-                                    {reply.Content}
-                                  </p>
-                                  <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                    <button
-                                      className="text-blue-500 hover:text-blue-700 text-xs"
-                                      onClick={() => {
-                                        setEditingReplyFeedbackID(
-                                          reply.FeedbackID
-                                        );
-                                        setEditReplyContent(reply.Content);
-                                      }}
-                                    >
-                                      Edit
-                                    </button>
-                                    <button
-                                      className="text-red-500 hover:text-red-700 text-xs"
-                                      onClick={() => {
-                                        setDeleteConfirmationReply(reply);
-                                      }}
-                                    >
-                                      Delete
-                                    </button>
-                                  </div>
-                                </div>
-                                <p className="text-xs text-gray-500">
-                                  User ID: {reply.UserID}
-                                </p>
-                              </>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-sm text-gray-500">No replies yet</p>
-                    )}
-                  </div>
+                  <RepliesSection
+                    replies={replies}
+                    editingReplyFeedbackID={editingReplyFeedbackID}
+                    setEditingReplyFeedbackID={setEditingReplyFeedbackID}
+                    setDeleteConfirmationReply={setDeleteConfirmationReply}
+                  />
                 )}
               </div>
             ))}
@@ -519,16 +445,9 @@ const CitizenCommentFeedback = ({
 
         {/* Delete Reply Confirmation Modal */}
         {deleteConfirmationReply && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
-            <div className="relative w-full max-w-lg px-4">
-              {/* Background overlay */}
-              <div
-                className="absolute inset-0 bg-gray-500 bg-opacity-75"
-                onClick={() => setDeleteConfirmationReply(null)}
-              />
-
-              {/* Modal panel */}
-              <div className="relative bg-white rounded-lg shadow-xl p-6 mx-auto">
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-500 bg-opacity-75 flex items-center justify-center">
+            <div className="relative w-full max-w-lg mx-auto">
+              <div className="relative bg-white rounded-lg shadow-xl p-6">
                 <div className="sm:flex sm:items-start">
                   <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
                     <svg
