@@ -8,6 +8,7 @@ import { FeedbackReply } from "@/types/feedbackReplyTypes";
 import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
 import { useState } from "react";
+import ReplySection from "../reusable/replySection";
 
 const CitizenCommentFeedback = ({
   userID,
@@ -382,42 +383,7 @@ const CitizenCommentFeedback = ({
 
                 {/* Reply Section */}
                 {replyingTo === feedback.feedback_id && (
-                  <div className="ml-14 mt-4 animate-fadeIn">
-                    <div className="flex gap-4">
-                      <Image
-                        src="/sawako.jpeg"
-                        width={40}
-                        height={40}
-                        alt="User reply"
-                        className="object-cover w-10 h-10 rounded-full border-2 border-emerald-400"
-                      />
-                      <div className="flex-1">
-                        <textarea
-                          value={replyContent.feedback_reply}
-                          onChange={(e) =>
-                            setReplyContent({ feedback_reply: e.target.value })
-                          }
-                          placeholder="Write a reply..."
-                          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none bg-gray-50"
-                          rows={3}
-                        />
-                        <div className="flex justify-end gap-2 mt-3">
-                          <button
-                            onClick={() => setReplyingTo(null)}
-                            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            onClick={() => submitReply(feedback.feedback_id)}
-                            className="px-4 py-2 text-sm font-medium text-white bg-emerald-500 rounded-lg hover:bg-emerald-600 transition-colors"
-                          >
-                            Submit Reply
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <ReplySection setReplyingTo={setReplyingTo} GetFeedbacksData={GetFeedbacksData} feedbackID={feedback.feedback_id} />
                 )}
 
                 {/* Replies Section */}
