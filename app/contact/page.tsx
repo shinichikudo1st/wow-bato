@@ -5,11 +5,7 @@ import {
   FiMail, 
   FiPhone, 
   FiMapPin, 
-  FiClock, 
   FiSend, 
-  FiArrowRight,
-  FiMessageCircle,
-  FiHelpCircle
 } from 'react-icons/fi';
 
 export default function ContactPage() {

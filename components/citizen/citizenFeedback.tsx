@@ -287,7 +287,8 @@ const CitizenCommentFeedback = ({
 
                   {!editingComment && (
                     <div className="relative">
-                      <button
+                      {feedback.user_id === userID && (
+                        <button
                         onClick={() =>
                           setActiveDropdown(
                             activeDropdown === feedback.feedback_id
@@ -312,6 +313,7 @@ const CitizenCommentFeedback = ({
                           />
                         </svg>
                       </button>
+                      )}
                       {activeDropdown === feedback.feedback_id && (
                         <div className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
                           <div className="py-1">
