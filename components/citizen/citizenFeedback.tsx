@@ -3,7 +3,7 @@ import {
   SubmitFeedback,
   UpdateFeedback,
 } from "@/libs/feedback";
-import { GetFeedbackReply, replyData, SubmitFeedbackReply } from "@/libs/feedbackReply";
+import { GetFeedbackReply } from "@/libs/feedbackReply";
 import { FeedbackReply } from "@/types/feedbackReplyTypes";
 import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
@@ -18,7 +18,7 @@ const CitizenCommentFeedback = ({
   isLoading,
   error,
 }: {
-  userID:   number | null;
+  userID: number | null;
   projectID: number | null;
   feedbacks: FeedbackListItem[] | null;
   GetFeedbacksData: () => void;
@@ -35,9 +35,7 @@ const CitizenCommentFeedback = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
-  const [replyContent, setReplyContent] = useState<replyData>({
-    feedback_reply: "",
-  });
+
   const [editingComment, setEditingComment] = useState<number | null>(null);
   const [editContent, setEditContent] = useState<string>("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(
@@ -45,12 +43,17 @@ const CitizenCommentFeedback = ({
   );
   const [deleteError, setDeleteError] = useState<string>("");
   const [replies, setReplies] = useState<FeedbackReply[]>([]);
-  const [activeFeedbackReplies, setActiveFeedbackReplies] = useState<number | null>(null);
-  const [editingReplyFeedbackID, setEditingReplyFeedbackID] = useState<number | null>(null);
-  const [editReplyContent, setEditReplyContent] = useState<string>('');
-  const [deleteConfirmationReply, setDeleteConfirmationReply] = useState<FeedbackReply | null>(null);
+  const [activeFeedbackReplies, setActiveFeedbackReplies] = useState<
+    number | null
+  >(null);
+  const [editingReplyFeedbackID, setEditingReplyFeedbackID] = useState<
+    number | null
+  >(null);
+  const [editReplyContent, setEditReplyContent] = useState<string>("");
+  const [deleteConfirmationReply, setDeleteConfirmationReply] =
+    useState<FeedbackReply | null>(null);
 
-  const getReplies = async(feedbackId: number) => {
+  const getReplies = async (feedbackId: number) => {
     try {
       const result = await GetFeedbackReply(feedbackId);
 
@@ -67,7 +70,7 @@ const CitizenCommentFeedback = ({
       );
       setReplies([]);
     }
-  }
+  };
 
   const handleShowReplies = async (feedbackId: number) => {
     if (activeFeedbackReplies === feedbackId) {
@@ -103,14 +106,8 @@ const CitizenCommentFeedback = ({
   const handleReply = (feedbackId: number) => {
     if (replyingTo === feedbackId) {
       setReplyingTo(null);
-      setReplyContent({
-        feedback_reply: "",
-      });
     } else {
       setReplyingTo(feedbackId);
-      setReplyContent({
-        feedback_reply: "",
-      });
     }
     setActiveDropdown(null);
   };
@@ -154,24 +151,6 @@ const CitizenCommentFeedback = ({
     }
   };
 
-  const submitReply = async (feedbackId: number | null) => {
-    console.log("Submitting reply to feedback:", feedbackId, replyContent);
-    try {
-      const data = await SubmitFeedbackReply(feedbackId, replyContent);
-      console.log(data.message);
-    } catch (error) {
-      console.log(
-        error instanceof Error ? error.message : "Unknown Error Occured"
-      );
-    } finally {
-      setReplyingTo(null);
-      setReplyContent({
-        feedback_reply: "",
-      });
-      GetFeedbacksData();
-    }
-  };
-
   if (!projectID) {
     return (
       <div className="w-full bg-white rounded-lg border p-6 text-center">
@@ -205,8 +184,12 @@ const CitizenCommentFeedback = ({
     <>
       <div className="w-full bg-white rounded-lg border p-4 md:p-6 relative min-h-[500px]">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-gray-900">Project Discussion</h3>
-          <div className="text-sm text-gray-500">{feedbacks?.length || 0} comments</div>
+          <h3 className="text-xl font-semibold text-gray-900">
+            Project Discussion
+          </h3>
+          <div className="text-sm text-gray-500">
+            {feedbacks?.length || 0} comments
+          </div>
         </div>
 
         <div className="space-y-6 mb-32">
@@ -229,7 +212,8 @@ const CitizenCommentFeedback = ({
                           {feedback.first_name + " " + feedback.last_name}
                         </h3>
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                          {feedback.role.charAt(0).toUpperCase() + feedback.role.slice(1).toLowerCase()}
+                          {feedback.role.charAt(0).toUpperCase() +
+                            feedback.role.slice(1).toLowerCase()}
                         </span>
                       </div>
                     </div>
@@ -259,27 +243,47 @@ const CitizenCommentFeedback = ({
                       </div>
                     ) : (
                       <>
-                        <p className="text-gray-700 mt-3 leading-relaxed">{feedback.content}</p>
+                        <p className="text-gray-700 mt-3 leading-relaxed">
+                          {feedback.content}
+                        </p>
                         <div className="mt-4 flex items-center space-x-4">
                           <button
                             onClick={() => handleReply(feedback.feedback_id)}
                             className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700"
                           >
-                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                            <svg
+                              className="w-4 h-4 mr-2"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
+                              />
                             </svg>
                             Reply
                           </button>
                           <button
-                            onClick={() => handleShowReplies(feedback.feedback_id)}
+                            onClick={() =>
+                              handleShowReplies(feedback.feedback_id)
+                            }
                             className="text-gray-600 hover:text-gray-700 text-sm font-medium flex items-center space-x-1"
                           >
-                            <span>{activeFeedbackReplies === feedback.feedback_id ? 'Hide' : 'Show'} Replies</span>
-                            {activeFeedbackReplies === feedback.feedback_id && replies.length > 0 && (
-                              <span className="bg-gray-100 px-2 py-0.5 rounded-full text-xs">
-                                {replies.length}
-                              </span>
-                            )}
+                            <span>
+                              {activeFeedbackReplies === feedback.feedback_id
+                                ? "Hide"
+                                : "Show"}{" "}
+                              Replies
+                            </span>
+                            {activeFeedbackReplies === feedback.feedback_id &&
+                              replies.length > 0 && (
+                                <span className="bg-gray-100 px-2 py-0.5 rounded-full text-xs">
+                                  {replies.length}
+                                </span>
+                              )}
                           </button>
                         </div>
                       </>
@@ -290,30 +294,30 @@ const CitizenCommentFeedback = ({
                     <div className="relative">
                       {feedback.user_id === userID && (
                         <button
-                        onClick={() =>
-                          setActiveDropdown(
-                            activeDropdown === feedback.feedback_id
-                              ? null
-                              : feedback.feedback_id
-                          )
-                        }
-                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-gray-500"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
+                          onClick={() =>
+                            setActiveDropdown(
+                              activeDropdown === feedback.feedback_id
+                                ? null
+                                : feedback.feedback_id
+                            )
+                          }
+                          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
-                          />
-                        </svg>
-                      </button>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 text-gray-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                            />
+                          </svg>
+                        </button>
                       )}
                       {activeDropdown === feedback.feedback_id && (
                         <div className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
@@ -327,8 +331,18 @@ const CitizenCommentFeedback = ({
                               }
                               className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                             >
-                              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                              <svg
+                                className="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                />
                               </svg>
                               Edit Comment
                             </button>
@@ -338,8 +352,18 @@ const CitizenCommentFeedback = ({
                               }
                               className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
                             >
-                              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                              <svg
+                                className="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
                               </svg>
                               Delete Comment
                             </button>
@@ -355,13 +379,25 @@ const CitizenCommentFeedback = ({
                   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl p-6 max-w-sm mx-4 animate-fadeIn">
                       <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto mb-4">
-                        <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        <svg
+                          className="w-6 h-6 text-red-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                          />
                         </svg>
                       </div>
-                      <h3 className="text-lg font-semibold text-center mb-2">Delete Comment?</h3>
+                      <h3 className="text-lg font-semibold text-center mb-2">
+                        Delete Comment?
+                      </h3>
                       <p className="text-gray-500 text-center mb-6">
-                        Are you sure you want to delete this comment? This action cannot be undone.
+                        Are you sure you want to delete this comment? This
+                        action cannot be undone.
                       </p>
                       <div className="flex justify-center gap-3">
                         <button
@@ -383,7 +419,11 @@ const CitizenCommentFeedback = ({
 
                 {/* Reply Section */}
                 {replyingTo === feedback.feedback_id && (
-                  <ReplySection setReplyingTo={setReplyingTo} GetFeedbacksData={GetFeedbacksData} feedbackID={feedback.feedback_id} />
+                  <ReplySection
+                    setReplyingTo={setReplyingTo}
+                    GetFeedbacksData={GetFeedbacksData}
+                    feedbackID={feedback.feedback_id}
+                  />
                 )}
 
                 {/* Replies Section */}
@@ -392,32 +432,40 @@ const CitizenCommentFeedback = ({
                     {replies.length > 0 ? (
                       <div className="space-y-4">
                         {replies.map((reply, index) => (
-                          <div key={index} className="bg-gray-50 p-4 rounded-lg relative group">
+                          <div
+                            key={index}
+                            className="bg-gray-50 p-4 rounded-lg relative group"
+                          >
                             {editingReplyFeedbackID === reply.FeedbackID ? (
                               <div className="space-y-2">
-                                <input 
+                                <input
                                   type="text"
                                   value={editReplyContent}
-                                  onChange={(e) => setEditReplyContent(e.target.value)}
+                                  onChange={(e) =>
+                                    setEditReplyContent(e.target.value)
+                                  }
                                   className="w-full px-3 py-2 text-sm text-gray-700 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                                   placeholder="Edit your reply"
                                 />
                                 <div className="flex space-x-2">
-                                  <button 
+                                  <button
                                     className="px-3 py-1 text-xs text-white bg-blue-600 rounded-md hover:bg-blue-700"
                                     onClick={() => {
                                       // Placeholder for save logic
-                                      console.log('Save edited reply', editReplyContent);
+                                      console.log(
+                                        "Save edited reply",
+                                        editReplyContent
+                                      );
                                       setEditingReplyFeedbackID(null);
                                     }}
                                   >
                                     Save
                                   </button>
-                                  <button 
+                                  <button
                                     className="px-3 py-1 text-xs text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200"
                                     onClick={() => {
                                       setEditingReplyFeedbackID(null);
-                                      setEditReplyContent('');
+                                      setEditReplyContent("");
                                     }}
                                   >
                                     Cancel
@@ -427,18 +475,22 @@ const CitizenCommentFeedback = ({
                             ) : (
                               <>
                                 <div className="flex justify-between items-center mb-2">
-                                  <p className="text-sm text-gray-700 flex-grow">{reply.Content}</p>
+                                  <p className="text-sm text-gray-700 flex-grow">
+                                    {reply.Content}
+                                  </p>
                                   <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                    <button 
+                                    <button
                                       className="text-blue-500 hover:text-blue-700 text-xs"
                                       onClick={() => {
-                                        setEditingReplyFeedbackID(reply.FeedbackID);
+                                        setEditingReplyFeedbackID(
+                                          reply.FeedbackID
+                                        );
                                         setEditReplyContent(reply.Content);
                                       }}
                                     >
                                       Edit
                                     </button>
-                                    <button 
+                                    <button
                                       className="text-red-500 hover:text-red-700 text-xs"
                                       onClick={() => {
                                         setDeleteConfirmationReply(reply);
@@ -470,8 +522,8 @@ const CitizenCommentFeedback = ({
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
             <div className="relative w-full max-w-lg px-4">
               {/* Background overlay */}
-              <div 
-                className="absolute inset-0 bg-gray-500 bg-opacity-75" 
+              <div
+                className="absolute inset-0 bg-gray-500 bg-opacity-75"
                 onClick={() => setDeleteConfirmationReply(null)}
               />
 
@@ -479,8 +531,18 @@ const CitizenCommentFeedback = ({
               <div className="relative bg-white rounded-lg shadow-xl p-6 mx-auto">
                 <div className="sm:flex sm:items-start">
                   <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-                    <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    <svg
+                      className="w-6 h-6 text-red-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
                     </svg>
                   </div>
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
@@ -489,7 +551,8 @@ const CitizenCommentFeedback = ({
                     </h3>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        Are you sure you want to delete this reply? This action cannot be undone.
+                        Are you sure you want to delete this reply? This action
+                        cannot be undone.
                       </p>
                       <p className="text-sm text-gray-700 mt-2 italic">
                         "{deleteConfirmationReply.Content}"
@@ -502,7 +565,10 @@ const CitizenCommentFeedback = ({
                     type="button"
                     onClick={() => {
                       // Placeholder for delete logic
-                      console.log('Confirmed delete reply', deleteConfirmationReply);
+                      console.log(
+                        "Confirmed delete reply",
+                        deleteConfirmationReply
+                      );
                       setDeleteConfirmationReply(null);
                     }}
                     className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
@@ -555,16 +621,42 @@ const CitizenCommentFeedback = ({
                 >
                   {submitting ? (
                     <>
-                      <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       <span>Posting...</span>
                     </>
                   ) : (
                     <>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                        />
                       </svg>
                       <span>Post Comment</span>
                     </>
