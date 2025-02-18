@@ -1,4 +1,5 @@
 export interface FeedbackReply {
+  ID: number | null;
   Content: string;
   FeedbackID: number | null;
   UserID: number | null;

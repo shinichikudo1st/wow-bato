@@ -48,7 +48,9 @@ const CitizenCommentFeedback = ({
   const [activeFeedbackReplies, setActiveFeedbackReplies] = useState<
     number | null
   >(null);
-  const [editingReplyFeedbackID, setEditingReplyFeedbackID] = useState<number | null>(null);
+  const [editingReplyFeedbackID, setEditingReplyFeedbackID] = useState<
+    number | null
+  >(null);
   const [deleteConfirmationReply, setDeleteConfirmationReply] =
     useState<FeedbackReply | null>(null);
 
