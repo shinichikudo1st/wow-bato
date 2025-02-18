@@ -49,7 +49,7 @@ export async function SubmitFeedback(
   }
 }
 
-export async function DeleteFeedback(feedbackID: number) {
+export async function DeleteFeedback(feedbackID: number | null) {
   try {
     const response = await fetch(
       `http://localhost:8080/api/v1/feedback/delete/${feedbackID}`,
