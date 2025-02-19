@@ -12,6 +12,7 @@ import FeedbackBox from "../citizenFeedback/feedbackBox";
 import NoProjectSelected from "../citizenFeedback/notSelected";
 import FeedbackDropdown from "../citizenFeedback/feedbackDropdown";
 import FeedbackKebabMenu from "../citizenFeedback/kebabMenu";
+import EditFeedbackContent from "../citizenFeedback/editFeedback";
 
 const CitizenCommentFeedback = ({
   userID,
@@ -154,28 +155,13 @@ const CitizenCommentFeedback = ({
                     </div>
 
                     {editingComment === feedback.feedback_id ? (
-                      <div className="mt-4">
-                        <textarea
-                          value={editContent}
-                          onChange={(e) => setEditContent(e.target.value)}
-                          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none bg-gray-50"
-                          rows={3}
-                        />
-                        <div className="flex justify-end gap-2 mt-3">
-                          <button
-                            onClick={() => setEditingComment(null)}
-                            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            onClick={() => submitEdit(feedback.feedback_id)}
-                            className="px-4 py-2 text-sm font-medium text-white bg-emerald-500 rounded-lg hover:bg-emerald-600 transition-colors"
-                          >
-                            Save Changes
-                          </button>
-                        </div>
-                      </div>
+                      <EditFeedbackContent
+                        editContent={editContent}
+                        setEditContent={setEditContent}
+                        setEditingComment={setEditingComment}
+                        GetFeedbacksData={GetFeedbacksData}
+                        feedback_id={feedback.feedback_id}
+                      />
                     ) : (
                       <>
                         <p className="text-gray-700 mt-3 leading-relaxed">
