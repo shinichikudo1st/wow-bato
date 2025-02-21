@@ -1,4 +1,3 @@
-import { UpdateFeedback } from "@/libs/feedback";
 import { GetFeedbackReply } from "@/libs/feedbackReply";
 import { FeedbackReply } from "@/types/feedbackReplyTypes";
 import { FeedbackListItem } from "@/types/feedbackTypes";
@@ -93,23 +92,6 @@ const CitizenCommentFeedback = ({
     setEditingComment(feedbackId);
     setEditContent(content);
     setActiveDropdown(null);
-  };
-
-  const submitEdit = async (feedbackId: number) => {
-    try {
-      const response = await UpdateFeedback(editContent, feedbackId);
-
-      console.log(response.message);
-    } catch (error) {
-      console.log(
-        error instanceof Error ? error.message : "Unknown error occured"
-      );
-    } finally {
-      console.log("Editing comment:", feedbackId, editContent);
-      setEditingComment(null);
-      setEditContent("");
-      GetFeedbacksData();
-    }
   };
 
   if (!projectID) {
