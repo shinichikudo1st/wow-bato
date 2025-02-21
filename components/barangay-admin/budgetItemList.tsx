@@ -53,6 +53,12 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
 
   const handleUpdateStatus = async () => {
     setUpdatingStatus(true);
+
+    if (confirmationState.action === "delete") {
+      handleDelete(confirmationState.itemId);
+      return;
+    }
+
     try {
       const result = await UpdateItemStatus(
         confirmationState.itemId,
@@ -87,6 +93,8 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
       );
     } finally {
       setDeletingItem(false);
+      setConfirmationState({ itemId: null, action: null });
+      FetchBudgetItems();
       setTimeout(() => {
         setErrorMessage("");
         setSuccessMessage("");
