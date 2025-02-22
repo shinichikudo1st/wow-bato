@@ -6,6 +6,7 @@ import { use } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import AddItemComponent from "@/components/barangay-admin/addBudgetItem";
 import BudgetItemList from "@/components/barangay-admin/budgetItemList";
+import { UseViewSingleProject } from "@/hooks/projectHooks";
 
 const ProjectItemsBarangayAdmin = ({
   params,
@@ -14,6 +15,8 @@ const ProjectItemsBarangayAdmin = ({
 }) => {
   const projectID = use(params).projectID;
   const router = useRouter();
+
+  const { project } = UseViewSingleProject(projectID);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -33,12 +36,9 @@ const ProjectItemsBarangayAdmin = ({
             {/* Welcome Section */}
             <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                Project Items - Barangay Admin
+                Project {project?.id} - Barangay Admin
               </h1>
-              <p className="text-gray-600">
-                View and Add Items to be used in the project from this central
-                dashboard.
-              </p>
+              <p className="text-gray-600">{project?.name}</p>
             </div>
 
             {/* Add Budget Item Form */}
