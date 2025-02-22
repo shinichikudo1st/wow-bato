@@ -26,3 +26,9 @@ export interface DisplayCategory {
   name: string;
   description: string;
 }
+
+export interface ViewReturnSingleProject {
+  project: ProjectListResponse | null;
+  error: string;
+  loading: boolean;
+}
