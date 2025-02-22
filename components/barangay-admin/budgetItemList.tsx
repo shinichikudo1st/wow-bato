@@ -43,14 +43,6 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
   const { budgetItems, totalPages, FetchBudgetItems, isLoading, error } =
     useBudgetItems(projectID, statusFilter, currentPage);
 
-  const handleRefresh = () => {
-    setIsRefreshing(true);
-    FetchBudgetItems();
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 1000);
-  };
-
   const handleUpdateStatus = async () => {
     setUpdatingStatus(true);
 
@@ -106,7 +98,8 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
     <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
       {/* Header Section */}
       <ControlSectionBudgetItem
-        handleRefresh={handleRefresh}
+        setIsRefreshing={setIsRefreshing}
+        FetchBudgetItems={FetchBudgetItems}
         isRefreshing={isRefreshing}
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}

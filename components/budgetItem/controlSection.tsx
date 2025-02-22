@@ -6,18 +6,28 @@ import {
 } from "react-icons/fi";
 
 const ControlSectionBudgetItem = ({
-  handleRefresh,
+  FetchBudgetItems,
+  setIsRefreshing,
   isRefreshing,
   setCurrentPage,
   currentPage,
   totalPages,
 }: {
-  handleRefresh: () => void;
+  FetchBudgetItems: () => void;
+  setIsRefreshing: (refreshing: boolean) => void;
   isRefreshing: boolean;
   setCurrentPage: (page: number | ((prev: number) => number)) => void;
   currentPage: number;
   totalPages: number;
 }) => {
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    FetchBudgetItems();
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 1000);
+  };
+
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
       <div>
