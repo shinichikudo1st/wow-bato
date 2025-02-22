@@ -4,19 +4,12 @@ import { useBudgetItems } from "@/hooks/budgetItemHooks";
 import { UpdateItemStatus, DeleteBudgetItem } from "@/libs/budgetItem";
 import { useState } from "react";
 import {
-  FiPackage,
-  FiFilter,
   FiClock,
   FiCheck,
   FiX,
   FiCalendar,
   FiFileText,
-  FiRefreshCw,
-  FiChevronLeft,
-  FiChevronRight,
   FiTag,
-  FiAlertCircle,
-  FiTrash2,
   FiDollarSign,
 } from "react-icons/fi";
 import DeleteButtonBudgetItem from "../budgetItem/deleteButton";

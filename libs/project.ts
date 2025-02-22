@@ -53,3 +53,25 @@ export async function GetAllProject(
     throw error;
   }
 }
+
+export async function GetSingleProject(projectID: number) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/project/specific-project/${projectID}`,
+      {
+        credentials: "include",
+        method: "GET",
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Could not fetch the project");
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

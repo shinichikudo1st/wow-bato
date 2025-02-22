@@ -40,11 +40,11 @@ const ProjectItemsBarangayAdmin = ({
                 dashboard.
               </p>
             </div>
-            
+
             {/* Add Budget Item Form */}
             <AddItemComponent projectID={projectID} />
           </div>
-          
+
           <div className="space-y-8">
             {/* Budget Item List */}
             <BudgetItemList projectID={projectID} />
