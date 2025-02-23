@@ -2,18 +2,11 @@
 
 import { useViewBarangay } from "@/hooks/barangayHook";
 import { use, useState } from "react";
-import {
-  FiHome,
-  FiGlobe,
-  FiLoader,
-  FiCalendar,
-  FiArrowLeft,
-} from "react-icons/fi";
+import { FiLoader, FiArrowLeft } from "react-icons/fi";
 import Navbar from "@/components/reusable/navbar";
 import AuthBackground from "@/components/auth/authBackground";
 import { useRouter } from "next/navigation";
-import { DeleteBarangay, UpdateBarangay } from "@/libs/barangay";
-import { AddBarangayFormData } from "@/types/barangayTypes";
+import { DeleteBarangay } from "@/libs/barangay";
 import BarangayUpdateForm from "@/components/city-admin/barangayUI/updateForm";
 import BarangayViewCard from "@/components/city-admin/barangayUI/barangayViewCard";
 import BarangayQuickInfo from "@/components/city-admin/barangayUI/barangayQuickInfo";
@@ -29,11 +22,6 @@ const CityAdminBarangayViewPage = ({
   const { barangay, isLoading, error, fetchBarangay } =
     useViewBarangay(barangayID);
 
-  const [updateBarangay, setUpdateBarangay] = useState<AddBarangayFormData>({
-    name: "",
-    city: "",
-    region: "",
-  });
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -48,7 +36,6 @@ const CityAdminBarangayViewPage = ({
       );
     }
   };
-
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -128,8 +115,8 @@ const CityAdminBarangayViewPage = ({
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             {/* Background overlay */}
-            <div 
-              className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" 
+            <div
+              className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
               onClick={() => setShowDeleteModal(false)}
             />
 
@@ -137,8 +124,18 @@ const CityAdminBarangayViewPage = ({
             <div className="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
               <div className="sm:flex sm:items-start">
                 <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-                  <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  <svg
+                    className="w-6 h-6 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
                   </svg>
                 </div>
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
@@ -147,7 +144,8 @@ const CityAdminBarangayViewPage = ({
                   </h3>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      Are you sure you want to delete {barangay?.name}? This action cannot be undone.
+                      Are you sure you want to delete {barangay?.name}? This
+                      action cannot be undone.
                     </p>
                   </div>
                 </div>
@@ -158,7 +156,7 @@ const CityAdminBarangayViewPage = ({
                   onClick={async () => {
                     await handleDelete(barangayID);
                     setShowDeleteModal(false);
-                    router.push('/home/city-admin'); // Redirect after delete
+                    router.push("/home/city-admin"); // Redirect after delete
                   }}
                   className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                 >
