@@ -14,6 +14,7 @@ import AuthBackground from "@/components/auth/authBackground";
 import { useRouter } from "next/navigation";
 import { DeleteBarangay, UpdateBarangay } from "@/libs/barangay";
 import { AddBarangayFormData } from "@/types/barangayTypes";
+import BarangayUpdateForm from "@/components/city-admin/barangayUI/updateForm";
 
 const CityAdminBarangayViewPage = ({
   params,
@@ -45,23 +46,6 @@ const CityAdminBarangayViewPage = ({
     }
   };
 
-  const handleUpdate = async () => {
-    try {
-      const result = await UpdateBarangay(updateBarangay, barangayID);
-
-      console.log(result.message);
-    } catch (error) {
-      console.log(
-        error instanceof Error ? error.message : "Unknown error occured"
-      );
-    } finally {
-      setUpdateBarangay({
-        name: "",
-        city: "",
-        region: "",
-      });
-    }
-  };
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -109,89 +93,11 @@ const CityAdminBarangayViewPage = ({
                   </div>
 
                   {isEditing ? (
-                    <div className="bg-gray-50 p-6 rounded-lg space-y-4">
-                      <div>
-                        <label
-                          htmlFor="name"
-                          className="block text-sm font-medium text-gray-700 mb-1"
-                        >
-                          Barangay Name
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          value={updateBarangay.name}
-                          onChange={(e) =>
-                            setUpdateBarangay({
-                              ...updateBarangay,
-                              name: e.target.value,
-                            })
-                          }
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="city"
-                          className="block text-sm font-medium text-gray-700 mb-1"
-                        >
-                          City
-                        </label>
-                        <input
-                          type="text"
-                          id="city"
-                          value={updateBarangay.city}
-                          onChange={(e) =>
-                            setUpdateBarangay({
-                              ...updateBarangay,
-                              city: e.target.value,
-                            })
-                          }
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="region"
-                          className="block text-sm font-medium text-gray-700 mb-1"
-                        >
-                          Region
-                        </label>
-                        <input
-                          type="text"
-                          id="region"
-                          value={updateBarangay.region}
-                          onChange={(e) =>
-                            setUpdateBarangay({
-                              ...updateBarangay,
-                              region: e.target.value,
-                            })
-                          }
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                        />
-                      </div>
-                      <div className="flex space-x-4 pt-4">
-                        <button
-                          onClick={handleUpdate}
-                          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-                        >
-                          Save Changes
-                        </button>
-                        <button
-                          onClick={() => {
-                            setIsEditing(false);
-                            setUpdateBarangay({
-                              name: "",
-                              city: "",
-                              region: "",
-                            });
-                          }}
-                          className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </div>
+                    <BarangayUpdateForm
+                      barangayID={barangayID}
+                      barangay={barangay}
+                      setIsEditing={setIsEditing}
+                    />
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
@@ -256,11 +162,6 @@ const CityAdminBarangayViewPage = ({
                 <button
                   onClick={() => {
                     setIsEditing(true);
-                    setUpdateBarangay({
-                      name: barangay?.name || "",
-                      city: barangay?.city || "",
-                      region: barangay?.region || "",
-                    });
                   }}
                   className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200"
                 >
