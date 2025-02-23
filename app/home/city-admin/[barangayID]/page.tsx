@@ -16,6 +16,8 @@ import { DeleteBarangay, UpdateBarangay } from "@/libs/barangay";
 import { AddBarangayFormData } from "@/types/barangayTypes";
 import BarangayUpdateForm from "@/components/city-admin/barangayUI/updateForm";
 import BarangayViewCard from "@/components/city-admin/barangayUI/barangayViewCard";
+import BarangayQuickInfo from "@/components/city-admin/barangayUI/barangayQuickInfo";
+import BarangayActionCard from "@/components/city-admin/barangayUI/barangayActionCard";
 
 const CityAdminBarangayViewPage = ({
   params,
@@ -110,48 +112,13 @@ const CityAdminBarangayViewPage = ({
           {/* Sidebar - Takes up 1 column */}
           <div className="space-y-6">
             {/* Quick Stats Card */}
-            <div className="bg-white p-6 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Quick Information
-              </h2>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-green-100 rounded-lg">
-                      <FiCalendar className="w-4 h-4 text-green-600" />
-                    </div>
-                    <span className="text-sm text-gray-500">ID Number</span>
-                  </div>
-                  <span className="text-sm font-medium text-gray-900">
-                    #{barangay?.id}
-                  </span>
-                </div>
-                {/* Add more quick stats here */}
-              </div>
-            </div>
+            <BarangayQuickInfo barangayID={barangay?.id} />
 
             {/* Actions Card */}
-            <div className="bg-white p-6 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Actions
-              </h2>
-              <div className="space-y-3">
-                <button
-                  onClick={() => {
-                    setIsEditing(true);
-                  }}
-                  className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-                >
-                  Edit Barangay
-                </button>
-                <button
-                  onClick={() => setShowDeleteModal(true)}
-                  className="w-full px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors duration-200"
-                >
-                  Delete Barangay
-                </button>
-              </div>
-            </div>
+            <BarangayActionCard
+              setIsEditing={setIsEditing}
+              setShowDeleteModal={setShowDeleteModal}
+            />
           </div>
         </div>
       </main>
