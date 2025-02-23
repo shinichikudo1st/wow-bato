@@ -1,8 +1,14 @@
 import { LoginFormData, RegisterFormData } from "@/types/authTypes";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_V1_BASE_URL;
+
+if (!API_BASE_URL) {
+  throw new Error('NEXT_PUBLIC_API_V1_BASE_URL environment variable is not defined');
+}
+
 export async function logout() {
   try {
-    const response = await fetch("http://localhost:8080/api/v1/user/logout", {
+    const response = await fetch(`${API_BASE_URL}/logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -19,7 +25,7 @@ export async function logout() {
 
 export async function register(formData: RegisterFormData) {
   try {
-    const response = await fetch("http://localhost:8080/api/v1/user/register", {
+    const response = await fetch(`${API_BASE_URL}/register`, {
       credentials: "include",
       method: "POST",
       headers: {
@@ -40,7 +46,7 @@ export async function register(formData: RegisterFormData) {
 
 export async function login(formData: LoginFormData) {
   try {
-    const response = await fetch("http://localhost:8080/api/v1/user/login", {
+    const response = await fetch(`${API_BASE_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,12 +67,9 @@ export async function login(formData: LoginFormData) {
 
 export async function checkAuth() {
   try {
-    const authResponse = await fetch(
-      "http://localhost:8080/api/v1/user/checkAuth",
-      {
-        credentials: "include",
-      }
-    );
+    const authResponse = await fetch(`${API_BASE_URL}/checkAuth`, {
+      credentials: "include",
+    });
 
     if (!authResponse.ok) {
       throw new Error("Failed to check authentication");
@@ -80,7 +83,7 @@ export async function checkAuth() {
 
 export async function getProfile() {
   try {
-    const response = await fetch("http://localhost:8080/api/v1/user/profile", {
+    const response = await fetch(`${API_BASE_URL}/profile`, {
       credentials: "include",
     });
 
