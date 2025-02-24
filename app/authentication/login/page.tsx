@@ -15,6 +15,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FormErrorsLogin, LoginFormData } from "@/types/authTypes";
 import { useRouter } from "next/navigation";
 import { checkAuth, login } from "@/libs/authentication";
+import LoginLogo from "@/components/login/loginLogo";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -70,33 +71,7 @@ export default function LoginPage() {
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <AuthBackground />
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center justify-center space-x-3 group"
-        >
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-md transition-transform duration-300 group-hover:scale-105">
-            <span className="text-white font-bold text-lg">TC</span>
-          </div>
-          <span className="text-lg font-semibold text-gray-800 tracking-tight">
-            Toledo City <span className="text-blue-600">Portal</span>
-          </span>
-        </Link>
-
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Welcome back
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
-          <Link
-            href="/authentication/register"
-            className="font-medium text-blue-600 hover:text-blue-500"
-          >
-            Sign up
-          </Link>
-        </p>
-      </div>
+      <LoginLogo />
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
         <div
