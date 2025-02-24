@@ -1,8 +1,14 @@
 import { AddBarangayFormData } from "@/types/barangayTypes";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+if (!API_BASE_URL) {
+  throw new Error("NEXT_PUBLIC_API_URL environment variable is not defined");
+}
+
 export async function addBarangay(formData: AddBarangayFormData) {
   try {
-    const response = await fetch("http://localhost:8080/api/v1/barangay/add", {
+    const response = await fetch(`${API_BASE_URL}/barangay/add`, {
       credentials: "include",
       method: "POST",
       headers: {
@@ -26,7 +32,7 @@ export async function addBarangay(formData: AddBarangayFormData) {
 export async function getBarangays(page: number, limit: number) {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/v1/barangay/all?page=${page}&limit=${limit}`,
+      `${API_BASE_URL}/barangay/all?page=${page}&limit=${limit}`,
       {
         credentials: "include",
       }
@@ -46,12 +52,9 @@ export async function getBarangays(page: number, limit: number) {
 
 export async function viewBarangay(id: string) {
   try {
-    const response = await fetch(
-      `http://localhost:8080/api/v1/barangay/single/${id}`,
-      {
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${API_BASE_URL}/barangay/single/${id}`, {
+      credentials: "include",
+    });
 
     const data = await response.json();
 
@@ -67,12 +70,9 @@ export async function viewBarangay(id: string) {
 
 export async function getBarangayNames() {
   try {
-    const response = await fetch(
-      "http://localhost:8080/api/v1/barangay/options",
-      {
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${API_BASE_URL}/barangay/options`, {
+      credentials: "include",
+    });
 
     const data = await response.json();
 
@@ -91,7 +91,7 @@ export async function getBarangayNames() {
 export async function DeleteBarangay(barangayID: string) {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/v1/barangay/delete/${barangayID}`,
+      `${API_BASE_URL}/barangay/delete/${barangayID}`,
       {
         credentials: "include",
         method: "DELETE",
@@ -116,7 +116,7 @@ export async function UpdateBarangay(
 ) {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/v1/barangay/update/${barangayID}`,
+      `${API_BASE_URL}/barangay/update/${barangayID}`,
       {
         credentials: "include",
         method: "PUT",
@@ -139,21 +139,21 @@ export async function UpdateBarangay(
   }
 }
 
-export async function DisplayBarangaysPublic(){
-    try {
-        const response = await fetch(`http://localhost:8080/api/v1/barangay/public-all`, {
-            credentials: "include",
-            method: "GET",
-        })
+export async function DisplayBarangaysPublic() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/barangay/public-all`, {
+      credentials: "include",
+      method: "GET",
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        if(!response.ok){
-            throw new Error(data.error || "Failed to fetch barangays")
-        }
-
-        return data;
-    } catch (error) {
-       throw error 
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to fetch barangays");
     }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
 }

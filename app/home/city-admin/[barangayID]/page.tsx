@@ -6,7 +6,6 @@ import { FiLoader, FiArrowLeft } from "react-icons/fi";
 import Navbar from "@/components/reusable/navbar";
 import AuthBackground from "@/components/auth/authBackground";
 import { useRouter } from "next/navigation";
-import { DeleteBarangay } from "@/libs/barangay";
 import BarangayUpdateForm from "@/components/city-admin/barangayUI/updateForm";
 import BarangayViewCard from "@/components/city-admin/barangayUI/barangayViewCard";
 import BarangayQuickInfo from "@/components/city-admin/barangayUI/barangayQuickInfo";
@@ -25,18 +24,6 @@ const CityAdminBarangayViewPage = ({
 
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const handleDelete = async (barangayID: string) => {
-    try {
-      const result = await DeleteBarangay(barangayID);
-
-      console.log(result.message);
-    } catch (error) {
-      console.log(
-        error instanceof Error ? error.message : "Unknown error occured"
-      );
-    }
-  };
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
