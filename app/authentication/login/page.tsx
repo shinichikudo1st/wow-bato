@@ -16,6 +16,8 @@ import { FormErrorsLogin, LoginFormData } from "@/types/authTypes";
 import { useRouter } from "next/navigation";
 import { checkAuth, login } from "@/libs/authentication";
 import LoginLogo from "@/components/login/loginLogo";
+import ForgotPassword from "@/components/login/forgotPassword";
+import SocialLoginButton from "@/components/login/socialLoginButton";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -85,28 +87,7 @@ export default function LoginPage() {
           before:absolute before:inset-0 before:-z-10 before:bg-white/40 before:backdrop-blur-xl before:rounded-2xl"
         >
           {/* Social Login Buttons */}
-          <div className="space-y-3">
-            <button
-              type="button"
-              className="w-full flex items-center justify-center px-4 py-3 
-                border border-gray-200 rounded-xl text-sm font-medium text-gray-700 
-                hover:bg-gray-50 transition-colors duration-200 
-                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              <FcGoogle className="h-5 w-5 mr-2" />
-              Continue with Google
-            </button>
-            <button
-              type="button"
-              className="w-full flex items-center justify-center px-4 py-3 
-                bg-blue-600 rounded-xl text-sm font-medium text-white 
-                hover:bg-blue-700 transition-colors duration-200 
-                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              <FiFacebook className="h-5 w-5 mr-2" />
-              Continue with Facebook
-            </button>
-          </div>
+          <SocialLoginButton />
 
           <div className="mt-6">
             <div className="relative">
@@ -230,31 +211,7 @@ export default function LoginPage() {
             </div>
 
             {/* Remember Me and Forgot Password */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-700"
-                >
-                  Remember me
-                </label>
-              </div>
-
-              <div className="text-sm">
-                <Link
-                  href="/authentication/forgot-password"
-                  className="font-medium text-blue-600 hover:text-blue-500"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
-            </div>
+            <ForgotPassword />
 
             {/* Submit Button */}
             <button
