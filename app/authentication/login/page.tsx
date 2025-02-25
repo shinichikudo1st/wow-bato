@@ -1,17 +1,8 @@
 "use client";
 
 import AuthBackground from "@/components/auth/authBackground";
-import Link from "next/link";
 import { useState } from "react";
-import {
-  FiMail,
-  FiLock,
-  FiArrowRight,
-  FiEye,
-  FiEyeOff,
-  FiFacebook,
-} from "react-icons/fi";
-import { FcGoogle } from "react-icons/fc";
+import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { FormErrorsLogin, LoginFormData } from "@/types/authTypes";
 import { useRouter } from "next/navigation";
 import { checkAuth, login } from "@/libs/authentication";
