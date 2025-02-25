@@ -2,7 +2,6 @@
 
 import AuthBackground from "@/components/auth/authBackground";
 import { useState } from "react";
-import { FiArrowRight } from "react-icons/fi";
 import { FormErrors, RegisterFormData } from "@/types/authTypes";
 import ErrorMessage from "@/components/ui/error";
 import SuccessMessage from "@/components/ui/success";
@@ -11,6 +10,7 @@ import RegisterLogo from "@/components/register/registerLogo";
 import RegisterSocialButton from "@/components/register/registerSocialButton";
 import RegisterFormLeftColumn from "@/components/register/registerFormLeft";
 import RegisterFormRightColumn from "@/components/register/registerFormRight";
+import RegisterFormButton from "@/components/register/registerButton";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState<RegisterFormData>({
@@ -191,33 +191,7 @@ export default function RegisterPage() {
             </div>
 
             {/* Submit Button - Full Width */}
-            <div className="mt-6">
-              <button
-                type="submit"
-                disabled={isLoading}
-                className={`w-full flex justify-center items-center px-4 py-3 
-                  text-sm font-medium rounded-xl text-white 
-                  bg-gradient-to-r from-blue-600 to-blue-500 
-                  hover:from-blue-700 hover:to-blue-600 
-                  transition-all duration-300 
-                  shadow-sm hover:shadow-md
-                  transform hover:-translate-y-0.5
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  disabled:hover:transform-none`}
-              >
-                {isLoading ? (
-                  <div className="flex items-center">
-                    <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    Creating account...
-                  </div>
-                ) : (
-                  <>
-                    Create Account
-                    <FiArrowRight className="ml-2 h-4 w-4" />
-                  </>
-                )}
-              </button>
-            </div>
+            <RegisterFormButton isLoading={isLoading} />
           </form>
         </div>
       </div>
