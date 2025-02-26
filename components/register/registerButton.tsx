@@ -6,6 +6,7 @@ const RegisterFormButton = ({ isLoading }: { isLoading: boolean }) => {
       <button
         type="submit"
         disabled={isLoading}
+        onClick={() => console.log("test")}
         className={`w-full flex justify-center items-center px-4 py-3 
                           text-sm font-medium rounded-xl text-white 
                           bg-gradient-to-r from-blue-600 to-blue-500 

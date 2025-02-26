@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FormErrors, RegisterFormData } from "@/types/authTypes";
 import ErrorMessage from "@/components/ui/error";
 import SuccessMessage from "@/components/ui/success";
-import { register } from "@/libs/authentication";
+import { register, validateRegisterForm } from "@/libs/authentication";
 import RegisterLogo from "@/components/register/registerLogo";
 import RegisterSocialButton from "@/components/register/registerSocialButton";
 import RegisterFormLeftColumn from "@/components/register/registerFormLeft";
@@ -29,55 +29,6 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    // Email validation
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-
-    // Name validation
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = "First name is required";
-    }
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "Last name is required";
-    }
-
-    // Contact validation
-    if (!formData.contact) {
-      newErrors.contact = "Contact number is required";
-    } else if (!/^\+?[\d\s-]{10,}$/.test(formData.contact)) {
-      newErrors.contact = "Please enter a valid contact number";
-    }
-
-    // Password validation
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
-      setTimeout(() => {
-        setErrors({ ...errors, password: undefined });
-      }, 3000);
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password =
-        "Password must contain uppercase, lowercase, and numbers";
-    }
-
-    // Confirm password validation
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password";
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const resetMessages = () => {
     setError(null);
     setSuccess(null);
@@ -86,7 +37,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) return;
+    if (!validateRegisterForm(formData, setErrors, errors)) return;
 
     setIsLoading(true);
     setError(null);
