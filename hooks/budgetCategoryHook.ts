@@ -1,45 +1,32 @@
 import { getBarangayBudgetCategory } from "@/libs/budgetCategory";
 import {
-  BudgetCategoryResponse,
   BudgetCategoryViewReturn,
 } from "@/types/budgetCategoryTypes";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export const useBudgetCategory = (
   barangayID: number | null,
   page: number
 ): BudgetCategoryViewReturn => {
-  const [budgetCategories, setBudgetCategories] = useState<
-    BudgetCategoryResponse[]
-  >([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [categoryCount, setCategoryCount] = useState(0);
+  const {
+    data,
+    isLoading,
+    error: queryError,
+  } = useQuery({
+    queryKey: ['budgetCategories', barangayID, page],
+    queryFn: () => barangayID ? getBarangayBudgetCategory(barangayID, page) : null,
+    staleTime: 5 * 60 * 1000, 
+    refetchOnWindowFocus: false,
+    enabled: !!barangayID, 
+  });
 
-  const fetchBudgetCategories = async () => {
-    if (!barangayID) return;
+  const error = queryError ? 
+    (queryError instanceof Error ? queryError.message : "Unknown error occurred") : 
+    null;
 
-    try {
-      setIsLoading(true);
-      const response = await getBarangayBudgetCategory(barangayID, page);
-
-      setBudgetCategories(response.data);
-      setCategoryCount(response.count);
-    } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "Unknown error occured"
-      );
-    } finally {
-      setIsLoading(false);
-      setTimeout(() => {
-        setError(null);
-      }, 3000);
-    }
-  };
-
-  useEffect(() => {
-    fetchBudgetCategories();
-  }, [barangayID, page]);
+  // Extract data from the query result
+  const budgetCategories = data?.data || [];
+  const categoryCount = data?.count || 0;
 
   return {
     budgetCategories,
