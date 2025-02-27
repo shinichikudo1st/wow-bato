@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { FormErrorsLogin, LoginFormData } from "@/types/authTypes";
 import { useRouter } from "next/navigation";
-import { checkAuth, login } from "@/libs/authentication";
+import { login } from "@/libs/authentication";
 import LoginLogo from "@/components/login/loginLogo";
 import ForgotPassword from "@/components/login/forgotPassword";
 import SocialLoginButton from "@/components/login/socialLoginButton";
@@ -22,15 +22,13 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const loginMutation = useMutation({
-    mutationFn: (data: LoginFormData) => login(data),
-    onSuccess: async () => {
-      try {
-        const authResponse = await checkAuth();
-        const authData = await authResponse.json();
-        router.push(`/home/${authData.role.toLowerCase().replace(" ", "-")}`);
-      } catch (error) {
-        console.error("Auth check error:", error);
-      }
+    mutationFn: async (data: LoginFormData) => {
+      const response = await login(data);
+      const responseData = await response.json();
+      return responseData;
+    },
+    onSuccess: (data) => {
+      router.push(`/home/${data.role.toLowerCase().replace(" ", "-")}`);
     },
     onError: (error) => {
       console.error("Login error:", error);
