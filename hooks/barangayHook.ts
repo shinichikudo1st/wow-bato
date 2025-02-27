@@ -2,48 +2,49 @@
 
 import {
   BarangayListItem,
-  BarangayListResponse,
   UseBarangayListReturn,
   UseBarangayNamesReturn,
   UsePublicViewBarangayReturn,
   UseViewBarangayReturn,
-  ViewBarangayResponse,
 } from "@/types/barangayTypes";
 import { useState, useEffect, useCallback } from "react";
 import { DisplayBarangaysPublic, getBarangayNames, getBarangays, viewBarangay } from "@/libs/barangay";
+import { useQuery } from "@tanstack/react-query";
 
 export const useBarangayList = (currentPage: number): UseBarangayListReturn => {
-  const [barangays, setBarangays] = useState<BarangayListResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const limit = 5;
+
+  const { 
+    data: barangays, 
+    isLoading, 
+    error: queryError, 
+    refetch 
+  } = useQuery({
+    queryKey: ['barangays', currentPage, limit],
+    queryFn: () => getBarangays(currentPage, limit),
+    staleTime: 5 * 60 * 1000, 
+    refetchOnWindowFocus: false,
+  });
+
+  const error = queryError ? 
+    (queryError instanceof Error ? queryError.message : "An unknown error occurred") : 
+    null;
 
   const fetchBarangays = useCallback(
     async (showRefresh = false) => {
+      if (showRefresh) {
+        setIsRefreshing(true);
+      }
+      
       try {
-        showRefresh ? setIsRefreshing(true) : setIsLoading(true);
-        setError(null);
-        const data = await getBarangays(currentPage, limit);
-        setBarangays(data);
-      } catch (error) {
-        setError(
-          error instanceof Error ? error.message : "An unknown error occurred"
-        );
+        await refetch();
       } finally {
-        setIsLoading(false);
         setIsRefreshing(false);
-        setTimeout(() => {
-          setError(null);
-        }, 2000);
       }
     },
-    [currentPage]
+    [refetch]
   );
-
-  useEffect(() => {
-    fetchBarangays();
-  }, [currentPage, fetchBarangays]);
 
   return {
     barangays,
@@ -125,5 +126,5 @@ export const usePublicViewBarangay = (): UsePublicViewBarangayReturn[] => {
     fetchBarangayNames();
   }, []);
 
-  return barangays
-}
+  return barangays;
+};
