@@ -10,6 +10,7 @@ import LoginLogo from "@/components/login/loginLogo";
 import ForgotPassword from "@/components/login/forgotPassword";
 import SocialLoginButton from "@/components/login/socialLoginButton";
 import LoginButton from "@/components/login/loginButton";
+import { useMutation } from "@tanstack/react-query";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,7 +20,22 @@ export default function LoginPage() {
   });
   const [errors, setErrors] = useState<FormErrorsLogin>({});
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const loginMutation = useMutation({
+    mutationFn: (data: LoginFormData) => login(data),
+    onSuccess: async () => {
+      try {
+        const authResponse = await checkAuth();
+        const authData = await authResponse.json();
+        router.push(`/home/${authData.role.toLowerCase().replace(" ", "-")}`);
+      } catch (error) {
+        console.error("Auth check error:", error);
+      }
+    },
+    onError: (error) => {
+      console.error("Login error:", error);
+    }
+  });
 
   const validateForm = (): boolean => {
     const newErrors: FormErrorsLogin = {};
@@ -44,21 +60,8 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!validateForm()) return;
-
-    setIsLoading(true);
-    try {
-      const response = await login(formData);
-
-      if (response.ok) {
-        const authResponse = await checkAuth();
-        const authData = await authResponse.json();
-        router.push(`/home/${authData.role.toLowerCase().replace(" ", "-")}`);
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    
+    loginMutation.mutate(formData);
   };
 
   return (
@@ -206,7 +209,7 @@ export default function LoginPage() {
             <ForgotPassword />
 
             {/* Submit Button */}
-            <LoginButton isLoading={isLoading} />
+            <LoginButton isLoading={loginMutation.isPending} />
           </form>
         </div>
       </div>
