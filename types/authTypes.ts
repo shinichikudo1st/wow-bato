@@ -37,3 +37,10 @@ export interface ProfileData {
   Role: string;
   Contact: string;
 }
+
+export interface AuthenticationInformation {
+  userID: number | null;
+  barangayID: number | null;
+  userRole: string | null;
+  barangayName: string | null;
+}

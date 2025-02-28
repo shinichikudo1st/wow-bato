@@ -120,15 +120,17 @@ export async function login(formData: LoginFormData) {
 
 export async function checkAuth() {
   try {
-    const authResponse = await fetch(`${API_BASE_URL}/user/checkAuth`, {
+    const response = await fetch(`${API_BASE_URL}/user/checkAuth`, {
       credentials: "include",
     });
 
-    if (!authResponse.ok) {
+    if (!response.ok) {
       throw new Error("Failed to check authentication");
     }
 
-    return authResponse;
+    const data = await response.json();
+
+    return data;
   } catch (error) {
     throw error;
   }
