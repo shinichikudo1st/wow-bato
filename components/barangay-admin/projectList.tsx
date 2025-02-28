@@ -26,7 +26,7 @@ export default function ProjectList({
   setActiveProject: (projectID: number) => void;
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const { categoryInfo, projectList, error, loading, fetchProjectList } =
+  const { categoryInfo, projectList, error, isLoading, refetch } =
     UseViewProjectList(categoryID, currentPage);
   const router = useRouter();
 
@@ -46,7 +46,7 @@ export default function ProjectList({
         <div className="text-center py-8">
           <p className="text-red-600 mb-4">{error}</p>
           <button
-            onClick={fetchProjectList}
+            onClick={refetch}
             className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200"
           >
             <FiRefreshCw className="w-4 h-4 mr-2" />
@@ -73,18 +73,18 @@ export default function ProjectList({
         {/* Controls */}
         <div className="flex items-center space-x-3">
           <button
-            onClick={fetchProjectList}
-            disabled={loading}
+            onClick={refetch}
+            disabled={isLoading}
             className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 disabled:opacity-50"
           >
             <FiRefreshCw
-              className={`w-5 h-5 ${loading ? "animate-spin" : ""}`}
+              className={`w-5 h-5 ${isLoading ? "animate-spin" : ""}`}
             />
           </button>
           <div className="flex items-center bg-gray-50 rounded-lg p-1">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1 || loading}
+              disabled={currentPage === 1 || isLoading}
               className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
             >
               <FiChevronLeft className="w-5 h-5" />
@@ -94,7 +94,7 @@ export default function ProjectList({
             </span>
             <button
               onClick={() => setCurrentPage((prev) => prev + 1)}
-              disabled={loading || !projectList || projectList.length < 5}
+              disabled={isLoading || !projectList || projectList.length < 5}
               className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
             >
               <FiChevronRight className="w-5 h-5" />
@@ -114,10 +114,10 @@ export default function ProjectList({
       </div>
 
       {/* Content Section */}
-      {loading ? (
+      {isLoading ? (
         <div className="flex flex-col items-center justify-center h-64 space-y-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="text-sm text-gray-500">Loading barangays...</p>
+          <p className="text-sm text-gray-500">isLoading barangays...</p>
         </div>
       ) : (
         <div className="space-y-3">

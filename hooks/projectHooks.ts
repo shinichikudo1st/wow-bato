@@ -1,53 +1,44 @@
 import { GetAllProject, GetSingleProject } from "@/libs/project";
 import {
-  DisplayCategory,
   ProjectListResponse,
   ViewReturnProjectList,
   ViewReturnSingleProject,
 } from "@/types/projectTypes";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 export const UseViewProjectList = (
   categoryID: number | null,
   page: number
 ): ViewReturnProjectList => {
-  const [projectList, setProjectList] = useState<ProjectListResponse[]>([]);
-  const [categoryInfo, setCategoryInfo] = useState<DisplayCategory>({
-    name: "",
-    description: "",
+  const {
+    data,
+    isLoading,
+    error: queryError,
+    refetch,
+  } = useQuery({
+    queryKey: ["projectLists", categoryID, page],
+    queryFn: () => (categoryID ? GetAllProject(categoryID, page) : null),
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    enabled: !!categoryID,
   });
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setIsLoading] = useState(false);
 
-  const fetchProjectList = async () => {
-    if (!categoryID) return;
+  const error = queryError
+    ? queryError instanceof Error
+      ? queryError.message
+      : "Unknown error occured"
+    : null;
 
-    setIsLoading(true);
-
-    try {
-      const result = await GetAllProject(categoryID, page);
-
-      setProjectList(result.projects);
-      setCategoryInfo(result.category);
-    } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "Unknown error occurred"
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProjectList();
-  }, [categoryID, page]);
+  const categoryInfo = data?.category || { name: "", description: "" };
+  const projectList = data?.projects || [];
 
   return {
     categoryInfo,
     projectList,
     error,
-    loading,
-    fetchProjectList,
+    isLoading,
+    refetch,
   };
 };
 
