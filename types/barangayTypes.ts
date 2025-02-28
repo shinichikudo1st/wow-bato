@@ -26,7 +26,7 @@ export interface UseBarangayListReturn {
   isLoading: boolean;
   isRefreshing: boolean;
   error: string | null;
-  fetchBarangays: (showRefresh?: boolean) => Promise<void>;
+  refetch: () => void;
 }
 
 export interface UseViewBarangayReturn {

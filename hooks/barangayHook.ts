@@ -8,50 +8,42 @@ import {
   UseViewBarangayReturn,
 } from "@/types/barangayTypes";
 import { useState, useEffect, useCallback } from "react";
-import { DisplayBarangaysPublic, getBarangayNames, getBarangays, viewBarangay } from "@/libs/barangay";
+import {
+  DisplayBarangaysPublic,
+  getBarangayNames,
+  getBarangays,
+  viewBarangay,
+} from "@/libs/barangay";
 import { useQuery } from "@tanstack/react-query";
 
 export const useBarangayList = (currentPage: number): UseBarangayListReturn => {
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const limit = 5;
 
-  const { 
-    data: barangays, 
-    isLoading, 
-    error: queryError, 
-    refetch 
+  const {
+    data: barangays,
+    isLoading,
+    error: queryError,
+    isFetching,
+    refetch,
   } = useQuery({
-    queryKey: ['barangays', currentPage, limit],
+    queryKey: ["barangays", currentPage, limit],
     queryFn: () => getBarangays(currentPage, limit),
-    staleTime: 5 * 60 * 1000, 
+    staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 
-  const error = queryError ? 
-    (queryError instanceof Error ? queryError.message : "An unknown error occurred") : 
-    null;
-
-  const fetchBarangays = useCallback(
-    async (showRefresh = false) => {
-      if (showRefresh) {
-        setIsRefreshing(true);
-      }
-      
-      try {
-        await refetch();
-      } finally {
-        setIsRefreshing(false);
-      }
-    },
-    [refetch]
-  );
+  const error = queryError
+    ? queryError instanceof Error
+      ? queryError.message
+      : "An unknown error occurred"
+    : null;
 
   return {
     barangays,
     isLoading,
-    isRefreshing,
+    isRefreshing: isFetching,
     error,
-    fetchBarangays,
+    refetch,
   };
 };
 

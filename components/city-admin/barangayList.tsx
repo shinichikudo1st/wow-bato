@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 export default function BarangayList() {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  const { barangays, isLoading, isRefreshing, error, fetchBarangays } =
+  const { barangays, isLoading, isRefreshing, error, refetch } =
     useBarangayList(currentPage);
   const limit = 5;
 
@@ -24,7 +24,7 @@ export default function BarangayList() {
         <div className="text-center py-8">
           <p className="text-red-600 mb-4">{error}</p>
           <button
-            onClick={() => fetchBarangays()}
+            onClick={() => refetch()}
             className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200"
           >
             <FiRefreshCw className="w-4 h-4 mr-2" />
@@ -49,7 +49,7 @@ export default function BarangayList() {
         {/* Controls */}
         <div className="flex items-center space-x-3">
           <button
-            onClick={() => fetchBarangays(true)}
+            onClick={() => refetch()}
             disabled={isRefreshing}
             className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 disabled:opacity-50"
           >
