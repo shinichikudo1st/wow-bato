@@ -33,8 +33,11 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const { budgetItems, totalPages, FetchBudgetItems, isLoading, error } =
-    useBudgetItems(projectID, statusFilter, currentPage);
+  const { budgetItems, totalPages, refetch, isLoading, error } = useBudgetItems(
+    projectID,
+    statusFilter,
+    currentPage
+  );
 
   const handleUpdateStatus = async () => {
     setUpdatingStatus(true);
@@ -58,7 +61,7 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
     } finally {
       setUpdatingStatus(false);
       setConfirmationState({ itemId: null, action: null });
-      FetchBudgetItems();
+      refetch();
       setTimeout(() => {
         setErrorMessage("");
         setSuccessMessage("");
@@ -79,7 +82,7 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
     } finally {
       setDeletingItem(false);
       setConfirmationState({ itemId: null, action: null });
-      FetchBudgetItems();
+      refetch();
       setTimeout(() => {
         setErrorMessage("");
         setSuccessMessage("");
@@ -92,7 +95,7 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
       {/* Header Section */}
       <ControlSectionBudgetItem
         setIsRefreshing={setIsRefreshing}
-        FetchBudgetItems={FetchBudgetItems}
+        FetchBudgetItems={refetch}
         isRefreshing={isRefreshing}
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}

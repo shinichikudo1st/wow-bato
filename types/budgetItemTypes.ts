@@ -19,7 +19,7 @@ export interface BudgetItemReturn {
   budgetItems: BudgetItemList[] | null;
   itemCount: number;
   totalPages: number;
-  FetchBudgetItems: () => Promise<void>;
+  refetch: () => void;
   isLoading: boolean;
   error: string | null;
 }
