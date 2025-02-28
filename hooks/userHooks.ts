@@ -1,24 +1,16 @@
 import { checkAuth, getProfile } from "@/libs/authentication";
-import { ProfileData } from "@/types/authTypes";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 export const useProfile = () => {
-  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const { data } = useQuery({
+    queryKey: ["profile"],
+    queryFn: () => getProfile(),
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const data = await getProfile();
-        setProfile(data);
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      }
-    };
-
-    fetchProfile();
-  }, []);
-
-  return { profile };
+  return { profile: data };
 };
 
 export const useProfileID = (): {
