@@ -1,13 +1,11 @@
 "use client";
 
 import {
-  BarangayListItem,
   UseBarangayListReturn,
   UseBarangayNamesReturn,
   UsePublicViewBarangayReturn,
-  UseViewBarangayReturn,
 } from "@/types/barangayTypes";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   DisplayBarangaysPublic,
   getBarangayNames,
@@ -47,41 +45,33 @@ export const useBarangayList = (currentPage: number): UseBarangayListReturn => {
   };
 };
 
-export const useViewBarangay = (barangayID: string): UseViewBarangayReturn => {
-  const [barangay, setBarangay] = useState<BarangayListItem | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export const useViewBarangay = (barangayID: string) => {
+  const {
+    data,
+    isLoading,
+    error: queryError,
+    isFetching,
+    refetch,
+  } = useQuery({
+    queryKey: ["barangay", barangayID],
+    queryFn: () => (barangayID ? viewBarangay(barangayID) : null),
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    enabled: !!barangayID,
+  });
 
-  const fetchBarangay = useCallback(
-    async (showRefresh = false) => {
-      try {
-        showRefresh ? setIsRefreshing(true) : setIsLoading(true);
-        setError(null);
-        const data = await viewBarangay(barangayID);
-        setBarangay(data.data);
-      } catch (error) {
-        setError(
-          error instanceof Error ? error.message : "An unknown error occurred"
-        );
-      } finally {
-        setIsLoading(false);
-        setIsRefreshing(false);
-      }
-    },
-    [barangayID]
-  );
-
-  useEffect(() => {
-    fetchBarangay();
-  }, [fetchBarangay]);
+  const error = queryError
+    ? queryError instanceof Error
+      ? queryError.message
+      : "Unknown error occured"
+    : null;
 
   return {
-    barangay,
+    barangay: data?.data,
     isLoading,
-    isRefreshing,
+    isRefreshing: isFetching,
     error,
-    fetchBarangay,
+    refetch,
   };
 };
 

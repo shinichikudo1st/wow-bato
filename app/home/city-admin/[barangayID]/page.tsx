@@ -19,8 +19,7 @@ const CityAdminBarangayViewPage = ({
 }) => {
   const router = useRouter();
   const barangayID = use(params).barangayID;
-  const { barangay, isLoading, error, fetchBarangay } =
-    useViewBarangay(barangayID);
+  const { barangay, isLoading, error, refetch } = useViewBarangay(barangayID);
 
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -56,7 +55,7 @@ const CityAdminBarangayViewPage = ({
                 <div className="text-center py-8">
                   <p className="text-red-600 mb-4">{error}</p>
                   <button
-                    onClick={() => fetchBarangay()}
+                    onClick={() => refetch()}
                     className="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200"
                   >
                     Try Again
