@@ -1,22 +1,18 @@
-"use client";
+'use client';
 
-import { useViewBarangay } from "@/hooks/barangayHook";
-import { use, useState } from "react";
-import { FiLoader, FiArrowLeft } from "react-icons/fi";
-import Navbar from "@/components/reusable/navbar";
-import AuthBackground from "@/components/auth/authBackground";
-import { useRouter } from "next/navigation";
-import BarangayUpdateForm from "@/components/city-admin/barangayUI/updateForm";
-import BarangayViewCard from "@/components/city-admin/barangayUI/barangayViewCard";
-import BarangayQuickInfo from "@/components/city-admin/barangayUI/barangayQuickInfo";
-import BarangayActionCard from "@/components/city-admin/barangayUI/barangayActionCard";
-import BarangayDeleteModal from "@/components/city-admin/barangayUI/deleteBarangayModal";
+import { useViewBarangay } from '@/hooks/barangayHook';
+import { use, useState } from 'react';
+import { FiLoader, FiArrowLeft } from 'react-icons/fi';
+import Navbar from '@/components/reusable/navbar';
+import AuthBackground from '@/components/auth/authBackground';
+import { useRouter } from 'next/navigation';
+import BarangayUpdateForm from '@/components/city-admin/barangayUI/updateForm';
+import BarangayViewCard from '@/components/city-admin/barangayUI/barangayViewCard';
+import BarangayQuickInfo from '@/components/city-admin/barangayUI/barangayQuickInfo';
+import BarangayActionCard from '@/components/city-admin/barangayUI/barangayActionCard';
+import BarangayDeleteModal from '@/components/city-admin/barangayUI/deleteBarangayModal';
 
-const CityAdminBarangayViewPage = ({
-  params,
-}: {
-  params: Promise<{ barangayID: string }>;
-}) => {
+const CityAdminBarangayViewPage = ({ params }: { params: Promise<{ barangayID: string }> }) => {
   const router = useRouter();
   const barangayID = use(params).barangayID;
   const { barangay, isLoading, error, refetch } = useViewBarangay(barangayID);
@@ -47,9 +43,7 @@ const CityAdminBarangayViewPage = ({
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center h-64 space-y-4">
                   <FiLoader className="w-8 h-8 text-blue-600 animate-spin" />
-                  <p className="text-sm text-gray-500">
-                    Loading barangay details...
-                  </p>
+                  <p className="text-sm text-gray-500">Loading barangay details...</p>
                 </div>
               ) : error ? (
                 <div className="text-center py-8">
@@ -74,6 +68,7 @@ const CityAdminBarangayViewPage = ({
                       barangayID={barangayID}
                       barangay={barangay}
                       setIsEditing={setIsEditing}
+                      refetch={refetch}
                     />
                   ) : (
                     <BarangayViewCard barangay={barangay} />

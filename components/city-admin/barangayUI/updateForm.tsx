@@ -1,20 +1,22 @@
-import { UpdateBarangay } from "@/libs/barangay";
-import { AddBarangayFormData, BarangayListItem } from "@/types/barangayTypes";
-import { useState } from "react";
+import { UpdateBarangay } from '@/libs/barangay';
+import { AddBarangayFormData, BarangayListItem } from '@/types/barangayTypes';
+import { useState } from 'react';
 
 const BarangayUpdateForm = ({
   barangayID,
   barangay,
   setIsEditing,
+  refetch,
 }: {
   barangayID: string;
   barangay: BarangayListItem | null;
   setIsEditing: (isEditing: boolean) => void;
+  refetch: () => void;
 }) => {
   const [updateBarangay, setUpdateBarangay] = useState<AddBarangayFormData>({
-    name: "",
-    city: "",
-    region: "",
+    name: '',
+    city: '',
+    region: '',
   });
 
   const handleUpdate = async () => {
@@ -23,25 +25,22 @@ const BarangayUpdateForm = ({
 
       console.log(result.message);
     } catch (error) {
-      console.log(
-        error instanceof Error ? error.message : "Unknown error occured"
-      );
+      console.log(error instanceof Error ? error.message : 'Unknown error occured');
     } finally {
       setUpdateBarangay({
-        name: "",
-        city: "",
-        region: "",
+        name: '',
+        city: '',
+        region: '',
       });
+      setIsEditing(false);
+      refetch();
     }
   };
 
   return (
     <div className="bg-gray-50 p-6 rounded-lg space-y-4">
       <div>
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
           Barangay Name
         </label>
         <input
@@ -59,10 +58,7 @@ const BarangayUpdateForm = ({
         />
       </div>
       <div>
-        <label
-          htmlFor="city"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
           City
         </label>
         <input
@@ -80,10 +76,7 @@ const BarangayUpdateForm = ({
         />
       </div>
       <div>
-        <label
-          htmlFor="region"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-1">
           Region
         </label>
         <input
@@ -111,9 +104,9 @@ const BarangayUpdateForm = ({
           onClick={() => {
             setIsEditing(false);
             setUpdateBarangay({
-              name: "",
-              city: "",
-              region: "",
+              name: '',
+              city: '',
+              region: '',
             });
           }}
           className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
