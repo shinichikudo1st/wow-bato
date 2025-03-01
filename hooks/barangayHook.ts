@@ -1,18 +1,17 @@
-"use client";
+'use client';
 
 import {
   UseBarangayListReturn,
   UseBarangayNamesReturn,
   UsePublicViewBarangayReturn,
-} from "@/types/barangayTypes";
-import { useState, useEffect } from "react";
+} from '@/types/barangayTypes';
 import {
   DisplayBarangaysPublic,
   getBarangayNames,
   getBarangays,
   viewBarangay,
-} from "@/libs/barangay";
-import { useQuery } from "@tanstack/react-query";
+} from '@/libs/barangay';
+import { useQuery } from '@tanstack/react-query';
 
 export const useBarangayList = (currentPage: number): UseBarangayListReturn => {
   const limit = 5;
@@ -24,7 +23,7 @@ export const useBarangayList = (currentPage: number): UseBarangayListReturn => {
     isFetching,
     refetch,
   } = useQuery({
-    queryKey: ["barangays", currentPage, limit],
+    queryKey: ['barangays', currentPage, limit],
     queryFn: () => getBarangays(currentPage, limit),
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
@@ -33,7 +32,7 @@ export const useBarangayList = (currentPage: number): UseBarangayListReturn => {
   const error = queryError
     ? queryError instanceof Error
       ? queryError.message
-      : "An unknown error occurred"
+      : 'An unknown error occurred'
     : null;
 
   return {
@@ -53,7 +52,7 @@ export const useViewBarangay = (barangayID: string) => {
     isFetching,
     refetch,
   } = useQuery({
-    queryKey: ["barangay", barangayID],
+    queryKey: ['barangay', barangayID],
     queryFn: () => (barangayID ? viewBarangay(barangayID) : null),
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
@@ -63,7 +62,7 @@ export const useViewBarangay = (barangayID: string) => {
   const error = queryError
     ? queryError instanceof Error
       ? queryError.message
-      : "Unknown error occured"
+      : 'Unknown error occured'
     : null;
 
   return {
@@ -76,37 +75,25 @@ export const useViewBarangay = (barangayID: string) => {
 };
 
 export const useBarangayNames = (): UseBarangayNamesReturn[] => {
-  const [barangays, setBarangays] = useState<UseBarangayNamesReturn[]>([]);
+  const { data } = useQuery({
+    queryKey: ['barangays'],
+    queryFn: () => getBarangayNames(),
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+  });
 
-  useEffect(() => {
-    const fetchBarangayNames = async () => {
-      try {
-        const data = await getBarangayNames();
-        setBarangays(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchBarangayNames();
-  }, []);
-
-  return barangays;
+  // Return an empty array if data is undefined or still loading
+  return data || [];
 };
 
-export const usePublicViewBarangay = (): UsePublicViewBarangayReturn[] => {
-  const [barangays, setBarangays] = useState<UsePublicViewBarangayReturn[]>([]);
+export const usePublicViewBarangay = (): UsePublicViewBarangayReturn => {
+  const { data } = useQuery({
+    queryKey: ['publicBarangays'],
+    queryFn: () => DisplayBarangaysPublic(),
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
 
-  useEffect(() => {
-    const fetchBarangayNames = async () => {
-      try {
-        const data = await DisplayBarangaysPublic();
-        setBarangays(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchBarangayNames();
-  }, []);
-
+  const barangays = data;
   return barangays;
 };
