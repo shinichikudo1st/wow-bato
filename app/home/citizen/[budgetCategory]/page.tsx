@@ -21,8 +21,7 @@ const BudgetCategoryCitizen = ({
   const [activeProject, setActiveProject] = useState<number | null>(null);
   const { userID, userRole } = useProfileID();
 
-  const { feedbacks, GetFeedbacksData, isLoading, error } =
-    useFeedbacks(activeProject);
+  const { feedbacks, refetch, isLoading, error } = useFeedbacks(activeProject);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -61,7 +60,7 @@ const BudgetCategoryCitizen = ({
             userID={userID}
             projectID={activeProject}
             feedbacks={feedbacks}
-            GetFeedbacksData={GetFeedbacksData}
+            GetFeedbacksData={refetch}
             isLoading={isLoading}
             error={error}
           />

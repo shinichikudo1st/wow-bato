@@ -1,10 +1,13 @@
-import { GetAllProject, GetSingleProject } from '@/libs/project';
-import { ViewReturnProjectList, ViewReturnSingleProject } from '@/types/projectTypes';
-import { useQuery } from '@tanstack/react-query';
+import { GetAllProject, GetSingleProject } from "@/libs/project";
+import {
+  ViewReturnProjectList,
+  ViewReturnSingleProject,
+} from "@/types/projectTypes";
+import { useQuery } from "@tanstack/react-query";
 
 export const UseViewProjectList = (
   categoryID: number | null,
-  page: number,
+  page: number
 ): ViewReturnProjectList => {
   const {
     data,
@@ -12,7 +15,7 @@ export const UseViewProjectList = (
     error: queryError,
     refetch,
   } = useQuery({
-    queryKey: ['projectLists', categoryID, page],
+    queryKey: ["projectLists", categoryID, page],
     queryFn: () => (categoryID ? GetAllProject(categoryID, page) : null),
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
@@ -22,10 +25,10 @@ export const UseViewProjectList = (
   const error = queryError
     ? queryError instanceof Error
       ? queryError.message
-      : 'Unknown error occured'
+      : "Unknown error occured"
     : null;
 
-  const categoryInfo = data?.category || { name: '', description: '' };
+  const categoryInfo = data?.category || { name: "", description: "" };
   const projectList = data?.projects || [];
 
   return {
@@ -37,13 +40,15 @@ export const UseViewProjectList = (
   };
 };
 
-export const UseViewSingleProject = (projectID: number): ViewReturnSingleProject => {
+export const UseViewSingleProject = (
+  projectID: number
+): ViewReturnSingleProject => {
   const {
     data,
     error: queryError,
     isLoading,
   } = useQuery({
-    queryKey: ['project'],
+    queryKey: ["project"],
     queryFn: () => (projectID ? GetSingleProject(projectID) : null),
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
@@ -52,8 +57,8 @@ export const UseViewSingleProject = (projectID: number): ViewReturnSingleProject
   const error = queryError
     ? queryError instanceof Error
       ? queryError.message
-      : 'Unknown error occured'
-    : null;
+      : "Unknown error occured"
+    : "";
 
   const project = data?.data;
 

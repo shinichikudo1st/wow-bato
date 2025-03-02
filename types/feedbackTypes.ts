@@ -10,7 +10,7 @@ export interface FeedbackListItem {
 
 export interface FeedbackListResponse {
   feedbacks: FeedbackListItem[] | null;
-  GetFeedbacksData: () => Promise<void>;
-  error: string;
+  refetch: () => void;
+  error: string | "";
   isLoading: boolean;
 }
