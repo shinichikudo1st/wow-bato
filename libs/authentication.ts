@@ -1,4 +1,9 @@
-import { FormErrors, LoginFormData, RegisterFormData } from "@/types/authTypes";
+import {
+  FormErrors,
+  FormErrorsLogin,
+  LoginFormData,
+  RegisterFormData,
+} from "@/types/authTypes";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -53,6 +58,28 @@ export const validateRegisterForm = async (
     newErrors.confirmPassword = "Please confirm your password";
   } else if (formData.password !== formData.confirmPassword) {
     newErrors.confirmPassword = "Passwords do not match";
+  }
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
+export const validateLoginForm = (
+  formData: LoginFormData,
+  setErrors: (errors: FormErrors) => void
+): boolean => {
+  const newErrors: FormErrorsLogin = {};
+
+  if (!formData.email) {
+    newErrors.email = "Email is required";
+  } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    newErrors.email = "Please enter a valid email address";
+  }
+
+  if (!formData.password) {
+    newErrors.password = "Password is required";
+  } else if (formData.password.length < 6) {
+    newErrors.password = "Password must be at least 6 characters";
   }
 
   setErrors(newErrors);

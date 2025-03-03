@@ -2,13 +2,13 @@
 
 import AuthBackground from "@/components/auth/authBackground";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
-import { FormErrorsLogin, LoginFormData } from "@/types/authTypes";
+import { LoginFormData } from "@/types/authTypes";
 import LoginLogo from "@/components/login/loginLogo";
 import ForgotPassword from "@/components/login/forgotPassword";
 import SocialLoginButton from "@/components/login/socialLoginButton";
 import LoginButton from "@/components/login/loginButton";
 import { useMutation } from "@tanstack/react-query";
-import { login } from "@/libs/authentication";
+import { login, validateLoginForm } from "@/libs/authentication";
 import { useRouter } from "next/navigation";
 import { useLoginStore } from "@/store/authStore";
 
@@ -38,29 +38,10 @@ export default function LoginPage() {
     },
   });
 
-  const validateForm = (): boolean => {
-    const newErrors: FormErrorsLogin = {};
-
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) return;
+    if (!validateLoginForm(formData, setErrors)) return;
 
     loginMutation.mutate(formData);
   };
