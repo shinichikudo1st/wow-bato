@@ -1,25 +1,28 @@
 "use client";
 
 import AuthBackground from "@/components/auth/authBackground";
-import { useState } from "react";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { FormErrorsLogin, LoginFormData } from "@/types/authTypes";
-import { useRouter } from "next/navigation";
-import { login } from "@/libs/authentication";
 import LoginLogo from "@/components/login/loginLogo";
 import ForgotPassword from "@/components/login/forgotPassword";
 import SocialLoginButton from "@/components/login/socialLoginButton";
 import LoginButton from "@/components/login/loginButton";
 import { useMutation } from "@tanstack/react-query";
+import { login } from "@/libs/authentication";
+import { useRouter } from "next/navigation";
+import { useLoginStore } from "@/store/authStore";
 
 export default function LoginPage() {
+  const {
+    formData,
+    errors,
+    showPassword,
+    setFormData,
+    setErrors,
+    setShowPassword,
+  } = useLoginStore();
+
   const router = useRouter();
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState<FormErrorsLogin>({});
-  const [showPassword, setShowPassword] = useState(false);
 
   const loginMutation = useMutation({
     mutationFn: async (data: LoginFormData) => {
@@ -32,7 +35,7 @@ export default function LoginPage() {
     },
     onError: (error) => {
       console.error("Login error:", error);
-    }
+    },
   });
 
   const validateForm = (): boolean => {
@@ -58,7 +61,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!validateForm()) return;
-    
+
     loginMutation.mutate(formData);
   };
 
@@ -189,7 +192,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setShowPassword()}
                 >
                   {showPassword ? (
                     <FiEyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
