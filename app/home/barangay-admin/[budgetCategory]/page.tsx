@@ -7,7 +7,6 @@ import Navbar from "@/components/reusable/navbar";
 import { useProfileID } from "@/hooks/userHooks";
 import { useRouter } from "next/navigation";
 import { use } from "react";
-import { useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 
 const BudgetCategoryBarangayAdmin = ({
@@ -16,7 +15,6 @@ const BudgetCategoryBarangayAdmin = ({
   params: Promise<{ budgetCategory: number }>;
 }) => {
   const categoryID = use(params).budgetCategory;
-  const [activeProject, setActiveProject] = useState<number | null>(null);
   const router = useRouter();
 
   const { userRole } = useProfileID();
@@ -52,11 +50,7 @@ const BudgetCategoryBarangayAdmin = ({
           </div>
 
           {/* Project List */}
-          <ProjectList
-            userRole={userRole}
-            categoryID={categoryID}
-            setActiveProject={setActiveProject}
-          />
+          <ProjectList userRole={userRole} categoryID={categoryID} />
         </div>
       </main>
     </div>

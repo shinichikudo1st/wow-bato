@@ -1,7 +1,6 @@
 import { GetFeedbacks } from "@/libs/feedback";
-import { FeedbackListItem, FeedbackListResponse } from "@/types/feedbackTypes";
+import { FeedbackListResponse } from "@/types/feedbackTypes";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 
 export const useFeedbacks = (
   projectID: number | null

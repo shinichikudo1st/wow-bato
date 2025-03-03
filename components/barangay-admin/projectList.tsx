@@ -23,7 +23,7 @@ export default function ProjectList({
 }: {
   userRole: string | null;
   categoryID: number | null;
-  setActiveProject: (projectID: number) => void;
+  setActiveProject?: (projectID: number) => void;
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const { categoryInfo, projectList, error, isLoading, refetch } =
@@ -37,6 +37,16 @@ export default function ProjectList({
       router.push(`/home/barangay-admin/projects/${projectID}`);
     } else {
       router.push(`/home/city-admin/projects/${projectID}`);
+    }
+  };
+
+  const viewDetails = (projectID: number) => {
+    if (userRole === "citizen") {
+      setActiveProject?.(projectID);
+    } else if (userRole === "barangay admin") {
+      router.push(`/home/barangay-admin/${categoryID}/${projectID}`);
+    } else {
+      return;
     }
   };
 
@@ -177,7 +187,7 @@ export default function ProjectList({
                   {/* View Details Button */}
                   <div className="flex flex-col space-y-2">
                     <button
-                      onClick={() => setActiveProject(project.id)}
+                      onClick={() => viewDetails(project.id)}
                       className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600
                       bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200
                       opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
