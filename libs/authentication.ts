@@ -118,7 +118,9 @@ export async function register(formData: RegisterFormData) {
       throw new Error("Failed to register");
     }
 
-    return response;
+    const data = response.json();
+
+    return data;
   } catch (error) {
     throw error;
   }
