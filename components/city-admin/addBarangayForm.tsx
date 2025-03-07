@@ -1,31 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import { FiMapPin, FiHome, FiGlobe, FiCheck, FiLoader } from "react-icons/fi";
 import ErrorMessage from "../ui/error";
 import SuccessMessage from "../ui/success";
 import { AddBarangayFormData } from "@/types/barangayTypes";
 import { addBarangay } from "@/libs/barangay";
 import { useMutation } from "@tanstack/react-query";
+import { useAddBarangayStore } from "@/store/barangayStore";
 
 export default function AddBarangayForm() {
-  const [formData, setFormData] = useState<AddBarangayFormData>({
-    name: "",
-    city: "",
-    region: "",
-  });
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const { formData, error, success, setFormData, setError, setSuccess } =
+    useAddBarangayStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     barangayMutation.mutate(formData);
-  };
-
-  const resetMessages = () => {
-    setError(null);
-    setSuccess(null);
   };
 
   const barangayMutation = useMutation({
@@ -67,11 +57,7 @@ export default function AddBarangayForm() {
       {/* Success Message */}
       {success && <SuccessMessage success={success} setSuccess={setSuccess} />}
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-6"
-        onChange={resetMessages}
-      >
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label
             htmlFor="name"
