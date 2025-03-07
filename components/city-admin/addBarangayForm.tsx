@@ -6,6 +6,7 @@ import ErrorMessage from "../ui/error";
 import SuccessMessage from "../ui/success";
 import { AddBarangayFormData } from "@/types/barangayTypes";
 import { addBarangay } from "@/libs/barangay";
+import { useMutation } from "@tanstack/react-query";
 
 export default function AddBarangayForm() {
   const [formData, setFormData] = useState<AddBarangayFormData>({
@@ -13,37 +14,45 @@ export default function AddBarangayForm() {
     city: "",
     region: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setError(null);
-    setSuccess(null);
 
-    try {
-      const data = await addBarangay(formData);
-
-      setSuccess(data.message);
-      setFormData({ name: "", city: "", region: "" });
-    } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "An unknown error occurred"
-      );
-    } finally {
-      setIsSubmitting(false);
-      setTimeout(() => {
-        resetMessages();
-      }, 2000);
-    }
+    barangayMutation.mutate(formData);
   };
 
   const resetMessages = () => {
     setError(null);
     setSuccess(null);
   };
+
+  const barangayMutation = useMutation({
+    mutationFn: async (data: AddBarangayFormData) => {
+      const result = await addBarangay(data);
+      return result.message;
+    },
+    onSuccess: (data) => {
+      setSuccess(data);
+      setFormData({
+        name: "",
+        city: "",
+        region: "",
+      });
+      setTimeout(() => {
+        setSuccess(null);
+      }, 3000);
+    },
+    onError: (error) => {
+      setError(
+        error instanceof Error ? error.message : "Failed to add barangay"
+      );
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+    },
+  });
 
   return (
     <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
@@ -143,7 +152,7 @@ export default function AddBarangayForm() {
 
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={barangayMutation.isPending}
           className="w-full px-4 py-2 text-white font-medium rounded-lg
             bg-gradient-to-r from-blue-600 to-blue-500 
             hover:from-blue-700 hover:to-blue-600 
@@ -153,7 +162,7 @@ export default function AddBarangayForm() {
             disabled:opacity-50 disabled:cursor-not-allowed
             flex items-center justify-center space-x-2"
         >
-          {isSubmitting ? (
+          {barangayMutation.isPending ? (
             <>
               <FiLoader className="w-5 h-5 animate-spin" />
               <span>Adding Barangay...</span>
