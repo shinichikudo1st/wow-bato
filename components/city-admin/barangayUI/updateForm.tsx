@@ -1,6 +1,7 @@
-import { UpdateBarangay } from '@/libs/barangay';
-import { AddBarangayFormData, BarangayListItem } from '@/types/barangayTypes';
-import { useState } from 'react';
+import { UpdateBarangay } from "@/libs/barangay";
+import { useUpdateBarangayStore } from "@/store/barangayStore";
+import { AddBarangayFormData, BarangayListItem } from "@/types/barangayTypes";
+import { useMutation } from "@tanstack/react-query";
 
 const BarangayUpdateForm = ({
   barangayID,
@@ -13,34 +14,30 @@ const BarangayUpdateForm = ({
   setIsEditing: (isEditing: boolean) => void;
   refetch: () => void;
 }) => {
-  const [updateBarangay, setUpdateBarangay] = useState<AddBarangayFormData>({
-    name: '',
-    city: '',
-    region: '',
-  });
+  const { updateBarangay, setUpdateBarangay } = useUpdateBarangayStore();
 
-  const handleUpdate = async () => {
-    try {
-      const result = await UpdateBarangay(updateBarangay, barangayID);
-
-      console.log(result.message);
-    } catch (error) {
-      console.log(error instanceof Error ? error.message : 'Unknown error occured');
-    } finally {
+  const barangayMutation = useMutation({
+    mutationFn: async (data: AddBarangayFormData) => {
+      await UpdateBarangay(data, barangayID);
+    },
+    onSuccess: () => {
       setUpdateBarangay({
-        name: '',
-        city: '',
-        region: '',
+        name: "",
+        city: "",
+        region: "",
       });
       setIsEditing(false);
       refetch();
-    }
-  };
+    },
+  });
 
   return (
     <div className="bg-gray-50 p-6 rounded-lg space-y-4">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Barangay Name
         </label>
         <input
@@ -58,7 +55,10 @@ const BarangayUpdateForm = ({
         />
       </div>
       <div>
-        <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="city"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           City
         </label>
         <input
@@ -76,7 +76,10 @@ const BarangayUpdateForm = ({
         />
       </div>
       <div>
-        <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="region"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Region
         </label>
         <input
@@ -95,7 +98,7 @@ const BarangayUpdateForm = ({
       </div>
       <div className="flex space-x-4 pt-4">
         <button
-          onClick={handleUpdate}
+          onClick={() => barangayMutation.mutate(updateBarangay)}
           className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200"
         >
           Save Changes
@@ -104,9 +107,9 @@ const BarangayUpdateForm = ({
           onClick={() => {
             setIsEditing(false);
             setUpdateBarangay({
-              name: '',
-              city: '',
-              region: '',
+              name: "",
+              city: "",
+              region: "",
             });
           }}
           className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
