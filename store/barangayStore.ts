@@ -15,6 +15,16 @@ type UpdateBarangayStore = {
   setUpdateBarangay: (data: AddBarangayFormData) => void;
 };
 
+type ViewBarangayStore = {
+  isEditing: boolean;
+  showDeleteModal: boolean;
+  setIsEditing: (data: boolean) => void;
+  setShowDeleteModal: (data: boolean) => void;
+};
+
+{
+  /* -----------------Zustand Barangay Store ----------------------------------*/
+}
 export const useAddBarangayStore = create<AddBarangayStore>((set) => ({
   formData: { name: "", city: "", region: "" },
   error: null,
@@ -29,4 +39,11 @@ export const useUpdateBarangayStore = create<UpdateBarangayStore>((set) => ({
   updateBarangay: { name: "", city: "", region: "" },
   setUpdateBarangay: (data) =>
     set((state) => ({ updateBarangay: { ...state.updateBarangay, ...data } })),
+}));
+
+export const useViewBarangayStore = create<ViewBarangayStore>((set) => ({
+  isEditing: false,
+  showDeleteModal: false,
+  setIsEditing: (data) => set((state) => ({ isEditing: data })),
+  setShowDeleteModal: (data) => set((state) => ({ showDeleteModal: data })),
 }));
