@@ -1,4 +1,5 @@
 import { DeleteBarangay } from "@/libs/barangay";
+import { useMutation } from "@tanstack/react-query";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const BarangayDeleteModal = ({
@@ -12,17 +13,13 @@ const BarangayDeleteModal = ({
   barangayName: string | undefined;
   router: AppRouterInstance;
 }) => {
-  const handleDelete = async (barangayID: string) => {
-    try {
-      const result = await DeleteBarangay(barangayID);
-
-      console.log(result.message);
-    } catch (error) {
-      console.log(
-        error instanceof Error ? error.message : "Unknown error occured"
-      );
-    }
-  };
+  const barangayMutation = useMutation({
+    mutationFn: async () => {
+      await DeleteBarangay(barangayID);
+    },
+    onSuccess: () => {},
+    onError: () => {},
+  });
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -67,7 +64,7 @@ const BarangayDeleteModal = ({
             <button
               type="button"
               onClick={async () => {
-                await handleDelete(barangayID);
+                barangayMutation.mutate();
                 setShowDeleteModal(false);
                 router.push("/home/city-admin"); // Redirect after delete
               }}
