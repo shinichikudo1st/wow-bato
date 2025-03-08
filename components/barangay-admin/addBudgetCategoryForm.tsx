@@ -1,9 +1,10 @@
 "use client";
 
 import { addBudgetCategory } from "@/libs/budgetCategory";
+import { useAddBudgetCategoryStore } from "@/store/budgetCategoryStore";
 import { AddBudgetCategoryFormData } from "@/types/budgetCategoryTypes";
 import { useMutation } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   FiFolderPlus,
   FiFileText,
@@ -16,20 +17,14 @@ export default function AddBudgetCategoryForm({
 }: {
   barangayID: number | null;
 }) {
-  const [formData, setFormData] = useState<AddBudgetCategoryFormData>({
-    name: "",
-    description: "",
-    barangay_ID: barangayID || 0,
-  });
+  const { formData, error, success, setFormData, setError, setSuccess } =
+    useAddBudgetCategoryStore();
 
   useEffect(() => {
     if (barangayID) {
       setFormData({ ...formData, barangay_ID: barangayID });
     }
   }, [barangayID]);
-
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const categoryMutation = useMutation({
     mutationFn: async (data: AddBudgetCategoryFormData) => {
