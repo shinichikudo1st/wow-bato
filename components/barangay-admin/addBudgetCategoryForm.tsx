@@ -2,6 +2,7 @@
 
 import { addBudgetCategory } from "@/libs/budgetCategory";
 import { AddBudgetCategoryFormData } from "@/types/budgetCategoryTypes";
+import { useMutation } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import {
   FiFolderPlus,
@@ -27,36 +28,39 @@ export default function AddBudgetCategoryForm({
     }
   }, [barangayID]);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError(null);
-    setSuccess(null);
-
-    try {
-      const data = await addBudgetCategory(formData);
-
+  const categoryMutation = useMutation({
+    mutationFn: async (data: AddBudgetCategoryFormData) => {
+      const result = await addBudgetCategory(data);
+      return result;
+    },
+    onSuccess: (data) => {
       setSuccess(data.message);
       setFormData({
         name: "",
         description: "",
         barangay_ID: barangayID || 0,
       });
-    } catch (error) {
+    },
+    onError: (error) => {
       setError(
         error instanceof Error ? error.message : "Unknown error occurred"
       );
-    } finally {
-      setIsSubmitting(false);
+    },
+    onSettled: () => {
       setTimeout(() => {
         setError(null);
         setSuccess(null);
       }, 3000);
-    }
+    },
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    categoryMutation.mutate(formData);
   };
 
   return (
