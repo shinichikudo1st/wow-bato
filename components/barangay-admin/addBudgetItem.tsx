@@ -1,57 +1,42 @@
 "use client";
 
 import { AddNewItem } from "@/libs/budgetItem";
-import { NewItemData } from "@/types/budgetItemTypes";
-import { useState } from "react";
 import {
-  FiFileText,
-  FiCheck,
-  FiPackage,
-  FiAlertCircle,
-} from "react-icons/fi";
+  InitialBudgetItemFormData,
+  useAddBudgetItemStore,
+} from "@/store/budgetItemStore";
+import { NewItemData } from "@/types/budgetItemTypes";
+import { useMutation } from "@tanstack/react-query";
+import { FiFileText, FiCheck, FiPackage, FiAlertCircle } from "react-icons/fi";
 
-const AddItemComponent = ({
-  projectID,
-}: {
-  projectID: number | null;
-}) => {
-  const [formData, setFormData] = useState<NewItemData>({
-    name: "",
-    description: "",
-    amount_allocated: 0,
-    status: "Pending",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+const AddItemComponent = ({ projectID }: { projectID: number | null }) => {
+  const { formData, success, error, setFormData, setSuccess, setError } =
+    useAddBudgetItemStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSuccess(null);
-    setError(null);
 
-    try {
-      const result = await AddNewItem(projectID, formData);
-      setSuccess(result.message);
-    } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "Unknown error occurred"
-      );
-    } finally {
-      setIsSubmitting(false);
-      setFormData({
-        name: "",
-        description: "",
-        amount_allocated: 0,
-        status: "Pending",
-      });
+    budgetItemMutation.mutate(formData);
+  };
+
+  const budgetItemMutation = useMutation({
+    mutationFn: async (data: NewItemData) => {
+      const result = await AddNewItem(projectID, data);
+      return result.message;
+    },
+    onSuccess: (success) => {
+      setSuccess(success);
+      setFormData(InitialBudgetItemFormData);
       setTimeout(() => {
         setError(null);
         setSuccess(null);
       }, 2000);
-    }
-  };
+    },
+    onError: (error) =>
+      setError(
+        error instanceof Error ? error.message : "Unknown error occurred"
+      ),
+  });
 
   return (
     <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
@@ -111,7 +96,9 @@ const AddItemComponent = ({
           </label>
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <span className="text-gray-500 group-hover:text-blue-500 transition-colors">₱</span>
+              <span className="text-gray-500 group-hover:text-blue-500 transition-colors">
+                ₱
+              </span>
             </div>
             <input
               type="text"
@@ -122,45 +109,53 @@ const AddItemComponent = ({
                 hover:border-blue-300 transition-all duration-200
                 bg-white hover:bg-blue-50/30"
               placeholder="0.00"
-              value={formData.amount_allocated === 0 ? "" : formData.amount_allocated.toLocaleString('en-PH', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              })}
+              value={
+                formData.amount_allocated === 0
+                  ? ""
+                  : formData.amount_allocated.toLocaleString("en-PH", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+              }
               onChange={(e) => {
                 // Remove all non-numeric characters except decimal point
-                const rawValue = e.target.value.replace(/[^0-9.]/g, '');
-                
+                const rawValue = e.target.value.replace(/[^0-9.]/g, "");
+
                 // Ensure only one decimal point
-                const parts = rawValue.split('.');
-                const cleanValue = parts[0] + (parts.length > 1 ? '.' + parts[1] : '');
-                
+                const parts = rawValue.split(".");
+                const cleanValue =
+                  parts[0] + (parts.length > 1 ? "." + parts[1] : "");
+
                 // Convert to number if valid
-                if (cleanValue === '' || cleanValue === '.') {
+                if (cleanValue === "" || cleanValue === ".") {
                   setFormData({
                     ...formData,
-                    amount_allocated: 0
+                    amount_allocated: 0,
                   });
                 } else {
                   const amount = parseFloat(cleanValue);
                   if (!isNaN(amount)) {
                     setFormData({
                       ...formData,
-                      amount_allocated: amount
+                      amount_allocated: amount,
                     });
                   }
                 }
               }}
               onBlur={(e) => {
                 // Format to 2 decimal places on blur
-                const amount = parseFloat(e.target.value.replace(/[^0-9.]/g, '')) || 0;
+                const amount =
+                  parseFloat(e.target.value.replace(/[^0-9.]/g, "")) || 0;
                 setFormData({
                   ...formData,
-                  amount_allocated: Number(amount.toFixed(2))
+                  amount_allocated: Number(amount.toFixed(2)),
                 });
               }}
             />
           </div>
-          <p className="mt-1 text-sm text-gray-500">Enter amount in Philippine Peso (₱)</p>
+          <p className="mt-1 text-sm text-gray-500">
+            Enter amount in Philippine Peso (₱)
+          </p>
         </div>
 
         <div>
@@ -189,20 +184,22 @@ const AddItemComponent = ({
               }
             />
           </div>
-          <p className="mt-1 text-sm text-gray-500">Provide details about how this budget will be utilized</p>
+          <p className="mt-1 text-sm text-gray-500">
+            Provide details about how this budget will be utilized
+          </p>
         </div>
 
         <div className="flex justify-end space-x-4">
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={budgetItemMutation.isPending}
             className="inline-flex items-center px-6 py-3 border border-transparent 
               text-base font-medium rounded-md shadow-sm text-white 
               bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 
               focus:ring-offset-2 focus:ring-blue-500 transition-colors
               disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? (
+            {budgetItemMutation.isPending ? (
               <>
                 <FiAlertCircle className="mr-2 h-5 w-5 animate-spin" />
                 Adding...

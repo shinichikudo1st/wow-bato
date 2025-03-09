@@ -1,21 +1,20 @@
-import { ProjectFormData } from "@/types/projectTypes";
+import { NewItemData } from "@/types/budgetItemTypes";
 import { create } from "zustand";
 
-type AddProjectStore = {
-  formData: ProjectFormData;
+type AddBudgetItemStore = {
+  formData: NewItemData;
   success: string | null;
   error: string | null;
-  setFormData: (formData: ProjectFormData) => void;
+  setFormData: (formData: NewItemData) => void;
   setSuccess: (success: string | null) => void;
   setError: (error: string | null) => void;
 };
 
-export const useAddProjectStore = create<AddProjectStore>((set) => ({
+export const useAddBudgetItemStore = create<AddBudgetItemStore>((set) => ({
   formData: {
     name: "",
     description: "",
-    startDate: "",
-    endDate: "",
+    amount_allocated: 0,
     status: "Pending",
   },
   success: null,
@@ -26,10 +25,9 @@ export const useAddProjectStore = create<AddProjectStore>((set) => ({
   setError: (error) => set(() => ({ error })),
 }));
 
-export const InitialProjectFormData = {
+export const InitialBudgetItemFormData = {
   name: "",
   description: "",
-  startDate: "",
-  endDate: "",
+  amount_allocated: 0,
   status: "Pending",
 };

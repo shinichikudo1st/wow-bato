@@ -1,7 +1,10 @@
 "use client";
 
 import { AddNewProject } from "@/libs/project";
-import { useAddProjectStore } from "@/store/projectStore";
+import {
+  InitialProjectFormData,
+  useAddProjectStore,
+} from "@/store/projectStore";
 import { ProjectFormData } from "@/types/projectTypes";
 import { useMutation } from "@tanstack/react-query";
 import {
@@ -31,15 +34,9 @@ export default function AddProjectForm({
       const result = await AddNewProject(data, categoryID);
       return result.message;
     },
-    onSuccess: (data) => {
-      setSuccess(data);
-      setFormData({
-        name: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        status: "Pending",
-      });
+    onSuccess: (success) => {
+      setSuccess(success);
+      setFormData(InitialProjectFormData);
       setTimeout(() => {
         setError(null);
         setSuccess(null);

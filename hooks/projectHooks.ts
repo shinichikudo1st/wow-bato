@@ -11,7 +11,7 @@ export const UseViewProjectList = (
 ): ViewReturnProjectList => {
   const {
     data,
-    isLoading,
+    isFetching,
     error: queryError,
     refetch,
   } = useQuery({
@@ -35,7 +35,7 @@ export const UseViewProjectList = (
     categoryInfo,
     projectList,
     error,
-    isLoading,
+    isLoading: isFetching,
     refetch,
   };
 };
