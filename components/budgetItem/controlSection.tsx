@@ -1,3 +1,4 @@
+import { useStatusBudgetItemStore } from "@/store/budgetItemStore";
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -7,26 +8,14 @@ import {
 
 const ControlSectionBudgetItem = ({
   FetchBudgetItems,
-  setIsRefreshing,
-  isRefreshing,
-  setCurrentPage,
-  currentPage,
   totalPages,
+  isLoading,
 }: {
   FetchBudgetItems: () => void;
-  setIsRefreshing: (refreshing: boolean) => void;
-  isRefreshing: boolean;
-  setCurrentPage: (page: number | ((prev: number) => number)) => void;
-  currentPage: number;
   totalPages: number;
+  isLoading: boolean;
 }) => {
-  const handleRefresh = () => {
-    setIsRefreshing(true);
-    FetchBudgetItems();
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 1000);
-  };
+  const { setCurrentPage, currentPage } = useStatusBudgetItemStore();
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
@@ -49,17 +38,19 @@ const ControlSectionBudgetItem = ({
       {/* Controls */}
       <div className="flex items-center space-x-3">
         <button
-          onClick={handleRefresh}
-          disabled={isRefreshing}
+          onClick={FetchBudgetItems}
+          disabled={isLoading}
           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 disabled:opacity-50"
         >
           <FiRefreshCcw
-            className={`w-5 h-5 ${isRefreshing ? "animate-spin" : ""}`}
+            className={`w-5 h-5 ${isLoading ? "animate-spin" : ""}`}
           />
         </button>
         <div className="flex items-center bg-gray-50 rounded-lg p-1">
           <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            onClick={() =>
+              setCurrentPage((prev: number) => Math.max(prev - 1, 1))
+            }
             disabled={currentPage === 1}
             className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"
           >
@@ -70,7 +61,7 @@ const ControlSectionBudgetItem = ({
           </span>
           <button
             onClick={() =>
-              setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+              setCurrentPage((prev: number) => Math.min(totalPages, prev + 1))
             }
             disabled={currentPage === totalPages}
             className="p-2 rounded-md hover:bg-white hover:shadow-sm disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:shadow-none transition-all duration-200"

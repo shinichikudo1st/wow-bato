@@ -1,8 +1,6 @@
 "use client";
 
 import { useBudgetItems } from "@/hooks/budgetItemHooks";
-import { UpdateItemStatus, DeleteBudgetItem } from "@/libs/budgetItem";
-import { useState } from "react";
 import {
   FiClock,
   FiCheck,
@@ -17,97 +15,29 @@ import ActionButtonBudgetItem from "../budgetItem/actionButton";
 import ConfirmationBudgetItem from "../budgetItem/confirmationOverlay";
 import FilterSectionBudgetItem from "../budgetItem/filterSection";
 import ControlSectionBudgetItem from "../budgetItem/controlSection";
+import { useStatusBudgetItemStore } from "@/store/budgetItemStore";
 
 const BudgetItemList = ({ projectID }: { projectID: number }) => {
-  const [statusFilter, setStatusFilter] = useState<
-    "all" | "pending" | "approved" | "rejected"
-  >("all");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [confirmationState, setConfirmationState] = useState<{
-    itemId: number | null;
-    action: "approve" | "reject" | "delete" | null;
-  }>({ itemId: null, action: null });
-  const [updatingStatus, setUpdatingStatus] = useState(false);
-  const [deletingItem, setDeletingItem] = useState(false);
-  const [successMessage, setSuccessMessage] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const { statusFilter, currentPage, confirmationState } =
+    useStatusBudgetItemStore();
 
-  const { budgetItems, totalPages, refetch, isLoading, error } = useBudgetItems(
+  const { budgetItems, totalPages, refetch, isLoading } = useBudgetItems(
     projectID,
     statusFilter,
     currentPage
   );
 
-  const handleUpdateStatus = async () => {
-    setUpdatingStatus(true);
-
-    if (confirmationState.action === "delete") {
-      handleDelete(confirmationState.itemId);
-      return;
-    }
-
-    try {
-      const result = await UpdateItemStatus(
-        confirmationState.itemId,
-        confirmationState.action
-      );
-
-      setSuccessMessage(result.message);
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error ? error.message : "Unknown error occurred"
-      );
-    } finally {
-      setUpdatingStatus(false);
-      setConfirmationState({ itemId: null, action: null });
-      refetch();
-      setTimeout(() => {
-        setErrorMessage("");
-        setSuccessMessage("");
-      }, 3000);
-    }
-  };
-
-  const handleDelete = async (itemID: number | null) => {
-    setDeletingItem(true);
-    try {
-      const result = await DeleteBudgetItem(itemID);
-
-      setSuccessMessage(result.message);
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error ? error.message : "Unknown error occurred"
-      );
-    } finally {
-      setDeletingItem(false);
-      setConfirmationState({ itemId: null, action: null });
-      refetch();
-      setTimeout(() => {
-        setErrorMessage("");
-        setSuccessMessage("");
-      }, 3000);
-    }
-  };
-
   return (
     <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
       {/* Header Section */}
       <ControlSectionBudgetItem
-        setIsRefreshing={setIsRefreshing}
         FetchBudgetItems={refetch}
-        isRefreshing={isRefreshing}
-        setCurrentPage={setCurrentPage}
-        currentPage={currentPage}
         totalPages={totalPages}
+        isLoading={isLoading}
       />
 
       {/* Filter Section */}
-      <FilterSectionBudgetItem
-        statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
-        setCurrentPage={setCurrentPage}
-      />
+      <FilterSectionBudgetItem />
 
       {/* Items List */}
       <div className="space-y-4">
@@ -125,11 +55,7 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
           >
             {/* Confirmation Overlay */}
             {confirmationState.itemId === item.ID && (
-              <ConfirmationBudgetItem
-                confirmationState={confirmationState}
-                setConfirmationState={setConfirmationState}
-                handleUpdateStatus={handleUpdateStatus}
-              />
+              <ConfirmationBudgetItem refetch={refetch} />
             )}
 
             <div className="flex justify-between items-start mb-4">
@@ -254,18 +180,12 @@ const BudgetItemList = ({ projectID }: { projectID: number }) => {
               <div className="flex items-center space-x-3">
                 {/* Action Buttons - Only show for pending items */}
                 {item.Status === "Pending" && !confirmationState.itemId && (
-                  <ActionButtonBudgetItem
-                    setConfirmationState={setConfirmationState}
-                    item_ID={item.ID}
-                  />
+                  <ActionButtonBudgetItem item_ID={item.ID} />
                 )}
 
                 {/* Delete Button - Always show unless confirmation is open */}
                 {!confirmationState.itemId && (
-                  <DeleteButtonBudgetItem
-                    setConfirmationState={setConfirmationState}
-                    item_ID={item.ID}
-                  />
+                  <DeleteButtonBudgetItem item_ID={item.ID} />
                 )}
               </div>
             </div>

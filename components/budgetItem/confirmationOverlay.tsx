@@ -1,20 +1,40 @@
+import { DeleteBudgetItem, UpdateItemStatus } from "@/libs/budgetItem";
+import { useStatusBudgetItemStore } from "@/store/budgetItemStore";
+import { useMutation } from "@tanstack/react-query";
 import { FiAlertCircle, FiCheck, FiTrash2, FiX } from "react-icons/fi";
 
-const ConfirmationBudgetItem = ({
-  confirmationState,
-  setConfirmationState,
-  handleUpdateStatus,
-}: {
-  confirmationState: {
-    itemId: number | null;
-    action: "approve" | "reject" | "delete" | null;
-  };
-  setConfirmationState: (state: {
-    itemId: number | null;
-    action: "approve" | "reject" | "delete" | null;
-  }) => void;
-  handleUpdateStatus: () => void;
-}) => {
+const ConfirmationBudgetItem = ({ refetch }: { refetch: () => void }) => {
+  const { confirmationState, setConfirmationState, setSuccess, setError } =
+    useStatusBudgetItemStore();
+
+  const budgetItemMutation = useMutation({
+    mutationFn: async (itemID: number | null) => {
+      if (confirmationState.action === "delete") {
+        const result = await DeleteBudgetItem(itemID);
+        return result.message;
+      }
+
+      const result = await UpdateItemStatus(
+        confirmationState.itemId,
+        confirmationState.action
+      );
+      return result.message;
+    },
+    onSuccess: (success) => {
+      setSuccess(success);
+      setConfirmationState({ itemId: null, action: null });
+      refetch();
+      setTimeout(() => {
+        setError("");
+        setSuccess("");
+      }, 3000);
+    },
+    onError: (error) =>
+      setError(
+        error instanceof Error ? error.message : "Unknown error occurred"
+      ),
+  });
+
   return (
     <div className="absolute inset-0 bg-white/95 backdrop-blur-sm rounded-xl p-6 flex flex-col items-center justify-center space-y-4 z-10">
       <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2">
@@ -51,7 +71,7 @@ const ConfirmationBudgetItem = ({
 
       <div className="flex items-center space-x-3 mt-4">
         <button
-          onClick={() => handleUpdateStatus()}
+          onClick={() => budgetItemMutation.mutate(confirmationState.itemId)}
           className={`inline-flex items-center px-4 py-2 text-sm font-medium
                       ${
                         confirmationState.action === "approve"

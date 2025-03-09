@@ -1,15 +1,9 @@
+import { useStatusBudgetItemStore } from "@/store/budgetItemStore";
 import { FiCheck, FiX } from "react-icons/fi";
 
-const ActionButtonBudgetItem = ({
-  setConfirmationState,
-  item_ID,
-}: {
-  setConfirmationState: (state: {
-    itemId: number | null;
-    action: "approve" | "reject" | "delete" | null;
-  }) => void;
-  item_ID: number;
-}) => {
+const ActionButtonBudgetItem = ({ item_ID }: { item_ID: number }) => {
+  const { setConfirmationState } = useStatusBudgetItemStore();
+
   return (
     <>
       <button

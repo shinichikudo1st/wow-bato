@@ -10,7 +10,7 @@ export const useBudgetItems = (
   const {
     data,
     error: queryError,
-    isLoading,
+    isFetching,
     refetch,
   } = useQuery({
     queryKey: ["budgetItems", filter, page],
@@ -31,7 +31,7 @@ export const useBudgetItems = (
     itemCount: data?.count,
     totalPages: Math.ceil(data?.count / 5),
     refetch,
-    isLoading,
+    isLoading: isFetching,
     error,
   };
 };

@@ -1,15 +1,9 @@
+import { useStatusBudgetItemStore } from "@/store/budgetItemStore";
 import { FiTrash2 } from "react-icons/fi";
 
-const DeleteButtonBudgetItem = ({
-  setConfirmationState,
-  item_ID,
-}: {
-  setConfirmationState: (state: {
-    itemId: number | null;
-    action: "approve" | "reject" | "delete" | null;
-  }) => void;
-  item_ID: number;
-}) => {
+const DeleteButtonBudgetItem = ({ item_ID }: { item_ID: number }) => {
+  const { setConfirmationState } = useStatusBudgetItemStore();
+
   return (
     <button
       onClick={() =>

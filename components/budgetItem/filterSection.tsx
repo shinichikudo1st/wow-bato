@@ -1,10 +1,10 @@
+import { useStatusBudgetItemStore } from "@/store/budgetItemStore";
 import { FiFilter } from "react-icons/fi";
 
-const FilterSectionBudgetItem = ({statusFilter, setStatusFilter, setCurrentPage} : {
-  statusFilter: "all" | "pending" | "approved" | "rejected";
-  setStatusFilter: (status: "all" | "pending" | "approved" | "rejected") => void;
-  setCurrentPage: (page: number) => void;
-}) => {
+const FilterSectionBudgetItem = () => {
+  const { statusFilter, setStatusFilter, setCurrentPage } =
+    useStatusBudgetItemStore();
+
   return (
     <div className="flex items-center space-x-4 mb-6">
       <div className="flex items-center space-x-2 text-sm text-gray-600">
