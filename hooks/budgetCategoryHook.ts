@@ -8,8 +8,9 @@ export const useBudgetCategory = (
 ): BudgetCategoryViewReturn => {
   const {
     data,
-    isLoading,
     error: queryError,
+    isFetching,
+    refetch,
   } = useQuery({
     queryKey: ["budgetCategories", barangayID, page],
     queryFn: () =>
@@ -31,8 +32,9 @@ export const useBudgetCategory = (
 
   return {
     budgetCategories,
-    isLoading,
+    isLoading: isFetching,
     error,
     categoryCount,
+    refetch,
   };
 };

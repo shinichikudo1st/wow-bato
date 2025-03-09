@@ -17,4 +17,5 @@ export interface BudgetCategoryViewReturn {
   isLoading: boolean;
   error: string | null;
   categoryCount: number;
+  refetch: () => void;
 }

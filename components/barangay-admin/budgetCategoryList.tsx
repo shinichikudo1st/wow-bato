@@ -23,21 +23,8 @@ export default function BudgetCategoryList({
 }) {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const { budgetCategories, isLoading, error, categoryCount } =
+  const { budgetCategories, isLoading, error, categoryCount, refetch } =
     useBudgetCategory(barangayID, currentPage);
-
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-md">
-        <div className="flex flex-col items-center justify-center h-64 space-y-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="text-sm text-gray-500">Loading categories...</p>
-        </div>
-      </div>
-    );
-  }
 
   // Error state
   if (error) {
@@ -49,14 +36,6 @@ export default function BudgetCategoryList({
       </div>
     );
   }
-
-  const handleRefresh = () => {
-    setIsRefreshing(true);
-    setCurrentPage(1);
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 1000);
-  };
 
   const nextPage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -82,12 +61,12 @@ export default function BudgetCategoryList({
         {/* Controls */}
         <div className="flex items-center space-x-3">
           <button
-            onClick={handleRefresh}
-            disabled={isRefreshing}
+            onClick={refetch}
+            disabled={isLoading}
             className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 disabled:opacity-50"
           >
             <FiRefreshCw
-              className={`w-5 h-5 ${isRefreshing ? "animate-spin" : ""}`}
+              className={`w-5 h-5 ${isLoading ? "animate-spin" : ""}`}
             />
           </button>
           <div className="flex items-center bg-gray-50 rounded-lg p-1">
