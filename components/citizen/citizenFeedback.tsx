@@ -1,8 +1,6 @@
 import { GetFeedbackReply } from "@/libs/feedbackReply";
-import { FeedbackReply } from "@/types/feedbackReplyTypes";
 import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
-import { useState } from "react";
 import ReplySection from "../citizenFeedback/replySection";
 import RepliesSection from "../citizenFeedback/repliesSection";
 import DeleteReplyModal from "../citizenFeedback/deleteReply";
@@ -12,6 +10,7 @@ import NoProjectSelected from "../citizenFeedback/notSelected";
 import FeedbackDropdown from "../citizenFeedback/feedbackDropdown";
 import FeedbackKebabMenu from "../citizenFeedback/kebabMenu";
 import EditFeedbackContent from "../citizenFeedback/editFeedback";
+import { useFeedbackStore } from "@/store/feedbackStore";
 
 const CitizenCommentFeedback = ({
   userID,
@@ -28,24 +27,47 @@ const CitizenCommentFeedback = ({
   isLoading: boolean;
   error: string;
 }) => {
-  const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
-  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const {
+    activeDropdown,
+    replyingTo,
+    editingComment,
+    editContent,
+    showDeleteConfirm,
+    replies,
+    activeFeedbackReplies,
+    editingReplyFeedbackID,
+    deleteConfirmationReply,
+    setActiveDropdown,
+    setReplyingTo,
+    setEditingComment,
+    setEditContent,
+    setShowDeleteConfirm,
+    setReplies,
+    setActiveFeedbackReplies,
+    setEditingReplyFeedbackID,
+    setDeleteConfirmationReply,
+  } = useFeedbackStore();
 
-  const [editingComment, setEditingComment] = useState<number | null>(null);
-  const [editContent, setEditContent] = useState<string>("");
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(
-    null
-  );
+  // CLEAN THE STATE MANAGEMENT LATER
 
-  const [replies, setReplies] = useState<FeedbackReply[]>([]);
-  const [activeFeedbackReplies, setActiveFeedbackReplies] = useState<
-    number | null
-  >(null);
-  const [editingReplyFeedbackID, setEditingReplyFeedbackID] = useState<
-    number | null
-  >(null);
-  const [deleteConfirmationReply, setDeleteConfirmationReply] =
-    useState<FeedbackReply | null>(null);
+  // const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
+  // const [replyingTo, setReplyingTo] = useState<number | null>(null);
+
+  // const [editingComment, setEditingComment] = useState<number | null>(null);
+  // const [editContent, setEditContent] = useState<string>("");
+  // const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(
+  //   null
+  // );
+
+  // const [replies, setReplies] = useState<FeedbackReply[]>([]);
+  // const [activeFeedbackReplies, setActiveFeedbackReplies] = useState<
+  //   number | null
+  // >(null);
+  // const [editingReplyFeedbackID, setEditingReplyFeedbackID] = useState<
+  //   number | null
+  // >(null);
+  // const [deleteConfirmationReply, setDeleteConfirmationReply] =
+  //   useState<FeedbackReply | null>(null);
 
   const getReplies = async (feedbackId: number) => {
     try {
