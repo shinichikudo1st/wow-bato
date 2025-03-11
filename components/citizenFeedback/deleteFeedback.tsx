@@ -1,5 +1,6 @@
 import { DeleteFeedback } from "@/libs/feedback";
 import { useFeedbackStore } from "@/store/feedbackStore";
+import { useMutation } from "@tanstack/react-query";
 
 const DeleteFeedbackModal = ({
   feedback_id,
@@ -10,21 +11,17 @@ const DeleteFeedbackModal = ({
 }) => {
   const { setShowDeleteConfirm } = useFeedbackStore();
 
-  const handleDelete = async (feedbackId: number | null) => {
-    try {
-      const response = await DeleteFeedback(feedbackId);
-
-      console.log(response.message);
-    } catch (error) {
-      console.log(
-        error instanceof Error ? error.message : "Unknown error occured"
-      );
-    } finally {
-      console.log("Deleting comment:", feedbackId);
+  const feedbackMutation = useMutation({
+    mutationFn: async (feedbackID: number | null) => {
+      const result = await DeleteFeedback(feedbackID);
+      return result.message;
+    },
+    onSuccess: () => {
       setShowDeleteConfirm(null);
       GetFeedbacksData();
-    }
-  };
+    },
+    onError: () => {},
+  });
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-500 bg-opacity-75 flex items-center justify-center">
@@ -60,7 +57,7 @@ const DeleteFeedbackModal = ({
               Cancel
             </button>
             <button
-              onClick={() => handleDelete(feedback_id)}
+              onClick={() => feedbackMutation.mutate(feedback_id)}
               className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition-colors"
             >
               Delete
