@@ -1,18 +1,15 @@
-import { FeedbackReply } from "@/types/feedbackReplyTypes";
+import { useFeedbackStore } from "@/store/feedbackStore";
 import { useState } from "react";
 
-const RepliesSection = ({
-  replies,
-  editingReplyFeedbackID,
-  setEditingReplyFeedbackID,
-  setDeleteConfirmationReply,
-}: {
-  replies: FeedbackReply[];
-  editingReplyFeedbackID: number | null;
-  setEditingReplyFeedbackID: (FeedbackID: number | null) => void;
-  setDeleteConfirmationReply: (reply: FeedbackReply | null) => void;
-}) => {
+const RepliesSection = () => {
   const [editReplyContent, setEditReplyContent] = useState<string>("");
+
+  const {
+    replies,
+    editingReplyFeedbackID,
+    setEditingReplyFeedbackID,
+    setDeleteConfirmationReply,
+  } = useFeedbackStore();
 
   return (
     <div className="mt-4 pl-6 border-l-2 border-gray-100">

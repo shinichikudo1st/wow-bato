@@ -31,43 +31,17 @@ const CitizenCommentFeedback = ({
     activeDropdown,
     replyingTo,
     editingComment,
-    editContent,
     showDeleteConfirm,
     replies,
     activeFeedbackReplies,
-    editingReplyFeedbackID,
     deleteConfirmationReply,
     setActiveDropdown,
     setReplyingTo,
     setEditingComment,
     setEditContent,
-    setShowDeleteConfirm,
     setReplies,
     setActiveFeedbackReplies,
-    setEditingReplyFeedbackID,
-    setDeleteConfirmationReply,
   } = useFeedbackStore();
-
-  // CLEAN THE STATE MANAGEMENT LATER
-
-  // const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
-  // const [replyingTo, setReplyingTo] = useState<number | null>(null);
-
-  // const [editingComment, setEditingComment] = useState<number | null>(null);
-  // const [editContent, setEditContent] = useState<string>("");
-  // const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(
-  //   null
-  // );
-
-  // const [replies, setReplies] = useState<FeedbackReply[]>([]);
-  // const [activeFeedbackReplies, setActiveFeedbackReplies] = useState<
-  //   number | null
-  // >(null);
-  // const [editingReplyFeedbackID, setEditingReplyFeedbackID] = useState<
-  //   number | null
-  // >(null);
-  // const [deleteConfirmationReply, setDeleteConfirmationReply] =
-  //   useState<FeedbackReply | null>(null);
 
   const getReplies = async (feedbackId: number) => {
     try {
@@ -160,9 +134,6 @@ const CitizenCommentFeedback = ({
 
                     {editingComment === feedback.feedback_id ? (
                       <EditFeedbackContent
-                        editContent={editContent}
-                        setEditContent={setEditContent}
-                        setEditingComment={setEditingComment}
                         GetFeedbacksData={GetFeedbacksData}
                         feedback_id={feedback.feedback_id}
                       />
@@ -218,18 +189,13 @@ const CitizenCommentFeedback = ({
                   {!editingComment && (
                     <div className="relative">
                       {feedback.user_id === userID && (
-                        <FeedbackKebabMenu
-                          setActiveDropdown={setActiveDropdown}
-                          activeDropdown={activeDropdown}
-                          feedback_id={feedback.feedback_id}
-                        />
+                        <FeedbackKebabMenu feedback_id={feedback.feedback_id} />
                       )}
                       {activeDropdown === feedback.feedback_id && (
                         <FeedbackDropdown
                           feedback_id={feedback.feedback_id}
                           content={feedback.content}
                           handleEdit={handleEdit}
-                          setShowDeleteConfirm={setShowDeleteConfirm}
                         />
                       )}
                     </div>
@@ -240,7 +206,6 @@ const CitizenCommentFeedback = ({
                 {showDeleteConfirm === feedback.feedback_id && (
                   <DeleteFeedbackModal
                     feedback_id={feedback.feedback_id}
-                    setShowDeleteConfirm={setShowDeleteConfirm}
                     GetFeedbacksData={GetFeedbacksData}
                   />
                 )}
@@ -248,7 +213,6 @@ const CitizenCommentFeedback = ({
                 {/* Reply Section */}
                 {replyingTo === feedback.feedback_id && (
                   <ReplySection
-                    setReplyingTo={setReplyingTo}
                     GetFeedbacksData={GetFeedbacksData}
                     feedbackID={feedback.feedback_id}
                   />
@@ -256,24 +220,14 @@ const CitizenCommentFeedback = ({
 
                 {/* Replies Section */}
                 {activeFeedbackReplies === feedback.feedback_id && (
-                  <RepliesSection
-                    replies={replies}
-                    editingReplyFeedbackID={editingReplyFeedbackID}
-                    setEditingReplyFeedbackID={setEditingReplyFeedbackID}
-                    setDeleteConfirmationReply={setDeleteConfirmationReply}
-                  />
+                  <RepliesSection />
                 )}
               </div>
             ))}
         </div>
 
         {/* Delete Reply Confirmation Modal */}
-        {deleteConfirmationReply && (
-          <DeleteReplyModal
-            deleteConfirmationReply={deleteConfirmationReply}
-            setDeleteConfirmationReply={setDeleteConfirmationReply}
-          />
-        )}
+        {deleteConfirmationReply && <DeleteReplyModal />}
       </div>
 
       {/* Floating Comment Box */}

@@ -1,14 +1,15 @@
 import { DeleteFeedback } from "@/libs/feedback";
+import { useFeedbackStore } from "@/store/feedbackStore";
 
 const DeleteFeedbackModal = ({
   feedback_id,
-  setShowDeleteConfirm,
   GetFeedbacksData,
 }: {
   feedback_id: number | null;
-  setShowDeleteConfirm: (feedback_id: number | null) => void;
   GetFeedbacksData: () => void;
 }) => {
+  const { setShowDeleteConfirm } = useFeedbackStore();
+
   const handleDelete = async (feedbackId: number | null) => {
     try {
       const response = await DeleteFeedback(feedbackId);

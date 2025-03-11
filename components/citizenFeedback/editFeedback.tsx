@@ -1,18 +1,15 @@
 import { UpdateFeedback } from "@/libs/feedback";
+import { useFeedbackStore } from "@/store/feedbackStore";
 
 const EditFeedbackContent = ({
-  editContent,
-  setEditContent,
-  setEditingComment,
   GetFeedbacksData,
   feedback_id,
 }: {
-  editContent: string;
-  setEditContent: (content: string) => void;
-  setEditingComment: (feedback_id: number | null) => void;
   GetFeedbacksData: () => void;
   feedback_id: number;
 }) => {
+  const { setEditingComment, setEditContent, editContent } = useFeedbackStore();
+
   const submitEdit = async (feedbackId: number) => {
     try {
       const response = await UpdateFeedback(editContent, feedbackId);

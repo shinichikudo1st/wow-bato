@@ -1,12 +1,8 @@
-const FeedbackKebabMenu = ({
-  setActiveDropdown,
-  activeDropdown,
-  feedback_id,
-}: {
-  setActiveDropdown: (feedback_id: number | null) => void;
-  activeDropdown: number | null;
-  feedback_id: number;
-}) => {
+import { useFeedbackStore } from "@/store/feedbackStore";
+
+const FeedbackKebabMenu = ({ feedback_id }: { feedback_id: number }) => {
+  const { activeDropdown, setActiveDropdown } = useFeedbackStore();
+
   return (
     <button
       onClick={() =>

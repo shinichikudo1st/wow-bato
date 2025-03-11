@@ -1,13 +1,7 @@
 import { DeleteFeedbackReply } from "@/libs/feedbackReply";
-import { FeedbackReply } from "@/types/feedbackReplyTypes";
+import { useFeedbackStore } from "@/store/feedbackStore";
 
-const DeleteReplyModal = ({
-  deleteConfirmationReply,
-  setDeleteConfirmationReply,
-}: {
-  deleteConfirmationReply: FeedbackReply;
-  setDeleteConfirmationReply: (reply: FeedbackReply | null) => void;
-}) => {
+const DeleteReplyModal = () => {
   const handleDeleteReply = async (replyID: number | null) => {
     try {
       const result = await DeleteFeedbackReply(replyID);
@@ -19,6 +13,9 @@ const DeleteReplyModal = ({
       );
     }
   };
+
+  const { deleteConfirmationReply, setDeleteConfirmationReply } =
+    useFeedbackStore();
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-500 bg-opacity-75 flex items-center justify-center">
@@ -61,7 +58,7 @@ const DeleteReplyModal = ({
               onClick={() => {
                 // Placeholder for delete logic
                 console.log("Confirmed delete reply", deleteConfirmationReply);
-                handleDeleteReply(deleteConfirmationReply?.ID);
+                handleDeleteReply(deleteConfirmationReply?.ID ?? null);
                 setDeleteConfirmationReply(null);
               }}
               className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
