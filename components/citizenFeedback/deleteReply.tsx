@@ -1,18 +1,16 @@
 import { DeleteFeedbackReply } from "@/libs/feedbackReply";
 import { useFeedbackStore } from "@/store/feedbackStore";
+import { useMutation } from "@tanstack/react-query";
 
 const DeleteReplyModal = () => {
-  const handleDeleteReply = async (replyID: number | null) => {
-    try {
+  const feedbackMutation = useMutation({
+    mutationFn: async (replyID: number | null) => {
       const result = await DeleteFeedbackReply(replyID);
-
-      console.log(result.message);
-    } catch (error) {
-      console.log(
-        error instanceof Error ? error.message : "Unknown Error Occured"
-      );
-    }
-  };
+      return result.message;
+    },
+    onSuccess: () => {},
+    onError: () => {},
+  });
 
   const { deleteConfirmationReply, setDeleteConfirmationReply } =
     useFeedbackStore();
@@ -58,7 +56,7 @@ const DeleteReplyModal = () => {
               onClick={() => {
                 // Placeholder for delete logic
                 console.log("Confirmed delete reply", deleteConfirmationReply);
-                handleDeleteReply(deleteConfirmationReply?.ID ?? null);
+                feedbackMutation.mutate(deleteConfirmationReply?.ID ?? null);
                 setDeleteConfirmationReply(null);
               }}
               className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
