@@ -1,5 +1,6 @@
 import { UpdateFeedback } from "@/libs/feedback";
 import { useFeedbackStore } from "@/store/feedbackStore";
+import { useMutation } from "@tanstack/react-query";
 
 const EditFeedbackContent = ({
   GetFeedbacksData,
@@ -10,22 +11,17 @@ const EditFeedbackContent = ({
 }) => {
   const { setEditingComment, setEditContent, editContent } = useFeedbackStore();
 
-  const submitEdit = async (feedbackId: number) => {
-    try {
-      const response = await UpdateFeedback(editContent, feedbackId);
-
-      console.log(response.message);
-    } catch (error) {
-      console.log(
-        error instanceof Error ? error.message : "Unknown error occured"
-      );
-    } finally {
-      console.log("Editing comment:", feedbackId, editContent);
+  const feedbackMutation = useMutation({
+    mutationFn: async (feedbackID: number) => {
+      const result = await UpdateFeedback(editContent, feedbackID);
+      return result.message;
+    },
+    onSuccess: () => {
       setEditingComment(null);
       setEditContent("");
       GetFeedbacksData();
-    }
-  };
+    },
+  });
 
   return (
     <div className="mt-4">
@@ -43,7 +39,7 @@ const EditFeedbackContent = ({
           Cancel
         </button>
         <button
-          onClick={() => submitEdit(feedback_id)}
+          onClick={() => feedbackMutation.mutate(feedback_id)}
           className="px-4 py-2 text-sm font-medium text-white bg-emerald-500 rounded-lg hover:bg-emerald-600 transition-colors"
         >
           Save Changes
