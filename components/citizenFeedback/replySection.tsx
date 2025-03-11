@@ -1,5 +1,6 @@
 import { replyData, SubmitFeedbackReply } from "@/libs/feedbackReply";
 import { useFeedbackStore } from "@/store/feedbackStore";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -16,23 +17,20 @@ const ReplySection = ({
     feedback_reply: "",
   });
 
-  const submitReply = async (feedbackId: number | null) => {
-    console.log("Submitting reply to feedback:", feedbackId, replyContent);
-    try {
-      const data = await SubmitFeedbackReply(feedbackId, replyContent);
-      console.log(data.message);
-    } catch (error) {
-      console.log(
-        error instanceof Error ? error.message : "Unknown Error Occured"
-      );
-    } finally {
+  const feedbackMutation = useMutation({
+    mutationFn: async (feedbackID: number | null) => {
+      const result = await SubmitFeedbackReply(feedbackID, replyContent);
+      return result.message;
+    },
+    onSuccess: () => {
       setReplyingTo(null);
       setReplyContent({
         feedback_reply: "",
       });
       GetFeedbacksData();
-    }
-  };
+    },
+    onError: () => {},
+  });
 
   return (
     <div className="ml-14 mt-4 animate-fadeIn">
@@ -62,7 +60,7 @@ const ReplySection = ({
               Cancel
             </button>
             <button
-              onClick={() => submitReply(feedbackID)}
+              onClick={() => feedbackMutation.mutate(feedbackID)}
               className="px-4 py-2 text-sm font-medium text-white bg-emerald-500 rounded-lg hover:bg-emerald-600 transition-colors"
             >
               Submit Reply
