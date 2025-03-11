@@ -1,16 +1,17 @@
 import { replyData, SubmitFeedbackReply } from "@/libs/feedbackReply";
+import { useFeedbackStore } from "@/store/feedbackStore";
 import Image from "next/image";
 import { useState } from "react";
 
 const ReplySection = ({
-  setReplyingTo,
   GetFeedbacksData,
   feedbackID,
 }: {
-  setReplyingTo: (feedbackId: number | null) => void;
   GetFeedbacksData: () => void;
   feedbackID: number | null;
 }) => {
+  const { setReplyingTo } = useFeedbackStore();
+
   const [replyContent, setReplyContent] = useState<replyData>({
     feedback_reply: "",
   });
