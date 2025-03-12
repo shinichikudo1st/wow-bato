@@ -3,13 +3,23 @@ import { useFeedbackStore } from "@/store/feedbackStore";
 const FeedbackDropdown = ({
   feedback_id,
   content,
-  handleEdit,
 }: {
   feedback_id: number;
   content: string;
-  handleEdit: (feedback_id: number, content: string) => void;
 }) => {
-  const { setShowDeleteConfirm } = useFeedbackStore();
+  const {
+    setShowDeleteConfirm,
+    setEditingComment,
+    setEditContent,
+    setActiveDropdown,
+  } = useFeedbackStore();
+
+  const handleEdit = (feedbackId: number, content: string) => {
+    setEditingComment(feedbackId);
+    setEditContent(content);
+    setActiveDropdown(null);
+  };
+
   return (
     <div className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
       <div className="py-1">
