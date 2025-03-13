@@ -1,11 +1,11 @@
 "use client";
-import AuthBackground from "@/components/auth/authBackground";
-import Navbar from "@/components/reusable/navbar";
+import AuthBackground from "@/components/ui/authBackground";
+import Navbar from "@/components/ui/navbar";
 import { useRouter } from "next/navigation";
 import { use } from "react";
 import { FiArrowLeft } from "react-icons/fi";
-import AddItemComponent from "@/components/barangay-admin/addBudgetItem";
-import BudgetItemList from "@/components/barangay-admin/budgetItemList";
+import AddItemComponent from "@/components/barangay-admin-exclusive/addBudgetItem";
+import BudgetItemList from "@/components/features/budgetItemList";
 import { UseViewSingleProject } from "@/hooks/projectHooks";
 
 const ProjectItemsBarangayAdmin = ({
@@ -36,31 +36,43 @@ const ProjectItemsBarangayAdmin = ({
             {/* Welcome Section */}
             <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
               <div className="border-b border-gray-200 pb-4 mb-4">
-                <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Project Details</h2>
+                <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                  Project Details
+                </h2>
                 <h1 className="text-4xl font-extrabold text-blue-600 mt-2 mb-1">
                   {project?.name}
                 </h1>
-                
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-500">Start Date</p>
+                  <p className="text-sm font-medium text-gray-500">
+                    Start Date
+                  </p>
                   <p className="text-lg font-semibold text-gray-900">
-                    {project?.startDate ? new Date(project.startDate).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    }) : 'Not set'}
+                    {project?.startDate
+                      ? new Date(project.startDate).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )
+                      : "Not set"}
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-500">Estimated End Date</p>
+                  <p className="text-sm font-medium text-gray-500">
+                    Estimated End Date
+                  </p>
                   <p className="text-lg font-semibold text-gray-900">
-                    {project?.endDate ? new Date(project.endDate).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    }) : 'Not set'}
+                    {project?.endDate
+                      ? new Date(project.endDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })
+                      : "Not set"}
                   </p>
                 </div>
               </div>

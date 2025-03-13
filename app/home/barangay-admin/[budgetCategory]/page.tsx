@@ -1,9 +1,9 @@
 "use client";
 
-import AuthBackground from "@/components/auth/authBackground";
-import AddProjectForm from "@/components/barangay-admin/addProjectForm";
-import ProjectList from "@/components/barangay-admin/projectList";
-import Navbar from "@/components/reusable/navbar";
+import AuthBackground from "@/components/ui/authBackground";
+import AddProjectForm from "@/components/barangay-admin-exclusive/addProjectForm";
+import ProjectList from "@/components/features/projectList";
+import Navbar from "@/components/ui/navbar";
 import { useProfileID } from "@/hooks/userHooks";
 import { useRouter } from "next/navigation";
 import { use } from "react";

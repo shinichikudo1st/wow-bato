@@ -1,6 +1,7 @@
 import { GetFeedbackReply } from "@/libs/feedbackReply";
 import { useFeedbackStore } from "@/store/feedbackStore";
 import { FeedbackListItem } from "@/types/feedbackTypes";
+import { useMutation } from "@tanstack/react-query";
 
 const FeedbackContent = ({ feedback }: { feedback: FeedbackListItem }) => {
   const {
@@ -13,24 +14,20 @@ const FeedbackContent = ({ feedback }: { feedback: FeedbackListItem }) => {
     replies,
   } = useFeedbackStore();
 
-  const getReplies = async (feedbackId: number) => {
-    try {
-      const result = await GetFeedbackReply(feedbackId);
-
-      console.log(result.data);
-
+  const feedbackMutation = useMutation({
+    mutationFn: async (feedbackID: number) => {
+      const result = await GetFeedbackReply(feedbackID);
+      return result;
+    },
+    onSuccess: (result) => {
       if (result && result.data) {
         setReplies(result.data);
       } else {
         setReplies([]);
       }
-    } catch (error) {
-      console.log(
-        error instanceof Error ? error.message : "Unknown error occured"
-      );
-      setReplies([]);
-    }
-  };
+    },
+    onError: () => setReplies([]),
+  });
 
   const handleShowReplies = async (feedbackId: number) => {
     if (activeFeedbackReplies === feedbackId) {
@@ -41,7 +38,7 @@ const FeedbackContent = ({ feedback }: { feedback: FeedbackListItem }) => {
       // If clicking on a different feedback, close the previous one and open the new one
       setActiveFeedbackReplies(feedbackId);
       setReplies([]); // Clear existing replies before loading new ones
-      await getReplies(feedbackId);
+      feedbackMutation.mutate(feedbackId);
     }
   };
 

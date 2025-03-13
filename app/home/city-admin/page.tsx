@@ -1,9 +1,9 @@
 "use client";
 
-import AuthBackground from "@/components/auth/authBackground";
-import Navbar from "@/components/reusable/navbar";
-import AddBarangayForm from "@/components/city-admin/addBarangayForm";
-import BarangayList from "@/components/city-admin/barangayList";
+import AuthBackground from "@/components/ui/authBackground";
+import Navbar from "@/components/ui/navbar";
+import AddBarangayForm from "@/components/city-admin-exclusive/addBarangayForm";
+import BarangayList from "@/components/city-admin-exclusive/barangayList";
 
 export default function CityAdminPage() {
   return (

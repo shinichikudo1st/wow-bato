@@ -1,17 +1,16 @@
-import { GetFeedbackReply } from "@/libs/feedbackReply";
 import { FeedbackListItem } from "@/types/feedbackTypes";
 import Image from "next/image";
-import ReplySection from "../citizenFeedback/replySection";
-import RepliesSection from "../citizenFeedback/repliesSection";
-import DeleteReplyModal from "../citizenFeedback/deleteReply";
-import DeleteFeedbackModal from "../citizenFeedback/deleteFeedback";
-import FeedbackBox from "../citizenFeedback/feedbackBox";
-import NoProjectSelected from "../citizenFeedback/notSelected";
-import FeedbackDropdown from "../citizenFeedback/feedbackDropdown";
-import FeedbackKebabMenu from "../citizenFeedback/kebabMenu";
-import EditFeedbackContent from "../citizenFeedback/editFeedback";
+import ReplySection from "./citizenFeedbackUI/replySection";
+import RepliesSection from "./citizenFeedbackUI/repliesSection";
+import DeleteReplyModal from "./citizenFeedbackUI/deleteReply";
+import DeleteFeedbackModal from "./citizenFeedbackUI/deleteFeedback";
+import FeedbackBox from "./citizenFeedbackUI/feedbackBox";
+import NoProjectSelected from "./citizenFeedbackUI/notSelected";
+import FeedbackDropdown from "./citizenFeedbackUI/feedbackDropdown";
+import FeedbackKebabMenu from "./citizenFeedbackUI/kebabMenu";
+import EditFeedbackContent from "./citizenFeedbackUI/editFeedback";
 import { useFeedbackStore } from "@/store/feedbackStore";
-import FeedbackContent from "../citizenFeedback/feedbackContent";
+import FeedbackContent from "./citizenFeedbackUI/feedbackContent";
 
 const CitizenCommentFeedback = ({
   userID,

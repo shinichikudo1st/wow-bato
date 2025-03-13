@@ -1,6 +1,6 @@
 "use client";
 
-import AuthBackground from "@/components/auth/authBackground";
+import AuthBackground from "@/components/ui/authBackground";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { LoginFormData } from "@/types/authTypes";
 import LoginLogo from "@/components/login/loginLogo";

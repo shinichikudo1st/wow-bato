@@ -1,6 +1,6 @@
 "use client";
-import AuthBackground from "@/components/auth/authBackground";
-import Navbar from "@/components/reusable/navbar";
+import AuthBackground from "@/components/ui/authBackground";
+import Navbar from "@/components/ui/navbar";
 import { useRouter } from "next/navigation";
 import { use } from "react";
 import { FiArrowLeft } from "react-icons/fi";

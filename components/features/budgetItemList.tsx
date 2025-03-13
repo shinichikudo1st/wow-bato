@@ -10,11 +10,11 @@ import {
   FiTag,
   FiDollarSign,
 } from "react-icons/fi";
-import DeleteButtonBudgetItem from "../budgetItem/deleteButton";
-import ActionButtonBudgetItem from "../budgetItem/actionButton";
-import ConfirmationBudgetItem from "../budgetItem/confirmationOverlay";
-import FilterSectionBudgetItem from "../budgetItem/filterSection";
-import ControlSectionBudgetItem from "../budgetItem/controlSection";
+import DeleteButtonBudgetItem from "./budgetItemListUI/deleteButton";
+import ActionButtonBudgetItem from "./budgetItemListUI/actionButton";
+import ConfirmationBudgetItem from "./budgetItemListUI/confirmationOverlay";
+import FilterSectionBudgetItem from "./budgetItemListUI/filterSection";
+import ControlSectionBudgetItem from "./budgetItemListUI/controlSection";
 import { useStatusBudgetItemStore } from "@/store/budgetItemStore";
 
 const BudgetItemList = ({ projectID }: { projectID: number }) => {

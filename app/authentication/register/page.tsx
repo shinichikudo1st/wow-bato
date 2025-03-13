@@ -1,6 +1,6 @@
 "use client";
 
-import AuthBackground from "@/components/auth/authBackground";
+import AuthBackground from "@/components/ui/authBackground";
 import { RegisterFormData } from "@/types/authTypes";
 import ErrorMessage from "@/components/ui/error";
 import SuccessMessage from "@/components/ui/success";

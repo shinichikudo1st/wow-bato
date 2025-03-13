@@ -1,8 +1,8 @@
 "use client";
 
-import AuthBackground from "@/components/auth/authBackground";
-import CitizenCommentFeedback from "@/components/citizen/citizenFeedback";
-import Navbar from "@/components/reusable/navbar";
+import AuthBackground from "@/components/ui/authBackground";
+import CitizenCommentFeedback from "@/components/features/citizenFeedback";
+import Navbar from "@/components/ui/navbar";
 import { useFeedbacks } from "@/hooks/feedbackHooks";
 import { UseViewSingleProject } from "@/hooks/projectHooks";
 import { useProfileID } from "@/hooks/userHooks";

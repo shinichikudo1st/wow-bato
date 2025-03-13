@@ -1,9 +1,9 @@
 "use client";
 
-import AuthBackground from "@/components/auth/authBackground";
-import ProjectList from "@/components/barangay-admin/projectList";
-import CitizenCommentFeedback from "@/components/citizen/citizenFeedback";
-import Navbar from "@/components/reusable/navbar";
+import AuthBackground from "@/components/ui/authBackground";
+import ProjectList from "@/components/features/projectList";
+import CitizenCommentFeedback from "@/components/features/citizenFeedback";
+import Navbar from "@/components/ui/navbar";
 import { useFeedbacks } from "@/hooks/feedbackHooks";
 import { useProfileID } from "@/hooks/userHooks";
 import { useRouter } from "next/navigation";

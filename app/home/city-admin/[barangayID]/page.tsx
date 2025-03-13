@@ -3,14 +3,14 @@
 import { useViewBarangay } from "@/hooks/barangayHook";
 import { use } from "react";
 import { FiLoader, FiArrowLeft } from "react-icons/fi";
-import Navbar from "@/components/reusable/navbar";
-import AuthBackground from "@/components/auth/authBackground";
+import Navbar from "@/components/ui/navbar";
+import AuthBackground from "@/components/ui/authBackground";
 import { useRouter } from "next/navigation";
-import BarangayUpdateForm from "@/components/city-admin/barangayUI/updateForm";
-import BarangayViewCard from "@/components/city-admin/barangayUI/barangayViewCard";
-import BarangayQuickInfo from "@/components/city-admin/barangayUI/barangayQuickInfo";
-import BarangayActionCard from "@/components/city-admin/barangayUI/barangayActionCard";
-import BarangayDeleteModal from "@/components/city-admin/barangayUI/deleteBarangayModal";
+import BarangayUpdateForm from "@/components/city-admin-exclusive/barangayUI/updateForm";
+import BarangayViewCard from "@/components/city-admin-exclusive/barangayUI/barangayViewCard";
+import BarangayQuickInfo from "@/components/city-admin-exclusive/barangayUI/barangayQuickInfo";
+import BarangayActionCard from "@/components/city-admin-exclusive/barangayUI/barangayActionCard";
+import BarangayDeleteModal from "@/components/city-admin-exclusive/barangayUI/deleteBarangayModal";
 import { useViewBarangayStore } from "@/store/barangayStore";
 
 const CityAdminBarangayViewPage = ({

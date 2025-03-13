@@ -1,9 +1,9 @@
 "use client";
 
-import AuthBackground from "@/components/auth/authBackground";
-import Navbar from "@/components/reusable/navbar";
-import AddBudgetCategoryForm from "@/components/barangay-admin/addBudgetCategoryForm";
-import BudgetCategoryList from "@/components/barangay-admin/budgetCategoryList";
+import AuthBackground from "@/components/ui/authBackground";
+import Navbar from "@/components/ui/navbar";
+import AddBudgetCategoryForm from "@/components/barangay-admin-exclusive/addBudgetCategoryForm";
+import BudgetCategoryList from "@/components/features/budgetCategoryList";
 import { useProfileID } from "@/hooks/userHooks";
 
 export default function BarangayAdminPage() {
