@@ -3,19 +3,16 @@
 import { UseViewProjectList } from "@/hooks/projectHooks";
 import { useState } from "react";
 import {
-  FiFolder,
-  FiDollarSign,
-  FiCalendar,
-  FiTrendingUp,
   FiRefreshCw,
   FiChevronLeft,
   FiChevronRight,
-  FiMapPin,
   FiSearch,
 } from "react-icons/fi";
 import ProjectListError from "./projectListUI/projectListError";
 import ProjectViewButton from "./projectListUI/projectListViewButton";
 import ProjectAdditionalDetails from "./projectListUI/projectAdditionalDetail";
+import ProjectListHeader from "./projectListUI/projectListHeader";
+import NoProjectsFound from "./projectListUI/NoProjectsFound";
 
 export default function ProjectList({
   userRole,
@@ -107,19 +104,10 @@ export default function ProjectList({
                 <div className="flex items-start justify-between">
                   <div className="space-y-4 flex-1">
                     {/* Project Header */}
-                    <div className="flex items-center space-x-3">
-                      <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 group-hover:scale-110 transition-all duration-200">
-                        <FiFolder className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
-                          {project.name}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {project.status}
-                        </p>
-                      </div>
-                    </div>
+                    <ProjectListHeader
+                      status={project.status}
+                      name={project.name}
+                    />
 
                     {/* Project Details */}
                     <ProjectAdditionalDetails
@@ -147,15 +135,7 @@ export default function ProjectList({
               </div>
             ))
           ) : (
-            <div className="text-center py-12 px-4 rounded-xl border-2 border-dashed border-gray-200">
-              <FiMapPin className="w-8 h-8 text-gray-400 mx-auto mb-3" />
-              <h3 className="text-lg font-medium text-gray-900 mb-1">
-                No Projects Found
-              </h3>
-              <p className="text-sm text-gray-500">
-                There are no projects to display at the moment.
-              </p>
-            </div>
+            <NoProjectsFound />
           )}
         </div>
       )}
