@@ -1,13 +1,11 @@
 "use client";
 
 import { UseViewProjectList } from "@/hooks/projectHooks";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   FiFolder,
   FiDollarSign,
   FiCalendar,
-  FiEye,
   FiTrendingUp,
   FiRefreshCw,
   FiChevronLeft,
@@ -16,6 +14,8 @@ import {
   FiSearch,
 } from "react-icons/fi";
 import ProjectListError from "./projectListUI/projectListError";
+import ProjectViewButton from "./projectListUI/projectListViewButton";
+import ProjectAdditionalDetails from "./projectListUI/projectAdditionalDetail";
 
 export default function ProjectList({
   userRole,
@@ -29,27 +29,6 @@ export default function ProjectList({
   const [currentPage, setCurrentPage] = useState(1);
   const { categoryInfo, projectList, error, isLoading, refetch } =
     UseViewProjectList(categoryID, currentPage);
-  const router = useRouter();
-
-  const showBudgetItems = (projectID: number) => {
-    if (userRole === "citizen") {
-      router.push(`/home/citizen/projects/${projectID}`);
-    } else if (userRole === "barangay admin") {
-      router.push(`/home/barangay-admin/projects/${projectID}`);
-    } else {
-      router.push(`/home/city-admin/projects/${projectID}`);
-    }
-  };
-
-  const viewDetails = (projectID: number) => {
-    if (userRole === "citizen") {
-      setActiveProject?.(projectID);
-    } else if (userRole === "barangay admin") {
-      router.push(`/home/barangay-admin/${categoryID}/${projectID}`);
-    } else {
-      return;
-    }
-  };
 
   if (error) {
     return <ProjectListError refetch={refetch} error={error} />;
@@ -143,25 +122,10 @@ export default function ProjectList({
                     </div>
 
                     {/* Project Details */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      <div className="flex items-center space-x-2">
-                        <FiDollarSign className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">₱100,000</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <FiCalendar className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">
-                          {new Date(project.startDate).toLocaleDateString()} -{" "}
-                          {new Date(project.endDate).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <FiTrendingUp className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">
-                          60% Complete
-                        </span>
-                      </div>
-                    </div>
+                    <ProjectAdditionalDetails
+                      startDate={project.startDate}
+                      endDate={project.endDate}
+                    />
 
                     {/* Progress Bar */}
                     <div className="w-full bg-gray-100 rounded-full h-2.5">
@@ -173,26 +137,12 @@ export default function ProjectList({
                   </div>
 
                   {/* View Details Button */}
-                  <div className="flex flex-col space-y-2">
-                    <button
-                      onClick={() => viewDetails(project.id)}
-                      className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600
-                      bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200
-                      opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
-                    >
-                      <FiEye className="w-4 h-4 mr-1.5" />
-                      View Details
-                    </button>
-                    <button
-                      onClick={() => showBudgetItems(project.id)}
-                      className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-emerald-600
-                      bg-transparent hover:bg-emerald-50 rounded-lg transition-colors duration-200
-                      opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
-                    >
-                      <FiDollarSign className="w-4 h-4 mr-1.5" />
-                      View Budget Items
-                    </button>
-                  </div>
+                  <ProjectViewButton
+                    projectID={project.id}
+                    userRole={userRole}
+                    categoryID={categoryID}
+                    setActiveProject={setActiveProject}
+                  />
                 </div>
               </div>
             ))
