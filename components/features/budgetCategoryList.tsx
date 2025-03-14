@@ -1,10 +1,6 @@
 "use client";
 
 import {
-  FiFolderPlus,
-  FiFileText,
-  FiEye,
-  FiTrendingUp,
   FiSearch,
   FiRefreshCw,
   FiChevronLeft,
@@ -13,6 +9,8 @@ import {
 import { useState } from "react";
 import { useBudgetCategory } from "@/hooks/budgetCategoryHook";
 import { useRouter } from "next/navigation";
+import BudgetCategories from "./budgetCategoryListUI/budgetCategories";
+import NoBudgetCategories from "./budgetCategoryListUI/noBudgetCategories";
 
 export default function BudgetCategoryList({
   barangayID,
@@ -109,81 +107,10 @@ export default function BudgetCategoryList({
       <div className="space-y-4">
         {budgetCategories && budgetCategories.length > 0 ? (
           budgetCategories.map((category) => (
-            <div
-              key={category.id}
-              className="group bg-white p-6 rounded-xl border border-gray-100 hover:border-blue-100 hover:shadow-md transition-all duration-200"
-            >
-              <div className="flex items-start justify-between">
-                <div className="space-y-4 flex-1 min-w-0">
-                  {/* Category Header */}
-                  <div className="flex items-start space-x-3">
-                    <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 group-hover:scale-110 transition-all duration-200 flex-shrink-0">
-                      <FiFolderPlus className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div className="min-w-0">
-                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 truncate">
-                        {category.name}
-                      </h3>
-                      <p className="text-sm text-gray-500 line-clamp-2 mt-1">
-                        {category.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Category Details */}
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="flex items-center space-x-2">
-                      <FiFolderPlus className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                      <span className="text-sm text-gray-600 truncate">
-                        {category.project_count} Projects
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <FiTrendingUp className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                      <span className="text-sm text-gray-600 truncate">
-                        ₱200,000
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <FiFileText className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                      <span className="text-sm text-gray-600 truncate">
-                        1 Active
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* View Details Button */}
-                <button
-                  onClick={() => {
-                    if (userRole === "citizen") {
-                      router.push(`/home/citizen/${category.id}`);
-                    } else if (userRole === "barangay admin") {
-                      router.push(`/home/barangay-admin/${category.id}`);
-                    } else {
-                      router.push(`/home/city-admin/${category.id}`);
-                    }
-                  }}
-                  className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-transparent hover:bg-blue-50 rounded-lg transition-colors duration-200 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 flex-shrink-0"
-                >
-                  <FiEye className="w-4 h-4 mr-1.5" />
-                  View Details
-                </button>
-              </div>
-            </div>
+            <BudgetCategories category={category} userRole={userRole} />
           ))
         ) : (
-          <div className="text-center py-12">
-            <div className="flex justify-center mb-4">
-              <FiFolderPlus className="w-12 h-12 text-gray-400" />
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              No Budget Categories Yet
-            </h3>
-            <p className="text-gray-500">
-              Create your first budget category to get started.
-            </p>
-          </div>
+          <NoBudgetCategories />
         )}
       </div>
     </div>
