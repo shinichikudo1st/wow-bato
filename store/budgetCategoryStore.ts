@@ -10,6 +10,11 @@ type AddBudgetCategoryStore = {
   setSuccess: (success: string | null) => void;
 };
 
+type BudgetCategoryList = {
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+};
+
 export const useAddBudgetCategoryStore = create<AddBudgetCategoryStore>(
   (set) => ({
     formData: {
@@ -25,3 +30,8 @@ export const useAddBudgetCategoryStore = create<AddBudgetCategoryStore>(
     setSuccess: (success) => set(() => ({ success })),
   })
 );
+
+export const useBudgetCategoryListStore = create<BudgetCategoryList>((set) => ({
+  currentPage: 1,
+  setCurrentPage: (page) => set({ currentPage: page }),
+}));
