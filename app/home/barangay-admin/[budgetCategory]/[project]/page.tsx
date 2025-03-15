@@ -9,19 +9,21 @@ import { useProfileID } from "@/hooks/userHooks";
 import { useRouter } from "next/navigation";
 import { use } from "react";
 import { FiArrowLeft } from "react-icons/fi";
+import { useFeedbackQueryStore } from "@/store/feedbackStore";
 
 const BarangayAdminFeedbackView = ({
   params,
 }: {
   params: Promise<{ budgetCategory: number; project: number }>;
 }) => {
-  const categoryID = use(params).budgetCategory;
   const projectID = use(params).project;
 
-  const { userID, userRole } = useProfileID();
+  const { userID } = useProfileID();
   const { feedbacks, refetch, isLoading, error } = useFeedbacks(projectID);
-
   const { project } = UseViewSingleProject(projectID);
+  const { setFeedbackQueryData } = useFeedbackQueryStore();
+
+  setFeedbackQueryData({ feedbacks, refetch, isLoading, error });
 
   const router = useRouter();
 
@@ -51,14 +53,7 @@ const BarangayAdminFeedbackView = ({
               </p>
             </div>
           </div>
-          <CitizenCommentFeedback
-            userID={userID}
-            projectID={projectID}
-            feedbacks={feedbacks}
-            GetFeedbacksData={refetch}
-            isLoading={isLoading}
-            error={error}
-          />
+          <CitizenCommentFeedback userID={userID} projectID={projectID} />
         </div>
       </main>
     </div>

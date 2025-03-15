@@ -9,23 +9,15 @@ import NoProjectSelected from "./citizenFeedbackUI/notSelected";
 import FeedbackDropdown from "./citizenFeedbackUI/feedbackDropdown";
 import FeedbackKebabMenu from "./citizenFeedbackUI/kebabMenu";
 import EditFeedbackContent from "./citizenFeedbackUI/editFeedback";
-import { useFeedbackStore } from "@/store/feedbackStore";
+import { useFeedbackQueryStore, useFeedbackStore } from "@/store/feedbackStore";
 import FeedbackContent from "./citizenFeedbackUI/feedbackContent";
 
 const CitizenCommentFeedback = ({
   userID,
   projectID,
-  feedbacks,
-  GetFeedbacksData,
-  isLoading,
-  error,
 }: {
   userID: number | null;
   projectID: number | null;
-  feedbacks: FeedbackListItem[] | null;
-  GetFeedbacksData: () => void;
-  isLoading: boolean;
-  error: string;
 }) => {
   const {
     activeDropdown,
@@ -35,6 +27,8 @@ const CitizenCommentFeedback = ({
     activeFeedbackReplies,
     deleteConfirmationReply,
   } = useFeedbackStore();
+
+  const { feedbacks, refetch, isLoading, error } = useFeedbackQueryStore();
 
   if (!projectID) {
     return <NoProjectSelected />;
@@ -80,7 +74,7 @@ const CitizenCommentFeedback = ({
 
                     {editingComment === feedback.feedback_id ? (
                       <EditFeedbackContent
-                        GetFeedbacksData={GetFeedbacksData}
+                        GetFeedbacksData={refetch}
                         feedback_id={feedback.feedback_id}
                       />
                     ) : (
@@ -107,14 +101,14 @@ const CitizenCommentFeedback = ({
                 {showDeleteConfirm === feedback.feedback_id && (
                   <DeleteFeedbackModal
                     feedback_id={feedback.feedback_id}
-                    GetFeedbacksData={GetFeedbacksData}
+                    GetFeedbacksData={refetch}
                   />
                 )}
 
                 {/* Reply Section */}
                 {replyingTo === feedback.feedback_id && (
                   <ReplySection
-                    GetFeedbacksData={GetFeedbacksData}
+                    GetFeedbacksData={refetch}
                     feedbackID={feedback.feedback_id}
                   />
                 )}
@@ -132,7 +126,7 @@ const CitizenCommentFeedback = ({
       </div>
 
       {/* Floating Comment Box */}
-      <FeedbackBox projectID={projectID} GetFeedbacksData={GetFeedbacksData} />
+      <FeedbackBox projectID={projectID} GetFeedbacksData={refetch} />
     </>
   );
 };

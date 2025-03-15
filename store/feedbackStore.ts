@@ -1,4 +1,5 @@
 import { FeedbackReply } from "@/types/feedbackReplyTypes";
+import { FeedbackListItem } from "@/types/feedbackTypes";
 import { create } from "zustand";
 
 type FeedbackStore = {
@@ -21,6 +22,20 @@ type FeedbackStore = {
   setActiveFeedbackReplies: (feedbackID: number | null) => void;
   setEditingReplyFeedbackID: (feedbackID: number | null) => void;
   setDeleteConfirmationReply: (reply: FeedbackReply | null) => void;
+};
+
+type FeedbackQueryStore = {
+  feedbacks: FeedbackListItem[] | null;
+  refetch: () => void;
+  error: string | "";
+  isLoading: boolean;
+
+  setFeedbackQueryData: (data: {
+    feedbacks: FeedbackListItem[] | null;
+    refetch: () => void;
+    error: string | "";
+    isLoading: boolean;
+  }) => void;
 };
 
 export const useFeedbackStore = create<FeedbackStore>((set) => ({
@@ -49,4 +64,14 @@ export const useFeedbackStore = create<FeedbackStore>((set) => ({
     set(() => ({ editingReplyFeedbackID: feedbackID })),
   setDeleteConfirmationReply: (reply) =>
     set(() => ({ deleteConfirmationReply: reply })),
+}));
+
+export const useFeedbackQueryStore = create<FeedbackQueryStore>((set) => ({
+  feedbacks: [],
+  refetch: () => {},
+  isLoading: false,
+  error: "",
+
+  setFeedbackQueryData: ({ feedbacks, refetch, isLoading, error }) =>
+    set({ feedbacks, refetch, isLoading, error }),
 }));
