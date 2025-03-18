@@ -1,18 +1,12 @@
 import { useStatusBudgetItemStore } from "@/store/budgetItemStore";
 import { BudgetItemList } from "@/types/budgetItemTypes";
 import ConfirmationBudgetItem from "./confirmationOverlay";
-import {
-  FiCalendar,
-  FiCheck,
-  FiClock,
-  FiFileText,
-  FiTag,
-  FiX,
-} from "react-icons/fi";
-import { AiFillMoneyCollect } from "react-icons/ai";
 import ActionButtonBudgetItem from "./actionButton";
 import DeleteButtonBudgetItem from "./deleteButton";
-import BudgetItemHeader from "./budgetItemHeader";
+import BudgetItemHeader from "./budgetItemContent/budgetItemHeader";
+import BudgetMoney from "./budgetItemContent/budgetMoney";
+import BudgetItemDescription from "./budgetItemContent/budgetDescription";
+import BudgetItemStatus from "./budgetItemContent/budgetItemStatus";
 
 const BudgetItem = ({
   item,
@@ -40,95 +34,12 @@ const BudgetItem = ({
 
       <BudgetItemHeader item={item} />
 
-      <div
-        className={`flex items-center text-gray-600 mb-3 rounded-lg p-3
-              ${
-                item.Status === "Approved"
-                  ? "bg-green-50"
-                  : item.Status === "Rejected"
-                  ? "bg-gray-50"
-                  : "bg-gray-50"
-              }`}
-      >
-        <AiFillMoneyCollect
-          className={`w-5 h-5 mr-2 
-                ${
-                  item.Status === "Approved"
-                    ? "text-green-500"
-                    : item.Status === "Rejected"
-                    ? "text-gray-500"
-                    : "text-blue-500"
-                }`}
-        />
-        <span className="font-medium text-lg">
-          ₱
-          {item.Amount_Allocated.toLocaleString("en-PH", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-        </span>
-      </div>
+      <BudgetMoney item={item} />
 
-      <div
-        className={`p-4 rounded-lg mb-4
-              ${
-                item.Status === "Approved"
-                  ? "bg-green-50"
-                  : item.Status === "Rejected"
-                  ? "bg-gray-50"
-                  : "bg-gray-50"
-              }`}
-      >
-        <div className="flex items-start">
-          <FiFileText
-            className={`w-4 h-4 mr-2 mt-1 flex-shrink-0
-                  ${
-                    item.Status === "Approved"
-                      ? "text-green-500"
-                      : item.Status === "Rejected"
-                      ? "text-gray-500"
-                      : "text-blue-500"
-                  }`}
-          />
-          <p className="text-gray-600">{item.Description}</p>
-        </div>
-      </div>
+      <BudgetItemDescription item={item} />
 
-      {/* Budget Item Status */}
       <div className="flex items-center justify-between">
-        <div
-          className={`flex items-center text-sm text-gray-500 px-3 py-2 rounded-lg
-                ${
-                  item.Status === "Approved"
-                    ? "bg-green-50"
-                    : item.Status === "Rejected"
-                    ? "bg-gray-50"
-                    : "bg-gray-50"
-                }`}
-        >
-          <FiCalendar
-            className={`w-4 h-4 mr-2
-                  ${
-                    item.Status === "Approved"
-                      ? "text-green-500"
-                      : item.Status === "Rejected"
-                      ? "text-gray-500"
-                      : "text-blue-500"
-                  }`}
-          />
-          {item.Approval_Date
-            ? `Approved on ${new Date(item.Approval_Date).toLocaleDateString(
-                "en-PH",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                }
-              )}`
-            : item.Status === "Rejected"
-            ? "Rejected"
-            : "Pending Approval"}
-        </div>
+        <BudgetItemStatus item={item} />
 
         <div className="flex items-center space-x-3">
           {/* Action Buttons - Only show for pending items */}
