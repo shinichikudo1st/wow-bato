@@ -1,12 +1,16 @@
 "use client";
 
-import { FiMapPin, FiHome, FiGlobe, FiCheck, FiLoader } from "react-icons/fi";
+import { FiHome } from "react-icons/fi";
 import ErrorMessage from "../ui/error";
 import SuccessMessage from "../ui/success";
 import { AddBarangayFormData } from "@/types/barangayTypes";
 import { addBarangay } from "@/libs/barangay";
 import { useMutation } from "@tanstack/react-query";
 import { useAddBarangayStore } from "@/store/barangayStore";
+import AddBarangayName from "./addBarangayForm/addBarangayName";
+import AddBarangayCity from "./addBarangayForm/addBarangayCity";
+import AddBarangayRegion from "./addBarangayForm/addBarangayRegion";
+import AddBarangayButton from "./addBarangayForm/addBarangayButton";
 
 export default function AddBarangayForm() {
   const { formData, error, success, setFormData, setError, setSuccess } =
@@ -51,115 +55,18 @@ export default function AddBarangayForm() {
         Add New Barangay
       </h2>
 
-      {/* Error Message */}
       {error && <ErrorMessage error={error} setError={setError} />}
 
-      {/* Success Message */}
       {success && <SuccessMessage success={success} setSuccess={setSuccess} />}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Barangay Name
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FiMapPin className="h-5 w-5 text-gray-400" />
-            </div>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              placeholder="Enter barangay name"
-              required
-            />
-          </div>
-        </div>
+        <AddBarangayName />
 
-        <div>
-          <label
-            htmlFor="city"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            City
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FiHome className="h-5 w-5 text-gray-400" />
-            </div>
-            <input
-              type="text"
-              id="city"
-              name="city"
-              value={formData.city}
-              onChange={(e) =>
-                setFormData({ ...formData, city: e.target.value })
-              }
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              placeholder="Enter city name"
-              required
-            />
-          </div>
-        </div>
+        <AddBarangayCity />
 
-        <div>
-          <label
-            htmlFor="region"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Region
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FiGlobe className="h-5 w-5 text-gray-400" />
-            </div>
-            <input
-              type="text"
-              id="region"
-              name="region"
-              value={formData.region}
-              onChange={(e) =>
-                setFormData({ ...formData, region: e.target.value })
-              }
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              placeholder="Enter region"
-              required
-            />
-          </div>
-        </div>
+        <AddBarangayRegion />
 
-        <button
-          type="submit"
-          disabled={barangayMutation.isPending}
-          className="w-full px-4 py-2 text-white font-medium rounded-lg
-            bg-gradient-to-r from-blue-600 to-blue-500 
-            hover:from-blue-700 hover:to-blue-600 
-            transition-all duration-300 
-            shadow-sm hover:shadow-md
-            transform hover:-translate-y-0.5
-            disabled:opacity-50 disabled:cursor-not-allowed
-            flex items-center justify-center space-x-2"
-        >
-          {barangayMutation.isPending ? (
-            <>
-              <FiLoader className="w-5 h-5 animate-spin" />
-              <span>Adding Barangay...</span>
-            </>
-          ) : (
-            <>
-              <FiCheck className="w-5 h-5" />
-              <span>Add Barangay</span>
-            </>
-          )}
-        </button>
+        <AddBarangayButton isPending={barangayMutation.isPending} />
       </form>
     </div>
   );
