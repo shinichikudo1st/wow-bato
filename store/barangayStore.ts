@@ -22,6 +22,11 @@ type ViewBarangayStore = {
   setShowDeleteModal: (data: boolean) => void;
 };
 
+type ListBarangayStore = {
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+};
+
 {
   /* -----------------Zustand Barangay Store ----------------------------------*/
 }
@@ -46,4 +51,9 @@ export const useViewBarangayStore = create<ViewBarangayStore>((set) => ({
   showDeleteModal: false,
   setIsEditing: (data) => set((state) => ({ isEditing: data })),
   setShowDeleteModal: (data) => set((state) => ({ showDeleteModal: data })),
+}));
+
+export const useBarangayListStore = create<ListBarangayStore>((set) => ({
+  currentPage: 1,
+  setCurrentPage: (page) => set({ currentPage: page }),
 }));
