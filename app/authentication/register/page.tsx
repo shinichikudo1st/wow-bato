@@ -12,6 +12,7 @@ import RegisterFormRightColumn from "@/components/register/registerFormRight";
 import RegisterFormButton from "@/components/register/registerButton";
 import { useRegisterStore } from "@/store/authStore";
 import { useMutation } from "@tanstack/react-query";
+import RegisterDivider from "@/components/register/registerDivider";
 
 export default function RegisterPage() {
   const {
@@ -83,10 +84,8 @@ export default function RegisterPage() {
           relative
           before:absolute before:inset-0 before:-z-10 before:bg-white/40 before:backdrop-blur-xl before:rounded-2xl"
         >
-          {/* Error Message */}
           {error && <ErrorMessage error={error} setError={setError} />}
 
-          {/* Success Message */}
           {success && (
             <SuccessMessage success={success} setSuccess={setSuccess} />
           )}
@@ -94,19 +93,7 @@ export default function RegisterPage() {
           {/* Social Registration Buttons in a row */}
           <RegisterSocialButton />
 
-          {/* Divider */}
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500">
-                  Or register with email
-                </span>
-              </div>
-            </div>
-          </div>
+          <RegisterDivider />
 
           <form
             onSubmit={handleSubmit}
@@ -121,7 +108,6 @@ export default function RegisterPage() {
               <RegisterFormRightColumn />
             </div>
 
-            {/* Submit Button - Full Width */}
             <RegisterFormButton isLoading={registerMutation.isPending} />
           </form>
         </div>
