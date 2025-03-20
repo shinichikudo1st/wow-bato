@@ -118,12 +118,7 @@ export default function RegisterPage() {
               <RegisterFormLeftColumn />
 
               {/* Right Column - role, contact, password, confirm password*/}
-              <RegisterFormRightColumn
-                errors={errors}
-                setErrors={setErrors}
-                formData={formData}
-                setFormData={setFormData}
-              />
+              <RegisterFormRightColumn />
             </div>
 
             {/* Submit Button - Full Width */}
