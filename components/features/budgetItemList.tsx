@@ -1,26 +1,13 @@
 "use client";
 
 import { useBudgetItems } from "@/hooks/budgetItemHooks";
-import {
-  FiClock,
-  FiCheck,
-  FiX,
-  FiCalendar,
-  FiFileText,
-  FiTag,
-  FiDollarSign,
-} from "react-icons/fi";
-import DeleteButtonBudgetItem from "./budgetItemListUI/deleteButton";
-import ActionButtonBudgetItem from "./budgetItemListUI/actionButton";
-import ConfirmationBudgetItem from "./budgetItemListUI/confirmationOverlay";
 import FilterSectionBudgetItem from "./budgetItemListUI/filterSection";
 import ControlSectionBudgetItem from "./budgetItemListUI/controlSection";
 import { useStatusBudgetItemStore } from "@/store/budgetItemStore";
 import BudgetItem from "./budgetItemListUI/budgetItem";
 
 const BudgetItemList = ({ projectID }: { projectID: number }) => {
-  const { statusFilter, currentPage, confirmationState } =
-    useStatusBudgetItemStore();
+  const { statusFilter, currentPage } = useStatusBudgetItemStore();
 
   const { budgetItems, totalPages, refetch, isLoading } = useBudgetItems(
     projectID,

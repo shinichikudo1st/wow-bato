@@ -115,12 +115,7 @@ export default function RegisterPage() {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left Column - email, firstname, lastname, barangay*/}
-              <RegisterFormLeftColumn
-                errors={errors}
-                setErrors={setErrors}
-                formData={formData}
-                setFormData={setFormData}
-              />
+              <RegisterFormLeftColumn />
 
               {/* Right Column - role, contact, password, confirm password*/}
               <RegisterFormRightColumn
