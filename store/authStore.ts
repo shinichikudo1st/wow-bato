@@ -6,6 +6,17 @@ import {
 } from "@/types/authTypes";
 import { create } from "zustand";
 
+export const initialRegisterData: RegisterFormData = {
+  email: "",
+  firstName: "",
+  lastName: "",
+  barangay: "1",
+  role: "citizen",
+  contact: "",
+  password: "",
+  confirmPassword: "",
+};
+
 type LoginStore = {
   formData: LoginFormData;
   errors: FormErrorsLogin;

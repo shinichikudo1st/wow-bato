@@ -10,7 +10,7 @@ import RegisterSocialButton from "@/components/register/registerSocialButton";
 import RegisterFormLeftColumn from "@/components/register/registerFormLeft";
 import RegisterFormRightColumn from "@/components/register/registerFormRight";
 import RegisterFormButton from "@/components/register/registerButton";
-import { useRegisterStore } from "@/store/authStore";
+import { initialRegisterData, useRegisterStore } from "@/store/authStore";
 import { useMutation } from "@tanstack/react-query";
 import RegisterDivider from "@/components/register/registerDivider";
 
@@ -26,37 +26,12 @@ export default function RegisterPage() {
     setSuccess,
   } = useRegisterStore();
 
-  const resetMessages = () => {
-    setError(null);
-    setSuccess(null);
-  };
-
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterFormData) => {
       await register(data);
     },
-    onSuccess: () => {
-      setSuccess("Registration successful! You can now login to your account.");
-      setFormData({
-        email: "",
-        firstName: "",
-        lastName: "",
-        barangay: "1",
-        role: "citizen",
-        contact: "",
-        password: "",
-        confirmPassword: "",
-      });
-      setTimeout(() => {
-        setSuccess(null);
-      }, 3000);
-    },
-    onError: (error) => {
-      setError(error instanceof Error ? error.message : "Failed to register");
-      setTimeout(() => {
-        setError(null);
-      }, 3000);
-    },
+    onSuccess: () => RegisterSuccess(),
+    onError: (error) => RegisterFailed(error),
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,6 +40,26 @@ export default function RegisterPage() {
     if (!validateRegisterForm(formData, setErrors, errors)) return;
 
     registerMutation.mutate(formData);
+  };
+
+  const RegisterSuccess = () => {
+    setSuccess("Registration successful! You can now login to your account.");
+    setFormData(initialRegisterData);
+    setTimeout(() => {
+      setSuccess(null);
+    }, 3000);
+  };
+
+  const RegisterFailed = (error: Error) => {
+    setError(error instanceof Error ? error.message : "Failed to register");
+    setTimeout(() => {
+      setError(null);
+    }, 3000);
+  };
+
+  const resetMessages = () => {
+    setError(null);
+    setSuccess(null);
   };
 
   return (
