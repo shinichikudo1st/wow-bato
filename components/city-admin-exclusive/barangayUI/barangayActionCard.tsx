@@ -1,10 +1,8 @@
-const BarangayActionCard = ({
-  setIsEditing,
-  setShowDeleteModal,
-}: {
-  setIsEditing: (isEditing: boolean) => void;
-  setShowDeleteModal: (showDeleteModal: boolean) => void;
-}) => {
+import { useViewBarangayStore } from "@/store/barangayStore";
+
+const BarangayActionCard = () => {
+  const { setIsEditing, setShowDeleteModal } = useViewBarangayStore();
+
   return (
     <div className="bg-white p-6 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80">
       <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions</h2>

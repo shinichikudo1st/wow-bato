@@ -4,6 +4,7 @@ import AuthBackground from "@/components/ui/authBackground";
 import Navbar from "@/components/ui/navbar";
 import AddBarangayForm from "@/components/city-admin-exclusive/addBarangayForm";
 import BarangayList from "@/components/city-admin-exclusive/barangayList";
+import WelcomeSectionBarangayAdmin from "@/components/city-admin-exclusive/ui/welcome";
 
 export default function CityAdminPage() {
   return (
@@ -15,15 +16,7 @@ export default function CityAdminPage() {
         <div className="grid gap-8 md:grid-cols-2">
           <div className="space-y-8">
             {/* Welcome Section */}
-            <div className="bg-white p-8 shadow-lg rounded-2xl border border-gray-100 backdrop-blur-xl bg-opacity-80 hover:shadow-xl transition-all duration-300">
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                Welcome to Your Dashboard
-              </h1>
-              <p className="text-gray-600">
-                Manage barangays and other administrative tasks from this
-                central dashboard.
-              </p>
-            </div>
+            <WelcomeSectionBarangayAdmin />
 
             {/* Add Barangay Form */}
             <AddBarangayForm />

@@ -84,16 +84,10 @@ const CityAdminBarangayViewPage = ({
             </div>
           </div>
 
-          {/* Sidebar - Takes up 1 column */}
           <div className="space-y-6">
-            {/* Quick Stats Card */}
             <BarangayQuickInfo barangayID={barangay?.id} />
 
-            {/* Actions Card */}
-            <BarangayActionCard
-              setIsEditing={setIsEditing}
-              setShowDeleteModal={setShowDeleteModal}
-            />
+            <BarangayActionCard />
           </div>
         </div>
       </main>
