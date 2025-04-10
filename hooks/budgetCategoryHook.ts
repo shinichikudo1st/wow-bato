@@ -26,7 +26,6 @@ export const useBudgetCategory = (
       : "Unknown error occurred"
     : null;
 
-  // Extract data from the query result
   const budgetCategories = data?.data || [];
   const categoryCount = data?.count || 0;
 
