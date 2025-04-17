@@ -1,8 +1,11 @@
 "use client";
 import CitizenItemList from "@/components/citizen-exclusive/citizenItemList";
+import CitizenCommentFeedback from "@/components/features/citizenFeedback";
 import AuthBackground from "@/components/ui/authBackground";
 import BudgetItemWelcome from "@/components/ui/budgetItemWelcome";
 import Navbar from "@/components/ui/navbar";
+import { useFeedbacks } from "@/hooks/feedbackHooks";
+import { useProfileID } from "@/hooks/userHooks";
 import { useRouter } from "next/navigation";
 import { use } from "react";
 import { FiArrowLeft } from "react-icons/fi";
@@ -14,6 +17,9 @@ const ProjectItemsCitizen = ({
 }) => {
   const projectID = use(params).projectID;
   const router = useRouter();
+  const { userID } = useProfileID();
+
+  const { feedbacks, refetch, isLoading, error } = useFeedbacks(projectID);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -31,6 +37,14 @@ const ProjectItemsCitizen = ({
         <div className="grid gap-8 md:grid-cols-2">
           <div className="space-y-8">
             <BudgetItemWelcome projectID={projectID} />
+            <CitizenCommentFeedback
+              userID={userID}
+              projectID={projectID}
+              feedbacks={feedbacks}
+              GetFeedbacksData={refetch}
+              isLoading={isLoading}
+              error={error}
+            />
           </div>
           <CitizenItemList projectID={projectID} />
         </div>

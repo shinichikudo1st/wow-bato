@@ -5,12 +5,10 @@ const ProjectViewButton = ({
   projectID,
   userRole,
   categoryID,
-  setActiveProject,
 }: {
   projectID: number;
   userRole: string | null;
   categoryID: number | null;
-  setActiveProject: ((projectID: number) => void) | undefined;
 }) => {
   const router = useRouter();
 
@@ -26,7 +24,7 @@ const ProjectViewButton = ({
 
   const viewDetails = (projectID: number) => {
     if (userRole === "citizen") {
-      setActiveProject?.(projectID);
+      console.log("redirect to new page");
     } else if (userRole === "barangay admin") {
       router.push(`/home/barangay-admin/${categoryID}/${projectID}`);
     } else {

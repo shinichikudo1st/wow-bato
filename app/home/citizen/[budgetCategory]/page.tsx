@@ -2,12 +2,10 @@
 
 import AuthBackground from "@/components/ui/authBackground";
 import ProjectList from "@/components/features/projectList";
-import CitizenCommentFeedback from "@/components/features/citizenFeedback";
 import Navbar from "@/components/ui/navbar";
-import { useFeedbacks } from "@/hooks/feedbackHooks";
 import { useProfileID } from "@/hooks/userHooks";
 import { useRouter } from "next/navigation";
-import { use, useState } from "react";
+import { use } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 
 const BudgetCategoryCitizen = ({
@@ -18,10 +16,7 @@ const BudgetCategoryCitizen = ({
   const categoryID = use(params).budgetCategory;
   const router = useRouter();
 
-  const [activeProject, setActiveProject] = useState<number | null>(null);
-  const { userID, userRole } = useProfileID();
-
-  const { feedbacks, refetch, isLoading, error } = useFeedbacks(activeProject);
+  const { userRole } = useProfileID();
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
@@ -50,20 +45,8 @@ const BudgetCategoryCitizen = ({
             </div>
 
             {/* Project List */}
-            <ProjectList
-              userRole={userRole}
-              categoryID={categoryID}
-              setActiveProject={setActiveProject}
-            />
+            <ProjectList userRole={userRole} categoryID={categoryID} />
           </div>
-          <CitizenCommentFeedback
-            userID={userID}
-            projectID={activeProject}
-            feedbacks={feedbacks}
-            GetFeedbacksData={refetch}
-            isLoading={isLoading}
-            error={error}
-          />
         </div>
       </main>
     </div>

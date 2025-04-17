@@ -17,15 +17,13 @@ const CitizenCommentFeedback = ({
   projectID,
   feedbacks,
   GetFeedbacksData,
-  isLoading,
-  error,
 }: {
   userID: number | null;
   projectID: number | null;
   feedbacks: FeedbackListItem[] | null;
   GetFeedbacksData: () => void;
-  isLoading: boolean;
-  error: string;
+  isLoading?: boolean;
+  error?: string;
 }) => {
   const {
     activeDropdown,
@@ -42,7 +40,7 @@ const CitizenCommentFeedback = ({
 
   return (
     <>
-      <div className="w-full bg-white rounded-lg border p-4 md:p-6 relative min-h-[500px]">
+      <div className="w-full bg-white rounded-lg border p-4 md:p-6 relative h-[800px] flex flex-col">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-semibold text-gray-900">
             Project Discussion
@@ -52,7 +50,7 @@ const CitizenCommentFeedback = ({
           </div>
         </div>
 
-        <div className="space-y-6 mb-32">
+        <div className="flex-1 overflow-y-auto pr-2 space-y-6 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
           {/* Comment Container */}
           {feedbacks &&
             feedbacks.map((feedback) => (
@@ -129,10 +127,11 @@ const CitizenCommentFeedback = ({
 
         {/* Delete Reply Confirmation Modal */}
         {deleteConfirmationReply && <DeleteReplyModal />}
-      </div>
 
-      {/* Floating Comment Box */}
-      <FeedbackBox projectID={projectID} GetFeedbacksData={GetFeedbacksData} />
+        <div className="mt-6 border-t pt-6">
+          <FeedbackBox projectID={projectID} GetFeedbacksData={GetFeedbacksData} />
+        </div>
+      </div>
     </>
   );
 };

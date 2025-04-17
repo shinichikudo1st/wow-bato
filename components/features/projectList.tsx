@@ -17,11 +17,9 @@ import NoProjectsFound from "./projectListUI/NoProjectsFound";
 export default function ProjectList({
   userRole,
   categoryID,
-  setActiveProject,
 }: {
   userRole: string | null;
   categoryID: number | null;
-  setActiveProject?: (projectID: number) => void;
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const { categoryInfo, projectList, error, isLoading, refetch } =
@@ -129,7 +127,6 @@ export default function ProjectList({
                     projectID={project.id}
                     userRole={userRole}
                     categoryID={categoryID}
-                    setActiveProject={setActiveProject}
                   />
                 </div>
               </div>
