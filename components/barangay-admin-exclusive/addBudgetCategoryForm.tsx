@@ -9,6 +9,8 @@ import AddCategoryButton from "./addBudgetCategoryForm/addCategoryButton";
 import AddCategoryHeader from "./addBudgetCategoryForm/addCategoryHeader";
 import AddCategoryName from "./addBudgetCategoryForm/addCategoryName";
 import AddCategoryDescription from "./addBudgetCategoryForm/addCategoryDescription";
+import ErrorMessage from "../ui/error";
+import SuccessMessage from "../ui/success";
 
 export default function AddBudgetCategoryForm({
   barangayID,
@@ -66,6 +68,12 @@ export default function AddBudgetCategoryForm({
         <AddCategoryDescription />
 
         <AddCategoryButton isPending={categoryMutation.isPending} />
+
+        {error && <ErrorMessage error={error} setError={setError} />}
+
+        {success && (
+          <SuccessMessage success={success} setSuccess={setSuccess} />
+        )}
       </form>
     </div>
   );

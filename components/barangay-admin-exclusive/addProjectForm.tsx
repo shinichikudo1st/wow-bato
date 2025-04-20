@@ -12,13 +12,16 @@ import AddProjectName from "./addProjectForm/addProjectName";
 import AddProjectDate from "./addProjectForm/addProjectDate";
 import AddProjectDescription from "./addProjectForm/addProjectDescription";
 import AddProjectButton from "./addProjectForm/addProjectButton";
+import ErrorMessage from "../ui/error";
+import SuccessMessage from "../ui/success";
 
 export default function AddProjectForm({
   categoryID,
 }: {
   categoryID: number | null;
 }) {
-  const { formData, setFormData, setSuccess, setError } = useAddProjectStore();
+  const { formData, setFormData, setSuccess, setError, error, success } =
+    useAddProjectStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,6 +60,12 @@ export default function AddProjectForm({
         <AddProjectDescription />
 
         <AddProjectButton isPending={projectMutation.isPending} />
+
+        {error && <ErrorMessage error={error} setError={setError} />}
+
+        {success && (
+          <SuccessMessage success={success} setSuccess={setSuccess} />
+        )}
       </form>
     </div>
   );
