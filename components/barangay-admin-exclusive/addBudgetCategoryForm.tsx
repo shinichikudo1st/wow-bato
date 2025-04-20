@@ -5,12 +5,6 @@ import { useAddBudgetCategoryStore } from "@/store/budgetCategoryStore";
 import { AddBudgetCategoryFormData } from "@/types/budgetCategoryTypes";
 import { useMutation } from "@tanstack/react-query";
 import React, { useEffect } from "react";
-import {
-  FiFolderPlus,
-  FiFileText,
-  FiCheck,
-  FiTrendingUp,
-} from "react-icons/fi";
 import AddCategoryButton from "./addBudgetCategoryForm/addCategoryButton";
 import AddCategoryHeader from "./addBudgetCategoryForm/addCategoryHeader";
 import AddCategoryName from "./addBudgetCategoryForm/addCategoryName";
@@ -71,7 +65,7 @@ export default function AddBudgetCategoryForm({
 
         <AddCategoryDescription />
 
-        <AddCategoryButton />
+        <AddCategoryButton isPending={categoryMutation.isPending} />
       </form>
     </div>
   );
