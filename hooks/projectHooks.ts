@@ -48,8 +48,9 @@ export const UseViewSingleProject = (
     error: queryError,
     isLoading,
   } = useQuery({
-    queryKey: ["project"],
+    queryKey: ["project", projectID],
     queryFn: () => (projectID ? GetSingleProject(projectID) : null),
+    enabled: !!projectID,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
   });
