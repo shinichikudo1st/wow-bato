@@ -15,10 +15,9 @@ const BarangayAdminFeedbackView = ({
 }: {
   params: Promise<{ budgetCategory: number; project: number }>;
 }) => {
-  const categoryID = use(params).budgetCategory;
   const projectID = use(params).project;
 
-  const { userID, userRole } = useProfileID();
+  const { userID } = useProfileID();
   const { feedbacks, refetch, isLoading, error } = useFeedbacks(projectID);
 
   const { project } = UseViewSingleProject(projectID);
