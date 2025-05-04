@@ -3,11 +3,11 @@
 import { logout } from "@/libs/authentication";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FiLogOut, FiMail, FiPhone } from "react-icons/fi";
 import { useState, useEffect, useRef } from "react";
 import { useProfile } from "@/hooks/userHooks";
 import DropdownButton from "./navbar/dropdownButton";
 import DropdownBox from "./navbar/dropdownBox";
+import { useMutation } from "@tanstack/react-query";
 
 export default function Navbar() {
   const router = useRouter();
@@ -29,15 +29,16 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const userMutation = useMutation({
+    mutationFn: async () => {
+      await logout();
+    },
+    onSuccess: () => router.push("/authentication/login"),
+    onError: (error) => console.log("Error logging out:", error),
+  });
+
   const handleLogout = async () => {
-    try {
-      const response = await logout();
-      if (response.ok) {
-        router.push("/authentication/login");
-      }
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
+    userMutation.mutate();
   };
 
   return (

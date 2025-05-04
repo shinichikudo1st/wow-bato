@@ -4,7 +4,7 @@ import { FiChevronLeft, FiChevronRight, FiRefreshCcw } from "react-icons/fi";
 
 const BarangayListControl = () => {
   const { currentPage, setCurrentPage } = useBarangayListStore();
-  const { barangays, isLoading, isRefreshing, error, refetch } =
+  const { barangays, isLoading, isRefreshing, refetch } =
     useBarangayList(currentPage);
   const LIMIT = 5;
   return (

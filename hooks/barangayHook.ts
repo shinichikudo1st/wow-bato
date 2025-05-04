@@ -1,44 +1,61 @@
-'use client';
+"use client";
 
 import {
   UseBarangayListReturn,
   UseBarangayNamesReturn,
   UsePublicViewBarangayReturn,
-} from '@/types/barangayTypes';
+} from "@/types/barangayTypes";
 import {
   DisplayBarangaysPublic,
   getBarangayNames,
   getBarangays,
   viewBarangay,
-} from '@/libs/barangay';
-import { useQuery } from '@tanstack/react-query';
+} from "@/libs/barangay";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 export const useBarangayList = (currentPage: number): UseBarangayListReturn => {
   const limit = 5;
+  const [isManualRefreshing, setIsManualRefreshing] = useState(false);
 
   const {
     data: barangays,
     isLoading,
     error: queryError,
     isFetching,
-    refetch,
+    refetch: originalRefetch,
   } = useQuery({
-    queryKey: ['barangays', currentPage, limit],
+    queryKey: ["barangays", currentPage, limit],
     queryFn: () => getBarangays(currentPage, limit),
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 
+  // Custom refetch function with minimum duration
+  const refetch = async () => {
+    setIsManualRefreshing(true);
+    
+    // Execute original refetch
+    const result = await originalRefetch();
+    
+    // Ensure spinner shows for at least 500ms
+    setTimeout(() => {
+      setIsManualRefreshing(false);
+    }, 500);
+    
+    return result;
+  };
+
   const error = queryError
     ? queryError instanceof Error
       ? queryError.message
-      : 'An unknown error occurred'
+      : "An unknown error occurred"
     : null;
 
   return {
     barangays,
     isLoading,
-    isRefreshing: isFetching,
+    isRefreshing: isManualRefreshing || isFetching,
     error,
     refetch,
   };
@@ -52,7 +69,7 @@ export const useViewBarangay = (barangayID: string) => {
     isFetching,
     refetch,
   } = useQuery({
-    queryKey: ['barangay', barangayID],
+    queryKey: ["barangay", barangayID],
     queryFn: () => (barangayID ? viewBarangay(barangayID) : null),
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
@@ -62,7 +79,7 @@ export const useViewBarangay = (barangayID: string) => {
   const error = queryError
     ? queryError instanceof Error
       ? queryError.message
-      : 'Unknown error occured'
+      : "Unknown error occured"
     : null;
 
   return {
@@ -76,7 +93,7 @@ export const useViewBarangay = (barangayID: string) => {
 
 export const useBarangayNames = (): UseBarangayNamesReturn[] => {
   const { data } = useQuery({
-    queryKey: ['barangays'],
+    queryKey: ["barangays"],
     queryFn: () => getBarangayNames(),
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
@@ -88,7 +105,7 @@ export const useBarangayNames = (): UseBarangayNamesReturn[] => {
 
 export const usePublicViewBarangay = (): UsePublicViewBarangayReturn => {
   const { data } = useQuery({
-    queryKey: ['publicBarangays'],
+    queryKey: ["publicBarangays"],
     queryFn: () => DisplayBarangaysPublic(),
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
