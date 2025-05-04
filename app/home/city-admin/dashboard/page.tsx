@@ -50,7 +50,7 @@ const CityAdminDashboard = () => {
     }).format(amount);
   };
 
-  return (
+    return ( 
     <div className="relative min-h-screen bg-gradient-to-b from-blue-50/50 via-white to-white">
       <AuthBackground />
       <Navbar />
@@ -58,7 +58,7 @@ const CityAdminDashboard = () => {
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Top Navigation */}
         <div className="flex items-center justify-between mb-8">
-          <div>
+        <div>
             <button
               onClick={() => router.push('/home/city-admin')}
               className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors duration-200"
@@ -292,8 +292,8 @@ const CityAdminDashboard = () => {
           </div>
         </div>
       </main>
-    </div>
-  );
+        </div>
+     );
 };
-
+ 
 export default CityAdminDashboard;
