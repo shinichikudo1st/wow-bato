@@ -6,7 +6,6 @@ import Navbar from "@/components/ui/navbar";
 import { FiArrowLeft, FiArrowUp, FiDollarSign, FiPieChart, FiBarChart2, FiTrendingUp, FiAlertCircle, FiCalendar } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 
-// Mock data for the dashboard
 const MOCK_BUDGET_DATA = {
   totalBudget: 120000000,
   allocated: 95000000,
@@ -41,7 +40,6 @@ const CityAdminDashboard = () => {
   const router = useRouter();
   const [timeframe, setTimeframe] = useState("yearly");
 
-  // Helper function to format currency
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-PH', {
       style: 'currency',
@@ -56,7 +54,6 @@ const CityAdminDashboard = () => {
       <Navbar />
 
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Top Navigation */}
         <div className="flex items-center justify-between mb-8">
         <div>
             <button
@@ -84,7 +81,6 @@ const CityAdminDashboard = () => {
           </div>
         </div>
 
-        {/* Budget Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
@@ -133,11 +129,9 @@ const CityAdminDashboard = () => {
           </div>
         </div>
 
-        {/* Main Content Area */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Spending by Category */}
             <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-200">
               <h2 className="text-lg font-semibold text-gray-900 mb-6">Spending by Category</h2>
               <div className="space-y-4">
