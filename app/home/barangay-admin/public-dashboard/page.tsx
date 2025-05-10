@@ -7,7 +7,6 @@ import AuthBackground from "@/components/ui/authBackground";
 import Navbar from "@/components/ui/navbar";
 import { useProfileID } from "@/hooks/userHooks";
 
-// Mock data for the public dashboard
 const MOCK_BUDGET_SUMMARY = {
   totalBudget: 21000000,
   allocated: 18600000,
@@ -79,7 +78,6 @@ const MOCK_RECENT_EXPENDITURES = [
   { date: "2023-10-02", description: "Road equipment rental", amount: 200000, category: "Infrastructure" },
 ];
 
-// Time periods for filtering
 const TIME_PERIODS = [
   { label: "Current Quarter", value: "quarter" },
   { label: "Current Year", value: "year" },
@@ -92,7 +90,6 @@ const PublicDisclosureDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [timeframe, setTimeframe] = useState("year");
 
-  // Format currency values
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-PH', {
       style: 'currency',
@@ -107,7 +104,6 @@ const PublicDisclosureDashboard = () => {
       <Navbar />
 
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header with Barangay Info */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div>
@@ -130,7 +126,6 @@ const PublicDisclosureDashboard = () => {
             </div>
           </div>
 
-          {/* Tab Navigation */}
           <div className="mt-8 border-b border-gray-200">
             <nav className="-mb-px flex space-x-8">
               <button
@@ -177,7 +172,6 @@ const PublicDisclosureDashboard = () => {
           </div>
         </div>
 
-        {/* Budget Summary Cards (visible in all tabs) */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-lg shadow p-4 flex items-start space-x-4">
             <div className="rounded-full bg-blue-100 p-2">
@@ -217,10 +211,8 @@ const PublicDisclosureDashboard = () => {
           </div>
         </div>
 
-        {/* Tab Content */}
         {activeTab === "overview" && (
           <div className="space-y-8">
-            {/* Budget by Category */}
             <div className="bg-white rounded-lg shadow overflow-hidden">
               <div className="p-6">
                 <h2 className="text-lg font-medium text-gray-900">Budget Allocation by Category</h2>
@@ -255,7 +247,6 @@ const PublicDisclosureDashboard = () => {
               </div>
             </div>
 
-            {/* Budget Distribution */}
             <div className="bg-white rounded-lg shadow p-6">
               <h2 className="text-lg font-medium text-gray-900 mb-4">Budget Distribution</h2>
               <div className="mb-6">
