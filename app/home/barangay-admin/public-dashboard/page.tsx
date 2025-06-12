@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { FiInfo, FiFileText, FiDollarSign, FiActivity, FiCheckCircle, FiAlertCircle, FiCalendar } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { FiInfo, FiFileText, FiDollarSign, FiActivity, FiUsers, FiCheckCircle, FiAlertCircle, FiCalendar, FiMapPin } from "react-icons/fi";
 import AuthBackground from "@/components/ui/authBackground";
 import Navbar from "@/components/ui/navbar";
 import { useProfileID } from "@/hooks/userHooks";
 
+// Mock data for the public dashboard
 const MOCK_BUDGET_SUMMARY = {
   totalBudget: 21000000,
   allocated: 18600000,
@@ -77,6 +79,7 @@ const MOCK_RECENT_EXPENDITURES = [
   { date: "2023-10-02", description: "Road equipment rental", amount: 200000, category: "Infrastructure" },
 ];
 
+// Time periods for filtering
 const TIME_PERIODS = [
   { label: "Current Quarter", value: "quarter" },
   { label: "Current Year", value: "year" },
@@ -84,12 +87,13 @@ const TIME_PERIODS = [
 ];
 
 const PublicDisclosureDashboard = () => {
+  const router = useRouter();
   const { barangayName } = useProfileID();
   const [activeTab, setActiveTab] = useState("overview");
   const [timeframe, setTimeframe] = useState("year");
 
   // Format currency values
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-PH', {
       style: 'currency',
       currency: 'PHP',
@@ -483,6 +487,7 @@ const PublicDisclosureDashboard = () => {
           </div>
         )}
 
+        {/* Disclaimer Footer */}
         <div className="mt-12 p-4 bg-gray-50 rounded-lg border border-gray-200">
           <div className="flex items-start">
             <div className="flex-shrink-0">
