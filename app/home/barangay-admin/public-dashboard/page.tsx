@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { FiInfo, FiFileText, FiDollarSign, FiActivity, FiUsers, FiCheckCircle, FiAlertCircle, FiCalendar, FiMapPin } from "react-icons/fi";
+import { FiInfo, FiFileText, FiDollarSign, FiActivity, FiCheckCircle, FiAlertCircle, FiCalendar  } from "react-icons/fi";
 import AuthBackground from "@/components/ui/authBackground";
 import Navbar from "@/components/ui/navbar";
 import { useProfileID } from "@/hooks/userHooks";
@@ -87,13 +86,12 @@ const TIME_PERIODS = [
 ];
 
 const PublicDisclosureDashboard = () => {
-  const router = useRouter();
   const { barangayName } = useProfileID();
   const [activeTab, setActiveTab] = useState("overview");
   const [timeframe, setTimeframe] = useState("year");
 
   // Format currency values
-  const formatCurrency = (amount) => {
+  const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-PH', {
       style: 'currency',
       currency: 'PHP',
